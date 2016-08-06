@@ -41,7 +41,6 @@ import java.util.Collections;
 
 import champak.champabun.adapters.Adapter_SongView;
 import champak.champabun.adapters.Adapter_playlist_Dialog;
-import champak.champabun.albums.lazylist.FileCache;
 import champak.champabun.classes.SongDetails;
 import champak.champabun.raymenu.RayMenu;
 import champak.champabun.ui.TypefaceTextView;
@@ -67,7 +66,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
     ProgressBar spinner;
     Handler handler = new Handler();
     String sexy, artist, image_path, name;
-    FileCache fileCache;
     ArrayList<SongDetails> multiplecheckedListforaddtoplaylist, pl;
     static public int highlight_zero = 0;
 

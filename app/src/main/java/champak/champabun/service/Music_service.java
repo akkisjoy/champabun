@@ -28,10 +28,11 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.support.v7.app.NotificationCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.RemoteViews;
+
+import com.squareup.picasso.Picasso;
 
 import champak.champabun.GlobalSongList;
 import champak.champabun.IConstant;
@@ -505,126 +506,100 @@ public class Music_service extends Service
             cancelNotification();
             return;
         }
-        if (android.os.Build.VERSION.SDK_INT < 16) {
-            int icon = R.drawable.ic_launcher;
-            CharSequence tickerText = getString(R.string.app_name);
-            long when = System.currentTimeMillis();
+//        if (android.os.Build.VERSION.SDK_INT < 16) {
+//            int icon = R.drawable.ic_launcher;
+//            CharSequence tickerText = getString(R.string.app_name);
+//            long when = System.currentTimeMillis();
+//
+//            Context context = getApplicationContext();
+//            CharSequence contentTitle = (CharSequence) GlobalSongList.GetInstance().GetCurSongDetails().getSong();
+//            CharSequence contentText = (CharSequence) GlobalSongList.GetInstance().GetCurSongDetails().getArtist();
+//
+//            Notification notification = new NotificationCompat.Builder(this)
+//                    .setSmallIcon(R.drawable.ic_launcher)
+//                    .setOngoing(true)
+//                    .setAutoCancel(false)
+//                    .setContentTitle(contentTitle)
+//                    .setContentText(contentText)
+//                    .build();
+//
+//            Intent notificationIntent = new Intent(this, Player.class);
+//            notificationIntent.putExtra("comefrom", "Music_service");
+//            PendingIntent contentIntent = PendingIntent.getActivity(context, IConstant.REQUEST_CODE, notificationIntent, 0);
+//            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//            notificationManager.notify(NOTIFICATION_ID, notification);
+////            notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+////            startForeground(NOTIFICATION_ID, notification);
+//        } else {
+        Intent intent = new Intent(this, Player.class);
+        intent.putExtra("comefrom", "Music_service");
+        PendingIntent pIntent = PendingIntent.getActivity(this, IConstant.REQUEST_CODE, intent, 0);
 
-            Context context = getApplicationContext();
-            CharSequence contentTitle = (CharSequence) GlobalSongList.GetInstance().GetCurSongDetails().getSong();
-            CharSequence contentText = (CharSequence) GlobalSongList.GetInstance().GetCurSongDetails().getArtist();
+        Intent playIntent = new Intent(IConstant.BROADCAST_PLAYPAUSE);
+        PendingIntent playPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), IConstant.REQUEST_CODE, playIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
-            Notification notification = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setOngoing(true)
-                    .setAutoCancel(false)
-                    .setContentTitle(contentTitle)
-                    .setContentText(contentText)
-                    .build();
+        Intent stopIntent = new Intent(IConstant.BROADCAST_STOP);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), IConstant.REQUEST_CODE, stopIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
-            Intent notificationIntent = new Intent(this, Player.class);
-            notificationIntent.putExtra("comefrom", "Music_service");
-            PendingIntent contentIntent = PendingIntent.getActivity(context, IConstant.REQUEST_CODE, notificationIntent, 0);
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(NOTIFICATION_ID, notification);
-//            notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-//            startForeground(NOTIFICATION_ID, notification);
+        Intent previousIntent = new Intent(IConstant.BROADCAST_PREV);
+        PendingIntent previousPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), IConstant.REQUEST_CODE, previousIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent nextIntent = new Intent(IConstant.BROADCAST_SWAP);
+        nextIntent.putExtra("nextprev", 1);
+
+        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), IConstant.REQUEST_CODE, nextIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification);
+
+        int wt_px = (int) getResources().getDimension(R.dimen.notification_height);
+
+
+        Bitmap bitmap = imgLoader.fetchfilefromcahce(GlobalSongList.GetInstance().GetCurSongDetails().getAlbum(),
+                GlobalSongList.GetInstance().GetCurSongDetails().getArtist());
+        if (bitmap != null)
+            bitmap = Bitmap.createScaledBitmap(bitmap, wt_px, wt_px, false);
+        if (bitmap == null)
+            bitmap = BitmapUtil.GetBitmapFromSongPath(getResources(), GlobalSongList.GetInstance().GetCurSongDetails().getAlbumID(),
+                    wt_px, wt_px, GlobalSongList.GetInstance().GetCurSongDetails().getPath2());
+        if (bitmap == null)
+            bitmap = BitmapUtil.GetRandomBitmap(Music_service.this.getResources(), GlobalSongList.GetInstance().GetCurSongDetails().getAlbumID(),
+                    wt_px, wt_px);
+
+        // Logger.d("Music_service", "GlobalSongList.GetInstance().GetCurSongDetails().getPlayingBGResID() = "
+        // + GlobalSongList.GetInstance().GetCurSongDetails().getPlayingBGResID());
+        if (bitmap != null) {
+            contentView.setImageViewBitmap(R.id.image, bitmap);
         } else {
-            Intent intent = new Intent(this, Player.class);
-            intent.putExtra("comefrom", "Music_service");
-            PendingIntent pIntent = PendingIntent.getActivity(this, IConstant.REQUEST_CODE, intent, 0);
-
-            Intent playIntent = new Intent(IConstant.BROADCAST_PLAYPAUSE);
-            PendingIntent playPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), IConstant.REQUEST_CODE, playIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
-            Intent stopIntent = new Intent(IConstant.BROADCAST_STOP);
-            PendingIntent stopPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), IConstant.REQUEST_CODE, stopIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
-            Intent previousIntent = new Intent(IConstant.BROADCAST_PREV);
-            PendingIntent previousPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), IConstant.REQUEST_CODE, previousIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
-            Intent nextIntent = new Intent(IConstant.BROADCAST_SWAP);
-            nextIntent.putExtra("nextprev", 1);
-
-            PendingIntent nextPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), IConstant.REQUEST_CODE, nextIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-            RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification);
-
-            int wt_px = (int) getResources().getDimension(R.dimen.notification_height);
-
-
-            Bitmap bitmap = imgLoader.fetchfilefromcahce(GlobalSongList.GetInstance().GetCurSongDetails().getAlbum(),
-                    GlobalSongList.GetInstance().GetCurSongDetails().getArtist());
-            if (bitmap != null)
-                bitmap = Bitmap.createScaledBitmap(bitmap, wt_px, wt_px, false);
-            if (bitmap == null)
-                bitmap = BitmapUtil.GetBitmapFromSongPath(getResources(), GlobalSongList.GetInstance().GetCurSongDetails().getAlbumID(),
-                        wt_px, wt_px, GlobalSongList.GetInstance().GetCurSongDetails().getPath2());
-            if (bitmap == null)
-                bitmap = BitmapUtil.GetRandomBitmap(Music_service.this.getResources(), GlobalSongList.GetInstance().GetCurSongDetails().getAlbumID(),
-                        wt_px, wt_px);
-
-            // Logger.d("Music_service", "GlobalSongList.GetInstance().GetCurSongDetails().getPlayingBGResID() = "
-            // + GlobalSongList.GetInstance().GetCurSongDetails().getPlayingBGResID());
-            if (bitmap != null) {
-                contentView.setImageViewBitmap(R.id.image, bitmap);
-            } else {
-                contentView.setImageViewResource(R.id.image, R.drawable.ic_launcher);
-            }
-
-            contentView.setImageViewResource(R.id.bPlayPause,
-                    GlobalSongList.GetInstance().boolMusicPlaying1 == true ? R.drawable.pause2 : R.drawable.play);
-
-            contentView.setTextViewText(R.id.title, GlobalSongList.GetInstance().GetCurSongDetails().getSong());
-            contentView.setTextViewText(R.id.text, GlobalSongList.GetInstance().GetCurSongDetails().getArtist());
-            contentView.setOnClickPendingIntent(R.id.stop, stopPendingIntent);
-            contentView.setOnClickPendingIntent(R.id.bPrevious, previousPendingIntent);
-            contentView.setOnClickPendingIntent(R.id.bPlayPause, playPendingIntent);
-            contentView.setOnClickPendingIntent(R.id.bNext, nextPendingIntent);
-
-            // RemoteViews customNotifView = new RemoteViews(getPackageName(), R.layout.notification_big);
-            // if (bitmap != null)
-            // {
-            // contentView.setImageViewBitmap(R.id.image, bitmap);
-            // }
-            // else
-            // {
-            // customNotifView.setImageViewResource(R.id.image, R.drawable.ic_launcher);
-            // }
-            // customNotifView.setTextViewText(R.id.title, GlobalSongList.GetInstance().GetCurSongDetails().getSong());
-            // customNotifView.setTextViewText(R.id.text, GlobalSongList.GetInstance().GetCurSongDetails().getArtist());
-            // customNotifView.setOnClickPendingIntent(R.id.bPrevious, previousPendingIntent);
-            // customNotifView.setOnClickPendingIntent(R.id.bPlayPause, playPendingIntent);
-            // customNotifView.setOnClickPendingIntent(R.id.bNext, nextPendingIntent);
-            // customNotifView.setOnClickPendingIntent(R.id.stop, stopPendingIntent);
-            //
-            // customNotifView.setImageViewResource(R.id.bPlayPause,
-            // GlobalSongList.GetInstance().boolMusicPlaying1 == true ? R.drawable.notification_pause : R.drawable.notification_play);
-
-            Notification n = new Notification.Builder(this).setContent(contentView)
-                    .setContentTitle(GlobalSongList.GetInstance().GetCurSongDetails().getSong())
-                    // .setContentText(ma.NP_List.get(ma.position).Artist)
-                    .setSmallIcon(R.drawable.ic_launcher).setContentIntent(pIntent)
-                    // .setAutoCancel(true)
-                    // .addAction(R.drawable.notification_prev, "",
-                    // previousPendingIntent)
-                    // .addAction(
-                    // ma.boolMusicPlaying1 == true ? R.drawable.notification_pause
-                    // : R.drawable.notification_play, "",
-                    // playPendingIntent)
-                    // .addAction(R.drawable.notification_next, "", nextPendingIntent)
-                    .build();
-            // n.bigContentView = customNotifView;
-            n.contentView = contentView;
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(NOTIFICATION_ID, n);
-//            startForeground(NOTIFICATION_ID, n);
+            contentView.setImageViewResource(R.id.image, R.drawable.ic_launcher);
         }
+
+        Notification n = new Notification.Builder(this).setContent(contentView)
+                .setContentTitle(GlobalSongList.GetInstance().GetCurSongDetails().getSong())
+                .setSmallIcon(R.drawable.ic_launcher).setContentIntent(pIntent)
+                .build();
+
+//        Picasso.with(Music_service.this.getApplicationContext()).load(GlobalSongList.GetInstance().GetCurSongDetails().getAlbum()).error(R.drawable.ic_launcher).into(contentView, R.id.image, NOTIFICATION_ID, n);
+
+        contentView.setImageViewResource(R.id.bPlayPause,
+                GlobalSongList.GetInstance().boolMusicPlaying1 == true ? R.drawable.pause2 : R.drawable.play);
+
+        contentView.setTextViewText(R.id.title, GlobalSongList.GetInstance().GetCurSongDetails().getSong());
+        contentView.setTextViewText(R.id.text, GlobalSongList.GetInstance().GetCurSongDetails().getArtist());
+        contentView.setOnClickPendingIntent(R.id.stop, stopPendingIntent);
+        contentView.setOnClickPendingIntent(R.id.bPrevious, previousPendingIntent);
+        contentView.setOnClickPendingIntent(R.id.bPlayPause, playPendingIntent);
+        contentView.setOnClickPendingIntent(R.id.bNext, nextPendingIntent);
+
+        n.contentView = contentView;
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID, n);
+//            startForeground(NOTIFICATION_ID, n);
+//        }
         initWidgetView();
     }
 
@@ -1061,7 +1036,7 @@ public class Music_service extends Service
 
     /**
      * Initialiser equaliser, bassbooster and Virtualiser
-     * <p/>
+     * <p>
      * This will be called only once or otherwise multiple instances will get created
      */
     public PlayMeePreferences prefs;
@@ -1101,7 +1076,7 @@ public class Music_service extends Service
 
     /**
      * Releases the Equaliser, Bass Booster and Virtualisers
-     * <p/>
+     * <p>
      * Only called once ate destroy so that equaliser may persist
      */
     private void releaseEqualizers() {

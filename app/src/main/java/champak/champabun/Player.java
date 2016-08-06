@@ -262,7 +262,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         }
     }
 
-
     private void initViews() {
         NowPlaying = findViewById(R.id.bNp);
         previous = (ImageView) findViewById(R.id.bPrevious);
@@ -553,7 +552,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
 		 * seekbar.setVisibility(View.VISIBLE); buttonPlayStop.setVisibility(View.VISIBLE); // if (slideOffset < 0.2) { //if (Visualizervis == true) {
 		 * //mVisualizerView.setVisibility(View.GONE); //Visualizervis = false; //} else { // } //} }
 		 */
-		/*
+        /*
 		 * @Override public void onPanelExpanded(View panel) { layout.setEnableDragViewTouchEvents(true); fpanel = true; //addLineRenderer();
 		 * Equalizer.setVisibility(View.GONE); seekbar.setVisibility(View.GONE); buttonPlayStop.setVisibility(View.GONE);
 		 * //mVisualizerView.setVisibility(View.VISIBLE); //Visualizervis = true; }

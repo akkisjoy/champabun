@@ -96,7 +96,7 @@ public class BitmapUtil {
     }
 
     public static Bitmap GetRandomBitmap(Resources res, int albumID, int desireWidth, int desireHeight) {
-        Bitmap bitmap = null;
+        Bitmap bitmap;
 
         {
             int x = R.drawable.album_art_1 + albumID % IConstant.arr.length;
@@ -104,6 +104,7 @@ public class BitmapUtil {
             bitmap = BitmapFactory.decodeResource(res, x);
             bitmap = Bitmap.createScaledBitmap(bitmap, desireWidth, desireHeight, true);
         }
+
         return bitmap;
 
     }

@@ -1,5 +1,17 @@
 package champak.champabun.albums.lazylist;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Handler;
+import android.util.TypedValue;
+import android.widget.ImageView;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,384 +36,317 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Handler;
-import android.util.TypedValue;
-import android.widget.ImageView;
-
 import champak.champabun.GlobalSongList;
 import champak.champabun.R;
 
-public class ImageLoader
-{
-	Context c;
-	float ht_px;
-	// Animation fadeIn;
-	float wt_px;
-	Bitmap draw;
-	static MemoryCache memoryCache = new MemoryCache( );
-	private static FileCache fileCache;
-	Uri s;
-	// static BitmapFactory.Options options;
-	private Map < ImageView, String > imageViews = Collections.synchronizedMap( new HashMap < ImageView, String >( ) );
-	ExecutorService executorService;
-	// static int REQUIRED_SIZE = 220;
-	Handler handler = new Handler( );// handler to display images in UI thread
-	final private static int MAX_THREAD = 3;
+public class ImageLoader {
+    Context c;
+    float ht_px;
+    // Animation fadeIn;
+    float wt_px;
+    Bitmap draw;
+    static MemoryCache memoryCache = new MemoryCache();
+    private static FileCache fileCache;
+    Uri s;
+    // static BitmapFactory.Options options;
+    private Map<ImageView, String> imageViews = Collections.synchronizedMap(new HashMap<ImageView, String>());
+    ExecutorService executorService;
+    // static int REQUIRED_SIZE = 220;
+    Handler handler = new Handler();// handler to display images in UI thread
+    final private static int MAX_THREAD = 3;
 
-	public ImageLoader( Context context )
-	{
-		setFileCache( new FileCache( context ) );
-		c = context;// added some context thing
-		executorService = Executors.newFixedThreadPool( MAX_THREAD );
-		draw = BitmapFactory.decodeResource( c.getResources( ), R.drawable.default_art );
-		ht_px = TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, 130, c.getResources( ).getDisplayMetrics( ) );
-		wt_px = TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, 130, c.getResources( ).getDisplayMetrics( ) );
-		draw = Bitmap.createScaledBitmap( draw, ( int ) ht_px, ( int ) wt_px, true );
-		// the reason why i have used a "draw" is because suppose the uri doesn't exist for some cases,then because of
-		// view reusability random pictures were getting displayed
-		// fadein(0,400);
-	}
+    public ImageLoader(Context context) {
+        setFileCache(new FileCache(context));
+        c = context;// added some context thing
+        executorService = Executors.newFixedThreadPool(MAX_THREAD);
+        draw = BitmapFactory.decodeResource(c.getResources(), R.drawable.default_art);
+        ht_px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130, c.getResources().getDisplayMetrics());
+        wt_px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130, c.getResources().getDisplayMetrics());
+        draw = Bitmap.createScaledBitmap(draw, (int) ht_px, (int) wt_px, true);
+        // the reason why i have used a "draw" is because suppose the uri doesn't exist for some cases,then because of
+        // view reusability random pictures were getting displayed
+        // fadein(0,400);
+    }
 
-	// protected void fadein(int offset, int duration)
-	// {
-	// fadeIn = null;
-	// fadeIn = new AlphaAnimation(0, 1);
-	// fadeIn.setInterpolator(new AccelerateInterpolator()); // and this
-	// fadeIn.setFillAfter(true);
-	// fadeIn.setStartOffset(offset);
-	// fadeIn.setDuration(duration);
-	// }
+    // protected void fadein(int offset, int duration)
+    // {
+    // fadeIn = null;
+    // fadeIn = new AlphaAnimation(0, 1);
+    // fadeIn.setInterpolator(new AccelerateInterpolator()); // and this
+    // fadeIn.setFillAfter(true);
+    // fadeIn.setStartOffset(offset);
+    // fadeIn.setDuration(duration);
+    // }
 
-	// final int stub_id=R.drawable.stub;
-	public void DisplayImage( String url, ImageView imageView, String album, String artist )
-	{
-		imageViews.put( imageView, url );
-		Bitmap bitmap = memoryCache.get( url );
-		if ( bitmap != null )
-		{
-			imageView.setImageBitmap( bitmap );
-		}
-		else
-		{
-			queuePhoto( url, imageView, album, artist );
-			imageView.setImageBitmap( draw );
-		}
-	}
+    // final int stub_id=R.drawable.stub;
+    public void DisplayImage(String url, ImageView imageView, String album, String artist) {
+        imageViews.put(imageView, url);
+        Bitmap bitmap = memoryCache.get(url);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+        } else {
+            queuePhoto(url, imageView, album, artist);
+            imageView.setImageBitmap(draw);
+        }
+    }
 
-	private void queuePhoto( String url, ImageView imageView, String album, String artist )
-	{
-		PhotoToLoad p = new PhotoToLoad( url, imageView, album, artist );
-		executorService.submit( new PhotosLoader( p ) );
-	}
+    private void queuePhoto(String url, ImageView imageView, String album, String artist) {
+        PhotoToLoad p = new PhotoToLoad(url, imageView, album, artist);
+        executorService.submit(new PhotosLoader(p));
+    }
 
-	public Bitmap getBitmap( String url, String album, String artist )
-	{
-		artist = artist.trim( );
+    public Bitmap getBitmap(String url, String album, String artist) {
+        artist = artist.trim();
 
-		album = album.trim( );
-		File f = getFileCache( ).getFile( artist + "_" + album );
-		Bitmap b = null;
-		if ( f.exists( ) )
-		{
-			b = BitmapFactory.decodeFile( f.getAbsolutePath( ) );
-		}
-		if ( b != null )
-		{
-			return b;
-		}
-		else
-		{
-			f = new File( url );
-			b = decodeFile( f );
+        album = album.trim();
+        File f = getFileCache().getFile(artist + "_" + album);
+        Bitmap b = null;
+        if (f.exists()) {
+            b = BitmapFactory.decodeFile(f.getAbsolutePath());
+        }
+        if (b != null) {
+            return b;
+        } else {
+            f = new File(url);
+            b = decodeFile(f);
 
-			if ( b == null )
-			{
-				b = getBitmap2( artist, album );
-			}
-			if ( b != null )
-			{
-				ByteArrayOutputStream bytes = new ByteArrayOutputStream( );
-				f = getFileCache( ).getFile( artist + "_" + album );
-				try
-				{
-					b.compress( Bitmap.CompressFormat.JPEG, 80, bytes );
-					f.createNewFile( );
-					FileOutputStream fo = new FileOutputStream( f );
-					fo.write( bytes.toByteArray( ) );
-					fo.close( );
-				}
-				catch ( IOException e )
-				{
-					// e.printStackTrace();
-				}
-			}
-			return b;
-		}
-	}
+            if (b == null) {
+                b = getBitmap2(artist, album);
+            }
+            if (b != null) {
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                f = getFileCache().getFile(artist + "_" + album);
+                try {
+                    b.compress(Bitmap.CompressFormat.JPEG, 80, bytes);
+                    f.createNewFile();
+                    FileOutputStream fo = new FileOutputStream(f);
+                    fo.write(bytes.toByteArray());
+                    fo.close();
+                } catch (IOException e) {
+                    // e.printStackTrace();
+                }
+            }
+            return b;
+        }
+    }
 
-	public Bitmap fetchfilefromcahce( String album, String artist )
-	{
-		artist = artist.trim( );
+    public Bitmap fetchfilefromcahce(String album, String artist) {
+        artist = artist.trim();
 
-		album = album.trim( );
-		File f = getFileCache( ).getFile( artist + "_" + album );
-		if ( !f.exists( ) )
-		{
-			return null;
-		}
-		Bitmap b = null;
-		try
-		{
-			b = BitmapFactory.decodeFile( f.getAbsolutePath( ) );
-		}
-		catch ( OutOfMemoryError e )
-		{
-		}
-		return b;
-	}
+        album = album.trim();
+        File f = getFileCache().getFile(artist + "_" + album);
+        if (!f.exists()) {
+            return null;
+        }
+        Bitmap b = null;
+        try {
+            b = BitmapFactory.decodeFile(f.getAbsolutePath());
+        } catch (OutOfMemoryError e) {
+        }
+        return b;
+    }
 
-	public Bitmap getBitmap2( String artistname, String albumname )
-	{
-		String key = null;
-		artistname = artistname.trim( );
+    public Bitmap getBitmap2(String artistname, String albumname) {
+        String key = null;
+        artistname = artistname.trim();
 
-		albumname = albumname.trim( );
-		File f = getFileCache( ).getFile( artistname.toString( ) + "_" + albumname.toString( ) );
-		artistname = artistname.replace( " ", "%20" );
-		artistname = artistname.replace( "/", "" );
+        albumname = albumname.trim();
+        File f = getFileCache().getFile(artistname.toString() + "_" + albumname.toString());
+        artistname = artistname.replace(" ", "%20");
+        artistname = artistname.replace("/", "");
 
-		albumname = albumname.replace( " ", "%20" );
-		albumname = albumname.replace( "/", "" );
+        albumname = albumname.replace(" ", "%20");
+        albumname = albumname.replace("/", "");
 
-		if ( albumname.equals( "" ) || albumname.equals( "unknown" ) || artistname.equals( "" ) || artistname.equals( "unknown" ) )
-			return null;
+        if (albumname.equals("") || albumname.equals("unknown") || artistname.equals("") || artistname.equals("unknown"))
+            return null;
 
-		String url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=ccdc092f5930d64ca9a13c257532bd2a&artist=" + artistname
-				+ "&album=" + albumname;
-		try
-		{
-			URL url2 = new URL( url );
-			URLConnection connection = url2.openConnection( );
-			connection.setConnectTimeout( 10000 );
-			connection.setReadTimeout( 30000 );
+        String url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=SOMEKEYYYYYYYYYYYYYY&artist=" + artistname
+                + "&album=" + albumname;
+        try {
+            URL url2 = new URL(url);
+            URLConnection connection = url2.openConnection();
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(30000);
 
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance( );
-			DocumentBuilder db = dbf.newDocumentBuilder( );
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
 
-			final Document document = db.parse( connection.getInputStream( ) );
-			document.getDocumentElement( ).normalize( );
-			XPathFactory xPathfactory = XPathFactory.newInstance( );
-			XPath xPathEvaluator = xPathfactory.newXPath( );
-			XPathExpression nameExpr = xPathEvaluator.compile( "//lfm/album/image" );
-			// XPathExpression nameExpr = xPathEvaluator.compile("//lfm/tracks/track/image");
-			NodeList nl = ( NodeList ) nameExpr.evaluate( document, XPathConstants.NODESET );
-			Node currentItem;
-			 
-			for ( int zzz = 0; zzz < ( (nl.getLength() > 0)? nl.getLength( )-2: 0); zzz ++ )
-			{
-				currentItem = nl.item( zzz );
-				key = currentItem.getTextContent( );
+            final Document document = db.parse(connection.getInputStream());
+            document.getDocumentElement().normalize();
+            XPathFactory xPathfactory = XPathFactory.newInstance();
+            XPath xPathEvaluator = xPathfactory.newXPath();
+            XPathExpression nameExpr = xPathEvaluator.compile("//lfm/album/image");
+            // XPathExpression nameExpr = xPathEvaluator.compile("//lfm/tracks/track/image");
+            NodeList nl = (NodeList) nameExpr.evaluate(document, XPathConstants.NODESET);
+            Node currentItem;
 
-				// key = currentItem.getAttributes().getNamedItem("uri").getNodeValue();
-			}
-			Bitmap bitmap = null;
+            for (int zzz = 0; zzz < ((nl.getLength() > 0) ? nl.getLength() - 2 : 0); zzz++) {
+                currentItem = nl.item(zzz);
+                key = currentItem.getTextContent();
 
-			URL imageUrl = new URL( key );
-			// URL imageUrl = new URL(url);
-			HttpURLConnection conn = ( HttpURLConnection ) imageUrl.openConnection( );
-			conn.setConnectTimeout( 10000 );
-			conn.setReadTimeout( 30000 );
-			conn.setInstanceFollowRedirects( true );
-			InputStream is = conn.getInputStream( );
+                // key = currentItem.getAttributes().getNamedItem("uri").getNodeValue();
+            }
+            Bitmap bitmap = null;
 
-			// File f = fileCache.getFile(artistname + "_" + albumname);
-			OutputStream os = new FileOutputStream( f );
-			Utils.CopyStream( is, os );
-			os.close( );
-			conn.disconnect( );
-			bitmap = decodeFile( f );
-			if ( bitmap != null )
-			{
-				ByteArrayOutputStream bytes = new ByteArrayOutputStream( );
-				bitmap.compress( Bitmap.CompressFormat.JPEG, 80, bytes );
-				f.createNewFile( );
-				FileOutputStream fo = new FileOutputStream( f );
-				fo.write( bytes.toByteArray( ) );
-				// remember close de FileOutput
-				fo.close( );
-			}
-			return bitmap;
-		}
-		catch ( Throwable ex )
-		{
-			// ex.printStackTrace();
-			if ( ex instanceof OutOfMemoryError )
-				memoryCache.clear( );
-			return null;
-		}
-	}
+            URL imageUrl = new URL(key);
+            // URL imageUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(30000);
+            conn.setInstanceFollowRedirects(true);
+            InputStream is = conn.getInputStream();
 
-	// decodes image and scales it to reduce memory consumption
-	private Bitmap decodeFile( File f )
-	{
-		try
-		{
-			// decode image size
-			BitmapFactory.Options o = new BitmapFactory.Options( );
-			o.inJustDecodeBounds = true;
-			FileInputStream stream1 = new FileInputStream( f );
-			BitmapFactory.decodeStream( stream1, null, o );
-			stream1.close( );
+            // File f = fileCache.getFile(artistname + "_" + albumname);
+            OutputStream os = new FileOutputStream(f);
+            Utils.CopyStream(is, os);
+            os.close();
+            conn.disconnect();
+            bitmap = decodeFile(f);
+            if (bitmap != null) {
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bytes);
+                f.createNewFile();
+                FileOutputStream fo = new FileOutputStream(f);
+                fo.write(bytes.toByteArray());
+                // remember close de FileOutput
+                fo.close();
+            }
+            return bitmap;
+        } catch (Throwable ex) {
+            // ex.printStackTrace();
+            if (ex instanceof OutOfMemoryError)
+                memoryCache.clear();
+            return null;
+        }
+    }
 
-			// Find the correct scale value. It should be the power of 2.
+    // decodes image and scales it to reduce memory consumption
+    private Bitmap decodeFile(File f) {
+        try {
+            // decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            FileInputStream stream1 = new FileInputStream(f);
+            BitmapFactory.decodeStream(stream1, null, o);
+            stream1.close();
 
-			int width_tmp = o.outWidth, height_tmp = o.outHeight;
-			int scale = 1;
-			while ( true )
-			{
-				if ( width_tmp / 2 < GlobalSongList.GetInstance( ).sizeofimage || height_tmp / 2 < GlobalSongList.GetInstance( ).sizeofimage )
-					break;
-				width_tmp /= 2;
-				height_tmp /= 2;
-				scale *= 2;
-			}
+            // Find the correct scale value. It should be the power of 2.
 
-			// decode with inSampleSize
-			BitmapFactory.Options o2 = new BitmapFactory.Options( );
-			o2.inSampleSize = scale;
-			FileInputStream stream2 = new FileInputStream( f );
-			Bitmap bitmap = BitmapFactory.decodeStream( stream2, null, o2 );
-			stream2.close( );
-			return bitmap;
-		}
-		catch ( FileNotFoundException e )
-		{
-		}
-		catch ( IOException e )
-		{
-			// e.printStackTrace();
-		}
-		catch ( OutOfMemoryError e )
-		{
-			// e.printStackTrace();
-		}
-		return null;
-	}
+            int width_tmp = o.outWidth, height_tmp = o.outHeight;
+            int scale = 1;
+            while (true) {
+                if (width_tmp / 2 < GlobalSongList.GetInstance().sizeofimage || height_tmp / 2 < GlobalSongList.GetInstance().sizeofimage)
+                    break;
+                width_tmp /= 2;
+                height_tmp /= 2;
+                scale *= 2;
+            }
 
-	// Task for the queue
-	private class PhotoToLoad
-	{
-		public String url;
-		public ImageView imageView;
-		public String album;
-		public String artist;
+            // decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            FileInputStream stream2 = new FileInputStream(f);
+            Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
+            stream2.close();
+            return bitmap;
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+            // e.printStackTrace();
+        } catch (OutOfMemoryError e) {
+            // e.printStackTrace();
+        }
+        return null;
+    }
 
-		public PhotoToLoad( String u, ImageView i, String a, String art )
-		{
-			url = u;
-			imageView = i;
-			album = a;
-			artist = art;
-		}
-	}
+    // Task for the queue
+    private class PhotoToLoad {
+        public String url;
+        public ImageView imageView;
+        public String album;
+        public String artist;
 
-	class PhotosLoader implements Runnable
-	{
-		PhotoToLoad photoToLoad;
+        public PhotoToLoad(String u, ImageView i, String a, String art) {
+            url = u;
+            imageView = i;
+            album = a;
+            artist = art;
+        }
+    }
 
-		PhotosLoader( PhotoToLoad photoToLoad )
-		{
-			this.photoToLoad = photoToLoad;
-		}
+    class PhotosLoader implements Runnable {
+        PhotoToLoad photoToLoad;
 
-		@Override
-		public void run( )
-		{
-			try
-			{
-				Bitmap bmp;
-				if ( imageViewReused( photoToLoad ) )
-					return;
-				bmp = getBitmap( photoToLoad.url, photoToLoad.album, photoToLoad.artist );
-				memoryCache.put( photoToLoad.url, bmp );
-				if ( imageViewReused( photoToLoad ) )
-					return;
-				BitmapDisplayer bd = new BitmapDisplayer( bmp, photoToLoad );
-				handler.post( bd );
-			}
-			catch ( Throwable th )
-			{
-				th.printStackTrace( );
-			}
-		}
-	}
+        PhotosLoader(PhotoToLoad photoToLoad) {
+            this.photoToLoad = photoToLoad;
+        }
 
-	boolean imageViewReused( PhotoToLoad photoToLoad )
-	{
-		String tag = imageViews.get( photoToLoad.imageView );
-		if ( tag == null || !tag.equals( photoToLoad.url ) )
-			return true;
-		return false;
-	}
+        @Override
+        public void run() {
+            try {
+                Bitmap bmp;
+                if (imageViewReused(photoToLoad))
+                    return;
+                bmp = getBitmap(photoToLoad.url, photoToLoad.album, photoToLoad.artist);
+                memoryCache.put(photoToLoad.url, bmp);
+                if (imageViewReused(photoToLoad))
+                    return;
+                BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
+                handler.post(bd);
+            } catch (Throwable th) {
+                th.printStackTrace();
+            }
+        }
+    }
 
-	// Used to display bitmap in the UI thread
-	class BitmapDisplayer implements Runnable
-	{
-		Bitmap bitmap;
-		PhotoToLoad photoToLoad;
+    boolean imageViewReused(PhotoToLoad photoToLoad) {
+        String tag = imageViews.get(photoToLoad.imageView);
+        if (tag == null || !tag.equals(photoToLoad.url))
+            return true;
+        return false;
+    }
 
-		public BitmapDisplayer( Bitmap bb, PhotoToLoad p )
-		{
-			bitmap = bb;
-			photoToLoad = p;
-		}
+    // Used to display bitmap in the UI thread
+    class BitmapDisplayer implements Runnable {
+        Bitmap bitmap;
+        PhotoToLoad photoToLoad;
 
-		public void run( )
-		{
-			if ( imageViewReused( photoToLoad ) )
+        public BitmapDisplayer(Bitmap bb, PhotoToLoad p) {
+            bitmap = bb;
+            photoToLoad = p;
+        }
 
-				return;
-			if ( bitmap != null )
-			// TODO Animation
-			{
-				photoToLoad.imageView.setImageBitmap( bitmap );
-				// photoToLoad.imageView.startAnimation(fadeIn);
-			}
-			else
-			{
-				photoToLoad.imageView.setImageBitmap( draw );
-			}
-		}
-	}
+        public void run() {
+            if (imageViewReused(photoToLoad))
 
-	public void clearCache( )
-	{
-		memoryCache.clear( );
-		getFileCache( ).clear( );
-		draw = null;
-	}
+                return;
+            if (bitmap != null)
+            // TODO Animation
+            {
+                photoToLoad.imageView.setImageBitmap(bitmap);
+                // photoToLoad.imageView.startAnimation(fadeIn);
+            } else {
+                photoToLoad.imageView.setImageBitmap(draw);
+            }
+        }
+    }
 
-	public void clearMCache( )
-	{
-		memoryCache.clear( );
-		draw = null;
-	}
+    public void clearCache() {
+        memoryCache.clear();
+        getFileCache().clear();
+        draw = null;
+    }
 
-	public FileCache getFileCache( )
-	{
-		return fileCache;
-	}
+    public void clearMCache() {
+        memoryCache.clear();
+        draw = null;
+    }
 
-	public static void setFileCache( FileCache fileCache )
-	{
-		ImageLoader.fileCache = fileCache;
-	}
+    public FileCache getFileCache() {
+        return fileCache;
+    }
+
+    public static void setFileCache(FileCache fileCache) {
+        ImageLoader.fileCache = fileCache;
+    }
 }
