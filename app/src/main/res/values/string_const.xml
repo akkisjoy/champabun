@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
+
+    <string name="GA_ID">ddd</string>
+    <string name="adUnitId">ca-app-pub</string>
+    <string name="adUnitId2">ca-app-pub</string>
+    <string name="amazonbannerUnitId">ca-app-pub</string>
+
+    <string name="appodeal_ApiKey">3c5fde18ad307860236252941c0e</string>
+
+
+    <!-- Facebook Ads -->
+    <string name="PLACEMENT_ID">1619557381646817_16195</string>
+    <string name="Tesing_Device_ID">1663041e75140f6e8e</string>
+
+    <string-array name="tabs">
+        <item>@string/tab_Genres</item>
+        <item>@string/tab_Playlists</item>
+        <item>@string/tab_Songs</item>
+        <item>@string/tab_Artists</item>
+        <item>@string/tab_Albums</item>
+        <item>@string/tab_My_Files</item>
+    </string-array>
+
+    <!-- Font typeface -->
+    <string name="Typeface_Splash">fonts/julius-sans-one.ttf</string>
+    <string name="Typeface_JosefinSans_Regular">fonts/FaberSansPro45reduced.otf</string>
+    <string name="Typeface_JosefinSans">fonts/FaberSansPro45reduced.otf</string>
+    <string name="Typeface_julius_sans_one">fonts/julius-sans-one.ttf</string>
+
+    <string name="lang_en">English</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+    <string name="lang_it">Italiano</string>
+    <string name="lang_es">Español</string>
+    <string name="lang_pt_rPT">Português</string>
+    <string name="lang_pt_rBR">Português(BR)</string>
+    <string name="lang_ru">Pусский</string>
+    <string name="lang_ja">日本人</string>
+    <string name="lang_tr">Türk</string>
+
+    <string-array name="languages">
+        <item>@string/lang_en</item>
+        <item>@string/lang_fr</item>
+        <item>@string/lang_de</item>
+        <item>@string/lang_it</item>
+        <item>@string/lang_es</item>
+        <item>@string/lang_pt_rPT</item>
+        <item>@string/lang_pt_rBR</item>
+        <item>@string/lang_ru</item>
+        <item>@string/lang_ja</item>
+        <item>@string/lang_tr</item>
+    </string-array>
+
+</resources>

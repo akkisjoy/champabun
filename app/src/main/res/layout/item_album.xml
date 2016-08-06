@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativelayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/itemalbum_albumimage_size"
+        android:layout_height="@dimen/itemalbum_albumimage_size"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="@dimen/itemalbum_albumimage_size"
+        android:layout_height="@dimen/itemalbum_albumtextLayout_size"
+        android:layout_alignBottom="@+id/image"
+        android:layout_alignLeft="@+id/image"
+        android:layout_alignRight="@+id/image"
+        android:layout_alignTop="@+id/image"
+        android:gravity="bottom" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#44000000"
+            android:gravity="center" >
+
+            <champak.champabun.ui.TypefaceTextView
+                android:id="@+id/text"
+                style="@style/TextViewStyle.JosefinSans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="1dp"
+                android:gravity="center_horizontal"
+                android:paddingTop="7dp"
+                android:shadowColor="#000000"
+                android:shadowDx="0.0"
+                android:shadowDy="0.0"
+                android:shadowRadius="16"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/itemalbum_albumtext_size" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

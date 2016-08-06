@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/artistbg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparentblack"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/headerBarLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <champak.champabun.ui.TypefaceTextView
+                    android:id="@+id/tV1"
+                    style="@style/TextViewStyle.julius_sans_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="42dp"
+                    android:paddingRight="42dp"
+                    android:paddingTop="18dp"
+                    android:singleLine="True"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/Heading_Size"  />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/tV1"
+                    android:paddingBottom="4dp"
+                    android:paddingRight="10dp" >
+
+                    <ProgressBar
+                        android:id="@+id/progressBar1"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="@dimen/now_playing_save_asSize"
+                        android:layout_height="@dimen/now_playing_save_asSize"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:gravity="bottom" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <champak.champabun.ecogallery.EcoGallery
+                android:id="@+id/gallery"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/artist_Image_Size"
+                android:background="#66000000" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/rayMenu_marginTop"
+                android:layout_marginTop="@dimen/rayMenu_marginTop"
+                android:paddingLeft="1dp"
+                android:paddingRight="18dp" >
+
+                <champak.champabun.raymenu.RayMenu
+                    android:id="@+id/ray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                </champak.champabun.raymenu.RayMenu>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="13dp"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/bRBack"
+                        android:layout_width="@dimen/lsongs_ButtonSize"
+                        android:layout_height="@dimen/lsongs_ButtonSize"
+                        android:background="@drawable/composer_button_back" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/bRAdd"
+                        android:layout_width="@dimen/lsongs_ButtonSize"
+                        android:layout_height="@dimen/lsongs_ButtonSize"
+                        android:background="@drawable/composer_button_queue" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/bRPlay"
+                        android:layout_width="@dimen/lsongs_ButtonSize"
+                        android:layout_height="@dimen/lsongs_ButtonSize"
+                        android:background="@drawable/composer_button_play" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/bRDelete"
+                        android:layout_width="@dimen/lsongs_ButtonSize"
+                        android:layout_height="@dimen/lsongs_ButtonSize"
+                        android:background="@drawable/composer_button_delete" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <ListView
+                android:id="@+id/listview"
+                style="@style/ListViewplaymee"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fastScrollEnabled="true"
+                android:paddingTop="4dp" >
+            </ListView>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/adLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            layout="@layout/ads_view"
+            android:background="@android:color/transparent"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>

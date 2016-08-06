@@ -1,0 +1,72 @@
+<resources>
+
+    <!-- Medium Screen -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="sticky_height">120dp</dimen>
+    <dimen name="top_height">150dp</dimen>
+    <dimen name="page_margin">16dp</dimen>
+    <dimen name="Heading_Size">22sp</dimen>
+    <dimen name="Heading_Size_Adapter">25sp</dimen>
+    <dimen name="player_random_marginTop">0dp</dimen>
+    <dimen name="player_button_left_size">27dp</dimen>
+    <dimen name="player_view_left_size">47dp</dimen>
+    <dimen name="player_image_size">200dp</dimen>
+    <dimen name="player_artist_Textsize">14sp</dimen>
+    <dimen name="player_buttonNext_size">37dp</dimen>
+    <dimen name="player_buttonPlay_size">45dp</dimen>
+    <dimen name="player_image_width">300dp</dimen>
+    <dimen name="player_image_height">300dp</dimen>
+    <dimen name="itemsongs_text_size">20sp</dimen>
+    <dimen name="setting_item_desc_size">17sp</dimen>
+    <dimen name="itemsongs_album_size">12sp</dimen>
+    <dimen name="itemalbum_albumimage_size">155dp</dimen>
+    <dimen name="itemalbum_albumtextLayout_size">25dp</dimen>
+    <dimen name="itemalbum_albumtext_size">15sp</dimen>
+    <dimen name="arcmenu_child_size">30dp</dimen>
+    <dimen name="rayMenu_marginTop">0dp</dimen>
+    <dimen name="lsongs_songTextSize">24sp</dimen>
+    <dimen name="lsongs_albumTextSize">14sp</dimen>
+    <dimen name="lsongs_playButton_Size">50dp</dimen>
+    <dimen name="lsongs_RightTextMargin">86dp</dimen>
+    <dimen name="lsongs_TopViewTopMargin">40dp</dimen>
+    <dimen name="lsongs_TopViewBottomMargin">25dp</dimen>
+    <dimen name="lsongs_ButtonSize">30dp</dimen>
+    <dimen name="album_Image_Size">155dp</dimen>
+    <dimen name="album_Text_Size">15sp</dimen>
+    <dimen name="album_Text_MarginLeft">2dp</dimen>
+    <dimen name="quickaction_ImageSize">35dp</dimen>
+    <dimen name="artist_Image_Size">200dp</dimen>
+    <dimen name="now_playing_save_asSize">27dp</dimen>
+    <dimen name="dialog_TextSize">21sp</dimen>
+    <dimen name="notification_height">64dp</dimen>
+    <dimen name="notification_margin_right">4dp</dimen>
+    <dimen name="notification_cross_button_width">36dp</dimen>
+    <dimen name="notification_cross_button_height">36dp</dimen>
+    <dimen name="notification_buttonNext_size">36dp</dimen>
+    <dimen name="notification_buttonPlay_size">40dp</dimen>
+    <dimen name="widget_min_width">250dp</dimen>
+    <dimen name="widget_min_height">40dp</dimen>
+
+    <integer name="widget_updatePeriodMillis">100</integer>
+
+    <dimen name="widget_prev_button_size">30dp</dimen>
+    <dimen name="widget_play_button_size">38dp</dimen>
+	<dimen name="player_seekbar_gap">8dp</dimen>
+    <!-- vertical seekbar -->
+    <dimen name="vertical_seekbar_width">70dip</dimen>
+    <dimen name="choose_bg_image_height">120dip</dimen>
+    <dimen name="change_background_horizontal_spacing">3dip</dimen>
+    <dimen name="change_background_vertical_spacing">3dip</dimen>
+    <integer name="change_background_gridview_columns">2</integer>
+    
+    <!-- listview -->
+    <dimen name="lv_item_min_height">48dip</dimen>
+    
+    <!-- appodeal height -->
+    <integer name="appodeal_height">50</integer>
+    
+    <dimen name="dialog_heading">20sp</dimen>
+    <dimen name="dialog_padding">5dp</dimen>
+	<dimen name="dialog_listipadding">10dp</dimen>
+</resources>

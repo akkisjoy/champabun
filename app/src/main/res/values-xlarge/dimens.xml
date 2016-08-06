@@ -1,0 +1,44 @@
+<resources>
+
+    <!-- Large Screen-->
+    <dimen name="Heading_Size">29sp</dimen>
+    <dimen name="Heading_Size_Adapter">31sp</dimen>
+    <dimen name="player_seekbar_gap">10dp</dimen>
+    
+   <dimen name="player_random_marginTop">100dp</dimen>
+   <dimen name="player_button_left_size">38dp</dimen> 
+   <dimen name="player_view_left_size">65dp</dimen>
+   <dimen name="player_image_size">320dp</dimen>
+   <dimen name="player_artist_Textsize">20sp</dimen>
+   <dimen name="player_buttonNext_size">50dp</dimen>
+   <dimen name="player_buttonPlay_size">60dp</dimen>
+   <dimen name="itemsongs_text_size">27sp</dimen>
+   <dimen name="itemsongs_album_size">15sp</dimen>
+   
+   <dimen name="itemalbum_albumimage_size">200dp</dimen>
+   <dimen name="itemalbum_albumtextLayout_size">23dp</dimen>
+   <dimen name="itemalbum_albumtext_size">20sp</dimen>
+   <dimen name="arcmenu_child_size">40dp</dimen>
+   <dimen name="rayMenu_marginTop">12dp</dimen>
+   
+   <dimen name="lsongs_songTextSize">38sp</dimen>
+   <dimen name="lsongs_albumTextSize">18sp</dimen>
+   <dimen name="lsongs_playButton_Size">65dp</dimen>
+   <dimen name="lsongs_RightTextMargin">105dp</dimen>
+   <dimen name="lsongs_TopViewTopMargin">60dp</dimen>
+   <dimen name="lsongs_TopViewBottomMargin">40dp</dimen>
+   <dimen name="lsongs_ButtonSize">40dp</dimen>
+   
+   <dimen name="album_Image_Size">230dp</dimen>
+   <dimen name="album_Text_Size">18sp</dimen>
+   <dimen name="album_Text_MarginLeft">4dp</dimen>
+   
+      <dimen name="artist_Image_Size">250dp</dimen>
+      
+   <dimen name="quickaction_ImageSize">47dp</dimen>
+   
+   <dimen name="now_playing_save_asSize">40dp</dimen>
+   
+   <!-- appodeal height -->
+   <integer name="appodeal_height">250</integer>
+</resources>

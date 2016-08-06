@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/artistbg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparentblack"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/headerBarLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             >
+
+            <champak.champabun.ui.TypefaceTextView
+                android:id="@+id/playlistname"
+                style="@style/TextViewStyle.julius_sans_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:paddingLeft="42dp"
+                android:paddingRight="42dp"
+                android:paddingTop="20dp"
+                android:singleLine="True"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/Heading_Size" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/playlistname"
+                android:paddingBottom="4dp"
+                android:paddingRight="10dp" >
+
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="@dimen/now_playing_save_asSize"
+                    android:layout_height="@dimen/now_playing_save_asSize"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:gravity="bottom" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ListView
+                android:id="@+id/listView1"
+                style="@style/ListViewplaymee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fastScrollEnabled="true" >
+            </ListView>
+
+            <include
+                android:id="@+id/adLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                layout="@layout/ads_view"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

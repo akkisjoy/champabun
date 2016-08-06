@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical"
+    android:paddingBottom="6dp"
+    android:paddingLeft="@dimen/lsongs_listview_item_padding_left_right"
+    android:paddingRight="@dimen/lsongs_listview_item_padding_left_right" >
+
+    <champak.champabun.ui.TypefaceTextView
+        android:id="@+id/Song"
+        style="@style/TextViewStyle.JosefinSans"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:paddingTop="5dp"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/TextColor_Primary"
+        android:textSize="@dimen/itemsongs_text_size" />
+
+    <RelativeLayout
+        android:id="@+id/ArtistLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="-3dp" >
+
+        <champak.champabun.ui.TypefaceTextView
+            android:id="@+id/Time"
+            style="@style/TextViewStyle.JosefinSans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="6dp"
+            android:singleLine="true"
+            android:textColor="@color/TextColor_Secondary"
+            android:textSize="@dimen/itemsongs_album_size" />
+
+        <champak.champabun.ui.TypefaceTextView
+            android:id="@+id/Artist"
+            style="@style/TextViewStyle.JosefinSans"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@+id/Time"
+            android:gravity="left"
+            android:singleLine="true"
+            android:textColor="@color/TextColor_Secondary"
+            android:textSize="@dimen/itemsongs_album_size" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_adplaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_weight="1" />
+    
+</LinearLayout>

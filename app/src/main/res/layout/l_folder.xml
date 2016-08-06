@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Transparent"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.4dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/lsongs_TopViewBottomMargin"
+        android:paddingLeft="18dp"
+        android:paddingRight="0dp"
+        android:paddingTop="@dimen/lsongs_TopViewTopMargin" >
+
+        <champak.champabun.ui.TypefaceTextView
+            style="@style/TextViewStyle.JosefinSans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:singleLine="true"
+            android:text="@string/directory"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/lsongs_songTextSize" />
+
+        <champak.champabun.ui.TypefaceTextView
+            android:id="@+id/path"
+            style="@style/TextViewStyle.JosefinSans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/lsongs_albumTextSize" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="@android:color/darker_gray" />
+
+    <ListView
+        android:id="@+id/list"
+        style="@style/ListViewplaymee"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/rayMenu_marginTop"
+        android:layout_weight="1"
+        android:background="#46000000"
+        android:fastScrollEnabled="true" />
+
+</LinearLayout>

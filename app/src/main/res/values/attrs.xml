@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+     <attr name="fromDegrees" format="float|reference" />
+    <attr name="toDegrees" format="float|reference" />
+    <attr name="childSize" format="dimension|reference" />
+<declare-styleable name="SatelliteMenu">
+		<attr name="expandDuration" format="integer" />
+		<attr name="closeOnClick" format="boolean" />
+		<attr name="totalSpacingDegree" format="float" />
+		<attr name="satelliteDistance" format="dimension" />
+		<attr name="mainImage" format="reference" />		
+	</declare-styleable>
+    <declare-styleable name="CustomFastScrollView">
+        <attr name="overlayWidth" format="dimension" />
+        <attr name="overlayHeight" format="dimension" />
+        <attr name="overlayTextSize" format="dimension" />
+        <attr name="overlayScrollThumbWidth" format="dimension" />
+    </declare-styleable>
+
+ <declare-styleable name="EcoGallery">
+        <attr name="gravity" format="integer" />
+        <attr name="animationDuration" format="integer" />
+        <attr name="unselectedAlpha" format="float" />
+        <attr name="spacing" format="dimension" />
+    </declare-styleable>
+
+    <attr name="ecoGalleryStyle" format="reference" />
+
+    <declare-styleable name="CustomAbsSpinner">
+        <attr name="entries" format="reference" />
+    </declare-styleable>
+
+    <attr name="customAbsSpinnerStyle" format="reference" />
+
+
+
+<declare-styleable name="PagerTitleStripCustom">
+    <attr name="parentViewPager" format="reference" />
+</declare-styleable>
+	<declare-styleable name="ArcLayout">
+        <attr name="fromDegrees"/>
+        <attr name="toDegrees"/>
+        <attr name="childSize"/>
+	</declare-styleable>
+
+    <declare-styleable name="ArcMenu">
+        <attr name="fromDegrees"/>
+        <attr name="toDegrees"/>
+        <attr name="childSize"/>
+    </declare-styleable>
+	
+	<declare-styleable name="RayLayout">
+		<attr name="leftHolderWidth" format="dimension" />
+	</declare-styleable>
+    
+    
+     <declare-styleable name="CoverFlow">
+        <attr name="imageWidth" format="dimension" />
+        <attr name="imageHeight" format="dimension" />
+        <attr name="withReflection" format="boolean" />
+        <attr name="reflectionGap" format="dimension" />
+        <attr name="imageReflectionRatio" format="float" />
+        
+    </declare-styleable>
+    
+    <declare-styleable name="SlidingUpPanelLayout">
+        <attr name="collapsedHeight" format="dimension" />
+        <attr name="shadowHeight" format="dimension" />
+        <attr name="fadeColor" format="color" />
+        <attr name="flingVelocity" format="integer" />
+        <attr name="dragView" format="reference" />
+        
+        </declare-styleable>
+    <declare-styleable name="NewMenu" >
+    </declare-styleable>
+    <declare-styleable name="DragSortListView">
+    <attr name="collapsed_height" format="dimension" />
+    <attr name="drag_scroll_start" format="float" />
+    <attr name="max_drag_scroll_speed" format="float" />
+    <attr name="float_background_color" format="color" />
+    <attr name="remove_mode">
+      <enum name="clickRemove" value="0" />
+      <enum name="flingRemove" value="1" />
+    </attr>
+    <attr name="track_drag_sort" format="boolean"/>
+    <attr name="float_alpha" format="float"/>
+    <attr name="slide_shuffle_speed" format="float"/>
+    <attr name="remove_animation_duration" format="integer"/>
+    <attr name="drop_animation_duration" format="integer"/>
+    <attr name="drag_enabled" format="boolean" />
+    <attr name="sort_enabled" format="boolean" />
+    <attr name="remove_enabled" format="boolean" />
+    <attr name="drag_start_mode">
+      <enum name="onDown" value="0" />
+      <enum name="onMove" value="1" />
+      <enum name="onLongPress" value="2"/>
+    </attr>
+    <attr name="drag_handle_id" format="integer" />
+    <attr name="fling_handle_id" format="integer" />
+    <attr name="click_remove_id" format="integer" />
+    <attr name="use_default_controller" format="boolean" />
+  </declare-styleable>
+</resources>

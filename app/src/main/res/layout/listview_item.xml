@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<champak.champabun.ui.TypefaceTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textview"
+    style="@style/TextViewStyle.Dialouge.secondary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/lv_item_min_height"
+    android:singleLine="true"
+    android:layout_marginLeft="10dp"
+    android:paddingLeft="15dp"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    />

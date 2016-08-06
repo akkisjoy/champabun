@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp" >
+
+    <ImageView
+        android:id="@id/drag_handle"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_weight="0"
+        android:background="@drawable/drag" />
+
+    <champak.champabun.ui.TypefaceTextView
+        android:id="@+id/Songs"
+        style="@style/TextViewStyle.JosefinSans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/itemsongs_text_size" />
+
+</LinearLayout>
