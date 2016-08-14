@@ -43,7 +43,17 @@ public class Settings extends BaseActivity implements OnClickListener {
     private boolean needRefresh = false;
     private boolean needRefreshLanguage = false;
     private boolean needRefreshFullscreen = false;
+    private OnTimeSetListener callback = new OnTimeSetListener() {
 
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            SetTime(hourOfDay, minute);
+            SleepTime st = new SleepTime(hourOfDay, minute);
+            appSettings.setSleepTimer(st);
+            AppDatabase.SaveSleepTimer(Settings.this, st);
+            Utilities.SetSleepTimer(Settings.this, hourOfDay, minute);
+        }
+    };
 
     @Override
     public int GetLayoutResID() {
@@ -152,7 +162,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         }
 
         durationFilterView.setText(String.valueOf(appSettings.getDurationFilterTime()));
-        chooseBGView.setText(GetAppBGDesc(appSettings.getAppBGResID()));
         auto_download_album_art_cb.setChecked(appSettings.isAutoDownloadAlbumArt());
         auto_download_album_art_cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -317,8 +326,6 @@ public class Settings extends BaseActivity implements OnClickListener {
                     Intent intent2 = getIntent();
                     intent2.putExtra("isAppBGChanged", true);
                     needRefresh = true;
-                    int bgResID = intent2.getIntExtra("bgResID", appSettings.getAppBGResID());
-                    chooseBGView.setText(GetAppBGDesc(bgResID));
                     break;
                 }
                 default:
@@ -350,18 +357,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         });
         dialog.show();
     }
-
-    private OnTimeSetListener callback = new OnTimeSetListener() {
-
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            SetTime(hourOfDay, minute);
-            SleepTime st = new SleepTime(hourOfDay, minute);
-            appSettings.setSleepTimer(st);
-            AppDatabase.SaveSleepTimer(Settings.this, st);
-            Utilities.SetSleepTimer(Settings.this, hourOfDay, minute);
-        }
-    };
 
     public void SetTime(int hourOfDay, int minute) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -489,18 +484,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
     }
 
-    private String GetAppBGDesc(int resID) {
-        int[] arr = new int[]{R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6, R.drawable.a7,
-                R.drawable.a8};
-        int i = 0;
-        for (; i < arr.length; i++) {
-            if (arr[i] == resID) {
-                break;
-            }
-        }
-        arr = null;
-        return String.format(getString(R.string.f_style), i + 1);
-    }
 
     private void OnAutoDownloadAlbumArt(boolean value) {
         appSettings.setAutoDownloadAlbumArt(auto_download_album_art_cb.isChecked());

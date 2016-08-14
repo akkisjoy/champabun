@@ -41,7 +41,7 @@
 
     <application
         android:name="champak.champabun.GlobalSongList"
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/playmee">
@@ -189,52 +189,7 @@
         <service
             android:name="champak.champabun.service.UpdateWidgetService"
             android:enabled="true" />
-        //Appodeal
-        <meta-data
-            android:name="com.appodeal.framework"
-            android:value="android" />
 
-        <receiver
-            android:name="com.appodeal.ads.AppodealPackageAddedReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name="com.appodeal.ads.InterstitialActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="com.appodeal.ads.VideoActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="com.appodeal.ads.LoaderActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <activity
-            android:name="org.nexage.sourcekit.mraid.MRAIDBrowser"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent" />
-        <activity
-            android:name="com.amazon.device.ads.AdActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity
-            android:name="org.nexage.sourcekit.vast.activity.VASTActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="org.nexage.sourcekit.vast.activity.VPAIDActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.appodeal.ads.networks.SpotXActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <!-- suppress AndroidDomInspection -->
     </application>
 
 </manifest>

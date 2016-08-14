@@ -6,10 +6,7 @@ import android.content.SharedPreferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
-
 import champak.champabun.IConstant;
-import champak.champabun.R;
 
 public class AppDatabase {
     private static final String APP_DB_KEY = "appsettings";
@@ -44,17 +41,6 @@ public class AppDatabase {
         }
         int duration = pref.getInt(KEY_DURATION_FILTER, IConstant.DURATION_FILTER_DEFAULT);
         settings.setDurationFilterTime(duration);
-
-        int resID = pref.getInt(KEY_APP_BG_RES_ID, -1);
-        if (resID == -1) {
-            int[] arr = new int[]{R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6, R.drawable.a7,
-                    R.drawable.a8};
-            Random mRandom = new Random();
-            int x = mRandom.nextInt(arr.length);
-            resID = R.drawable.a1 + x;
-            arr = null;
-        }
-        settings.setAppBGResID(resID);
 
         // album sort
         settings.setAlbumSortKey(pref.getString(KEY_ALBUM_SORT, null));
@@ -112,20 +98,6 @@ public class AppDatabase {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putInt(KEY_APP_BG_RES_ID, resID);
         editor.commit();
-    }
-
-    public static int GetAppBGResID(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE);
-        int resID = pref.getInt(KEY_APP_BG_RES_ID, -1);
-        if (resID == -1) {
-            int[] arr = new int[]{R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6, R.drawable.a7,
-                    R.drawable.a8};
-            Random mRandom = new Random();
-            int x = mRandom.nextInt(arr.length);
-            resID = R.drawable.a1 + x;
-            arr = null;
-        }
-        return resID;
     }
 
     public static String GetAlbumSortKey(Context context) {

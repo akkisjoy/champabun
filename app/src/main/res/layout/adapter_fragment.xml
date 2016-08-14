@@ -1,50 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
-<!-- android:layout_width="match_parent" -->
-<!-- android:layout_height="match_parent" -->
-<!-- android:orientation="vertical" > -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootview"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/Transparent" >
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="horizontal">
 
-    <champak.champabun.adapters.ViewPagerParallax
+    <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+        android:id="@+id/ntb_vertical"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        app:ntb_bg_color="@color/white"
+        app:ntb_preview_colors="@array/vertical_ntb" />
+
+    <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
-        android:textColor="#D7D6D6" >
+        android:layout_height="wrap_content" />
 
-        <champak.champabun.classes.PagerClickTitleStrip
-            android:id="@+id/__Weekly_pager_title_strip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="#70000000"
-            android:paddingTop="18dp"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/Heading_Size_Adapter" />
-    </champak.champabun.adapters.ViewPagerParallax>
+</LinearLayout>
 
-<!--     <FrameLayout -->
-<!--         android:id="@+id/fl_adplaceholder" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_alignParentBottom="true" /> -->
-
-</RelativeLayout> 
-
-
-<!-- <ImageButton -->
-<!-- android:id="@+id/closeAdsButton" -->
-<!-- android:layout_width="11.5dp" -->
-<!-- android:layout_height="11.5dp" -->
-<!-- android:background="@color/appodeal_close_button_bg_color" -->
-<!-- android:onClick="OnCloseAds" -->
-<!-- android:src="@drawable/ic_content_remove" /> -->
-<!-- </FrameLayout> -->
-
-
-<!-- </LinearLayout> -->

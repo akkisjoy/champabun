@@ -73,7 +73,30 @@ public class EcoGallery extends EcoGalleryAbsSpinner implements GestureDetector.
      * Executes the delta scrolls from a fling or scroll movement.
      */
     private FlingRunnable mFlingRunnable = new FlingRunnable();
-
+    /**
+     * When fling runnable runs, it resets this to false. Any method along the
+     * path until the end of its run() can set this to true to abort any
+     * remaining fling. For example, if we've reached either the leftmost or
+     * rightmost item, we will set this to true.
+     */
+    private boolean mShouldStopFling;
+    /**
+     * The currently selected item's child.
+     */
+    private View mSelectedChild;
+    /**
+     * Whether to continuously callback on the item selected listener during a
+     * fling.
+     */
+    private boolean mShouldCallbackDuringFling = true;
+    /**
+     * Whether to callback when an item that is not selected is clicked.
+     */
+    private boolean mShouldCallbackOnUnselectedItemClick = true;
+    /**
+     * If true, do not callback to item selected listener.
+     */
+    private boolean mSuppressSelectionChanged;
     /**
      * Sets mSuppressSelectionChanged = false. This is used to set it to false
      * in the future. It will also trigger a selection changed.
@@ -84,36 +107,6 @@ public class EcoGallery extends EcoGalleryAbsSpinner implements GestureDetector.
             selectionChanged();
         }
     };
-
-    /**
-     * When fling runnable runs, it resets this to false. Any method along the
-     * path until the end of its run() can set this to true to abort any
-     * remaining fling. For example, if we've reached either the leftmost or
-     * rightmost item, we will set this to true.
-     */
-    private boolean mShouldStopFling;
-
-    /**
-     * The currently selected item's child.
-     */
-    private View mSelectedChild;
-
-    /**
-     * Whether to continuously callback on the item selected listener during a
-     * fling.
-     */
-    private boolean mShouldCallbackDuringFling = true;
-
-    /**
-     * Whether to callback when an item that is not selected is clicked.
-     */
-    private boolean mShouldCallbackOnUnselectedItemClick = true;
-
-    /**
-     * If true, do not callback to item selected listener.
-     */
-    private boolean mSuppressSelectionChanged;
-
     /**
      * If true, we have received the "invoke" (center or enter buttons) key
      * down. This is checked before we action on the "invoke" key up, and is
@@ -209,6 +202,13 @@ public class EcoGallery extends EcoGalleryAbsSpinner implements GestureDetector.
         } catch (IllegalAccessException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
+    }
+
+    /**
+     * @return The center of the given view.
+     */
+    private static int getCenterOfView(View view) {
+        return view.getLeft() + view.getWidth() / 2;
     }
 
     /**
@@ -320,7 +320,7 @@ public class EcoGallery extends EcoGalleryAbsSpinner implements GestureDetector.
     @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
         /*
-		 * Gallery expects EcoGallery.LayoutParams.
+         * Gallery expects EcoGallery.LayoutParams.
 		 */
         return new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
@@ -432,13 +432,6 @@ public class EcoGallery extends EcoGalleryAbsSpinner implements GestureDetector.
     private int getCenterOfGallery() {
         int paddingLeft = getPaddingLeft();
         return (getWidth() - paddingLeft - getPaddingRight()) / 2 + paddingLeft;
-    }
-
-    /**
-     * @return The center of the given view.
-     */
-    private static int getCenterOfView(View view) {
-        return view.getLeft() + view.getWidth() / 2;
     }
 
     /**
@@ -1240,6 +1233,25 @@ public class EcoGallery extends EcoGalleryAbsSpinner implements GestureDetector.
     }
 
     /**
+     * Gallery extends LayoutParams to provide a place to hold current
+     * Transformation information along with previous position/transformation
+     * info.
+     */
+    public static class LayoutParams extends ViewGroup.LayoutParams {
+        public LayoutParams(Context c, AttributeSet attrs) {
+            super(c, attrs);
+        }
+
+        public LayoutParams(int w, int h) {
+            super(w, h);
+        }
+
+        public LayoutParams(ViewGroup.LayoutParams source) {
+            super(source);
+        }
+    }
+
+    /**
      * Responsible for fling behavior. Use {@link #startUsingVelocity(int)} to
      * initiate a fling. Each frame of the fling is handled in {@link #run()}. A
      * FlingRunnable will keep re-posting itself until the fling is done.
@@ -1346,24 +1358,5 @@ public class EcoGallery extends EcoGalleryAbsSpinner implements GestureDetector.
             }
         }
 
-    }
-
-    /**
-     * Gallery extends LayoutParams to provide a place to hold current
-     * Transformation information along with previous position/transformation
-     * info.
-     */
-    public static class LayoutParams extends ViewGroup.LayoutParams {
-        public LayoutParams(Context c, AttributeSet attrs) {
-            super(c, attrs);
-        }
-
-        public LayoutParams(int w, int h) {
-            super(w, h);
-        }
-
-        public LayoutParams(ViewGroup.LayoutParams source) {
-            super(source);
-        }
     }
 }
