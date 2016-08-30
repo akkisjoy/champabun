@@ -2,6 +2,7 @@ package champak.champabun;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class F_Genres extends BaseFragment {
     ListView mListView;
     Adapter_playlist adapter;
     ArrayList<SongDetails> Genredetails;
+    ImageView backPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,8 @@ public class F_Genres extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_playlists, container, false);
 
+        backPager = (ImageView) view.findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.redPager), PorterDuff.Mode.MULTIPLY);
         mListView = (ListView) view.findViewById(R.id.PlayList);
         adapter = null;
         mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -95,6 +100,15 @@ public class F_Genres extends BaseFragment {
         }
     }
 
+    @Override
+    public void Update() {
+    }
+
+    @Override
+    protected String GetGAScreenName() {
+        return "F_Genres";
+    }
+
     class FetchGenreList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
@@ -147,14 +161,5 @@ public class F_Genres extends BaseFragment {
             result.clear();
             OnRefreshListview();
         }
-    }
-
-    @Override
-    public void Update() {
-    }
-
-    @Override
-    protected String GetGAScreenName() {
-        return "F_Genres";
     }
 }

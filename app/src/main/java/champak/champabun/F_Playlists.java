@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ import champak.champabun.util.SongHelper;
 import champak.champabun.util.Utilities;
 
 public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActionItemSelectListener {
+    ImageView backPager;
     private ListView mListView;
     private Adapter_playlist ab;
     private ArrayList<SongDetails> Playlists;
@@ -53,7 +56,8 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_playlists, container, false);
-
+        backPager = (ImageView) view.findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.greenPager), PorterDuff.Mode.MULTIPLY);
         mListView = (ListView) view.findViewById(R.id.PlayList);
         ab = null;
         mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -133,72 +137,6 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
         // intent = null;
         if (IConstant.USE_SYSTEM_GC) {
             System.gc();
-        }
-    }
-
-    class FetchPlayList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
-        @Override
-        protected ArrayList<SongDetails> doInBackground(Void... arg0) {
-            ArrayList<SongDetails> playlists = new ArrayList<SongDetails>();
-            SongDetails Latest = new SongDetails();
-            Latest.setSong(prefs.GetPlaylistRecentName());// name
-            playlists.add(Latest);
-            String click_no = prefs.GetLastplayClickNo();
-            try {
-                if (!Utilities.isEmpty(click_no)) {
-                    SongDetails LastPlayed = new SongDetails();
-                    LastPlayed.setSong(getResources().getString(R.string.last_played));// name
-                    LastPlayed.setClick_no(click_no);
-                    playlists.add(LastPlayed);
-                } else {
-                    if (prefs.HasLastPlayed()) {
-                        SongDetails LastPlayed = new SongDetails();
-                        LastPlayed.setSong(getResources().getString(R.string.last_played));// name
-                        playlists.add(LastPlayed);
-                    }
-                }
-            } catch (NullPointerException e) {
-            } catch (Exception e) {
-            }
-
-            Cursor cursor = null;
-            try {
-                cursor = getActivity().getContentResolver().query(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
-                        new String[]{MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME}, null, null,
-                        MediaStore.Audio.Playlists.NAME + " COLLATE NOCASE ASC");
-                if (cursor != null && cursor.moveToFirst()) {
-                    int _ID_index = cursor.getColumnIndex(MediaStore.Audio.Playlists._ID);
-                    int NAME_index = cursor.getColumnIndex(MediaStore.Audio.Playlists.NAME);
-                    do {
-                        Logger.d("F_Playlists", ".............." + cursor.getString(1));
-                        playlists.add(new SongDetails(cursor.getInt(_ID_index), cursor.getString(_ID_index), cursor.getString(_ID_index),
-                                cursor.getString(NAME_index)));
-                    }
-                    while (cursor.moveToNext());
-                }
-            } catch (NullPointerException e) {
-            } catch (Exception e) {
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                    cursor = null;
-                }
-            }
-
-            return playlists;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<SongDetails> result) {
-            super.onPostExecute(result);
-            if (Playlists != null) {
-                Playlists.clear();
-            } else {
-                Playlists = new ArrayList<SongDetails>();
-            }
-            Playlists.addAll(result);
-            result.clear();
-            OnRefreshListview();
         }
     }
 
@@ -440,5 +378,71 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     @Override
     protected String GetGAScreenName() {
         return "F_Playlists";
+    }
+
+    class FetchPlayList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
+        @Override
+        protected ArrayList<SongDetails> doInBackground(Void... arg0) {
+            ArrayList<SongDetails> playlists = new ArrayList<SongDetails>();
+            SongDetails Latest = new SongDetails();
+            Latest.setSong(prefs.GetPlaylistRecentName());// name
+            playlists.add(Latest);
+            String click_no = prefs.GetLastplayClickNo();
+            try {
+                if (!Utilities.isEmpty(click_no)) {
+                    SongDetails LastPlayed = new SongDetails();
+                    LastPlayed.setSong(getResources().getString(R.string.last_played));// name
+                    LastPlayed.setClick_no(click_no);
+                    playlists.add(LastPlayed);
+                } else {
+                    if (prefs.HasLastPlayed()) {
+                        SongDetails LastPlayed = new SongDetails();
+                        LastPlayed.setSong(getResources().getString(R.string.last_played));// name
+                        playlists.add(LastPlayed);
+                    }
+                }
+            } catch (NullPointerException e) {
+            } catch (Exception e) {
+            }
+
+            Cursor cursor = null;
+            try {
+                cursor = getActivity().getContentResolver().query(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
+                        new String[]{MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME}, null, null,
+                        MediaStore.Audio.Playlists.NAME + " COLLATE NOCASE ASC");
+                if (cursor != null && cursor.moveToFirst()) {
+                    int _ID_index = cursor.getColumnIndex(MediaStore.Audio.Playlists._ID);
+                    int NAME_index = cursor.getColumnIndex(MediaStore.Audio.Playlists.NAME);
+                    do {
+                        Logger.d("F_Playlists", ".............." + cursor.getString(1));
+                        playlists.add(new SongDetails(cursor.getInt(_ID_index), cursor.getString(_ID_index), cursor.getString(_ID_index),
+                                cursor.getString(NAME_index)));
+                    }
+                    while (cursor.moveToNext());
+                }
+            } catch (NullPointerException e) {
+            } catch (Exception e) {
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                    cursor = null;
+                }
+            }
+
+            return playlists;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<SongDetails> result) {
+            super.onPostExecute(result);
+            if (Playlists != null) {
+                Playlists.clear();
+            } else {
+                Playlists = new ArrayList<SongDetails>();
+            }
+            Playlists.addAll(result);
+            result.clear();
+            OnRefreshListview();
+        }
     }
 }

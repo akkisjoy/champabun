@@ -52,7 +52,7 @@ public class Activity_Fragments extends BaseActivity {
         adapter = new Adapter_ViewPager(getSupportFragmentManager(), titles, fragments);
         pager = (ViewPager) findViewById(R.id.viewpager);
 
-        pager.setPageTransformer(true, new ZoomOutPageTransformer());
+//        pager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(3);

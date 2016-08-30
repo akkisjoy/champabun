@@ -203,6 +203,13 @@
     <color name="YellowGreen">#ff9acd32</color>
     <color name="player_shuffle_on_bg_color">#30000000</color>
     <color name="player_shuffle_off_bg_color">#00ffffff</color>
+
+    <color name="redPager">#ea1c44</color>
+    <color name="yellowPager">#467ef3</color>
+    <color name="pinkPager">#E91E63</color>
+    <color name="bluePager">#a335d8</color>
+    <color name="greenPager">#67bc29</color>
+    <color name="purplePager">#00bb98</color>
     
     <!-- appodeal height -->
     <color name="appodeal_close_button_bg_color">#aa636363</color>

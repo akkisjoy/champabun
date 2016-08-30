@@ -1,356 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/artistbg"
-    android:orientation="vertical" >
+    android:background="@drawable/dummy1"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#70000000"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <RelativeLayout
+        <champak.champabun.ui.TypefaceTextView
+            android:id="@+id/settings"
+            style="@style/TextViewStyle.julius_sans_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:paddingLeft="@dimen/player_settingsSize"
+            android:paddingRight="@dimen/player_settingsSize"
+            android:paddingTop="20dp"
+            android:singleLine="true"
+            android:text="@string/settings"
+            android:textSize="@dimen/Heading_Size" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:paddingTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="6dp">
 
             <champak.champabun.ui.TypefaceTextView
-                android:id="@+id/settings"
-                style="@style/TextViewStyle.julius_sans_one"
+                android:id="@+id/my_apps"
+                style="@style/TextViewStyle.Settings.Item"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:background="@drawable/selector_list"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="@dimen/lsongs_listview_item_padding_left_right"
+                android:paddingRight="@dimen/lsongs_listview_item_padding_left_right"
+                android:text="@string/setting_my_apps" />
+
+            <RelativeLayout
+                android:id="@+id/sleep_timer_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:paddingLeft="@dimen/player_settingsSize"
-                android:paddingRight="@dimen/player_settingsSize"
-                android:paddingTop="20dp"
-                android:singleLine="True"
-                android:text="@string/settings"
-                android:textColor="@color/TextColor_Primary"
-                android:textSize="@dimen/Heading_Size" />
-        </RelativeLayout>
+                android:background="@drawable/selector_list"
+                android:minHeight="?android:attr/listPreferredItemHeight">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            android:paddingTop="16dp" >
+                <champak.champabun.ui.TypefaceTextView
+                    android:id="@+id/sleep_timer_time"
+                    style="@style/TextViewStyle.JosefinSans"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
+                    android:text="@string/setting_not_set" />
+
+                <champak.champabun.ui.TypefaceTextView
+                    android:id="@+id/sleep_timer"
+                    style="@style/TextViewStyle.Settings.Item"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dip"
+                    android:layout_toLeftOf="@+id/sleep_timer_time"
+                    android:background="@android:color/transparent"
+                    android:text="@string/setting_sleep_timer" />
+            </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/duration_filter_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:gravity="center_vertical"
+                android:minHeight="?android:attr/listPreferredItemHeight"
                 android:orientation="vertical"
-                android:paddingBottom="6dp"
-                android:textColor="@color/TextColor_Primary" >
-
-                <champak.champabun.ui.TypefaceTextView
-                    android:id="@+id/my_apps"
-                    style="@style/TextViewStyle.Settings.Item"
-                    android:layout_width="match_parent"
-                    android:layout_height="?android:attr/listPreferredItemHeight"
-                    android:background="@drawable/selector_list"
-                    android:gravity="center_vertical|left"
-                    android:paddingLeft="@dimen/lsongs_listview_item_padding_left_right"
-                    android:paddingRight="@dimen/lsongs_listview_item_padding_left_right"
-                    android:text="@string/setting_my_apps" />
+                android:paddingBottom="3dip"
+                android:paddingTop="3dip">
 
                 <RelativeLayout
-                    android:id="@+id/sleep_timer_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_list"
-                    android:minHeight="?android:attr/listPreferredItemHeight" >
+                    android:orientation="vertical">
 
                     <champak.champabun.ui.TypefaceTextView
-                        android:id="@+id/sleep_timer_time"
-                        style="@style/TextViewStyle.JosefinSans"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
-                        android:text="@string/setting_not_set"
-                        android:textColor="@color/TextColor_Secondary" />
-
-                    <champak.champabun.ui.TypefaceTextView
-                        android:id="@+id/sleep_timer"
-                        style="@style/TextViewStyle.Settings.Item"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip"
-                        android:layout_toLeftOf="@+id/sleep_timer_time"
-                        android:background="@android:color/transparent"
-                        android:text="@string/setting_sleep_timer" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/duration_filter_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_list"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:orientation="vertical"
-                    android:paddingBottom="3dip"
-                    android:paddingTop="3dip" >
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" >
-
-                        <champak.champabun.ui.TypefaceTextView
-                            android:id="@+id/duration_filter_time"
-                            style="@style/TextViewStyle.JosefinSans"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
-                            android:minHeight="0dip"
-                            android:text="@string/setting_not_set"
-                            android:textColor="@color/TextColor_Secondary" />
-
-                        <champak.champabun.ui.TypefaceTextView
-                            style="@style/TextViewStyle.Settings.Item"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="10dip"
-                            android:layout_toLeftOf="@+id/duration_filter_time"
-                            android:background="@android:color/transparent"
-                            android:minHeight="0dip"
-                            android:text="@string/hide_small_clips" />
-                    </RelativeLayout>
-
-                    <champak.champabun.ui.TypefaceTextView
-                        style="@style/TextViewStyle.Settings.Item.Desc"
-                        android:layout_marginTop="3dip"
-                        android:background="@android:color/transparent"
-                        android:minHeight="0dip"
-                        android:singleLine="false"
-                        android:text="@string/duration_filter_desc"
-                        android:textColor="@color/TextColor_Secondary" />
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/language_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_list"
-                    android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:paddingBottom="3dip"
-                    android:paddingTop="3dip" >
-
-                    <champak.champabun.ui.TypefaceTextView
-                        android:id="@+id/language"
+                        android:id="@+id/duration_filter_time"
                         style="@style/TextViewStyle.JosefinSans"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                         android:minHeight="0dip"
-                        android:text="@string/setting_not_set"
-                        android:textColor="@color/TextColor_Secondary" />
+                        android:text="@string/setting_not_set" />
 
                     <champak.champabun.ui.TypefaceTextView
                         style="@style/TextViewStyle.Settings.Item"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dip"
-                        android:layout_toLeftOf="@+id/language"
+                        android:layout_toLeftOf="@+id/duration_filter_time"
                         android:background="@android:color/transparent"
                         android:minHeight="0dip"
-                        android:text="@string/language" />
+                        android:text="@string/hide_small_clips" />
                 </RelativeLayout>
 
                 <champak.champabun.ui.TypefaceTextView
-                    android:id="@+id/cross_fading"
-                    style="@style/TextViewStyle.Settings.Item"
-                    android:background="@drawable/selector"
-                    android:text="@string/setting_cross_fading"
-                    android:visibility="gone" />
-
-                <champak.champabun.ui.TypefaceTextView
-                    android:id="@+id/rescan_lib"
-                    style="@style/TextViewStyle.Settings.Item"
-                    android:background="@drawable/selector"
-                    android:text="@string/setting_rescan_lib"
-                    android:visibility="gone" />
-
-                <champak.champabun.ui.TypefaceTextView
-                    android:id="@+id/choose_folder"
-                    style="@style/TextViewStyle.Settings.Item"
-                    android:background="@drawable/selector"
-                    android:text="@string/setting_choose_folder"
-                    android:visibility="gone" />
-
-                <RelativeLayout
-                    android:id="@+id/choose_background_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_list"
-                    android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:visibility="gone" >
-
-                    <champak.champabun.ui.TypefaceTextView
-                        android:id="@+id/choose_background_value"
-                        style="@style/TextViewStyle.JosefinSans"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
-                        android:text="@string/setting_not_set"
-                        android:textColor="@color/TextColor_Secondary" />
-
-                    <champak.champabun.ui.TypefaceTextView
-                        android:id="@+id/choose_background"
-                        style="@style/TextViewStyle.Settings.Item"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip"
-                        android:layout_toLeftOf="@+id/choose_background_value"
-                        android:background="@android:color/transparent"
-                        android:text="@string/setting_choose_background" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/auto_download_album_art"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:addStatesFromChildren="true"
-                    android:background="@drawable/selector_list"
-                    android:minHeight="?android:attr/listPreferredItemHeight" >
-
-                    <CheckBox
-                        android:id="@+id/auto_download_album_art_cb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right" />
-
-                    <champak.champabun.ui.TypefaceTextView
-                        style="@style/TextViewStyle.Settings.Item"
-                        android:layout_centerHorizontal="true"
-                        android:layout_toLeftOf="@+id/auto_download_album_art_cb"
-                        android:text="@string/setting_auto_download_album_art" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/fullscreen"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:addStatesFromChildren="true"
-                    android:background="@drawable/selector_list"
-                    android:minHeight="?android:attr/listPreferredItemHeight" >
-
-                    <CheckBox
-                        android:id="@+id/fullscreen_cb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
-                        android:focusableInTouchMode="false" />
-
-                    <champak.champabun.ui.TypefaceTextView
-                        style="@style/TextViewStyle.Settings.Item"
-                        android:layout_centerHorizontal="true"
-                        android:layout_toLeftOf="@+id/fullscreen_cb"
-                        android:text="@string/settings_fullscreen" />
-                </RelativeLayout>
-
-                <!-- <TypefaceTextView -->
-                <!-- android:id="@+id/theme" -->
-                <!-- style="@style/TextViewStyle.Settings.Item" -->
-                <!-- android:text="@string/setting_theme" /> -->
-
-
-                <!-- <TypefaceTextView -->
-                <!-- android:id="@+id/choose_album" -->
-                <!-- style="@style/TextViewStyle.Settings.Item" -->
-                <!-- android:text="@string/setting_choose_album" /> -->
-
-
-                <!-- <TypefaceTextView -->
-                <!-- android:id="@+id/choose_color" -->
-                <!-- style="@style/TextViewStyle.Settings.Item" -->
-                <!-- android:text="@string/setting_choose_color" /> -->
-
-
-                <!-- <TypefaceTextView -->
-                <!-- android:id="@+id/choose_font" -->
-                <!-- style="@style/TextViewStyle.Settings.Item" -->
-                <!-- android:text="@string/setting_choose_font" /> -->
-
-                <champak.champabun.ui.TypefaceTextView
-                    android:id="@+id/request_feature"
-                    style="@style/TextViewStyle.Settings.Item"
-                    android:background="@drawable/selector_list"
-                    android:text="@string/setting_request_feature"
-                    android:visibility="gone" />
-
-                <champak.champabun.ui.TypefaceTextView
-                    android:id="@+id/report_bug"
-                    style="@style/TextViewStyle.Settings.Item"
-                    android:background="@drawable/selector_list"
-                    android:text="@string/setting_report_bug"
-                    android:visibility="gone" />
-
-                <champak.champabun.ui.TypefaceTextView
-                    android:id="@+id/remove_ads"
-                    style="@style/TextViewStyle.Settings.Item"
-                    android:background="@drawable/selector_list"
-                    android:text="@string/setting_remove_ads" />
-
-                <champak.champabun.ui.TypefaceTextView
-                    android:id="@+id/donate"
-                    style="@style/TextViewStyle.Settings.Item"
-                    android:background="@drawable/selector_list"
-                    android:text="@string/setting_donate"
-                    android:visibility="gone" />
-
-                <!-- <TypefaceTextView -->
-                <!-- android:id="@+id/share" -->
-                <!-- style="@style/TextViewStyle.Settings.Item" -->
-                <!-- android:text="@string/setting_share" /> -->
+                    style="@style/TextViewStyle.Settings.Item.Desc"
+                    android:layout_marginTop="3dip"
+                    android:background="@android:color/transparent"
+                    android:minHeight="0dip"
+                    android:singleLine="false"
+                    android:text="@string/duration_filter_desc" />
             </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:orientation="vertical" >
+            <RelativeLayout
+                android:id="@+id/language_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:paddingBottom="3dip"
+                android:paddingTop="3dip">
 
-        <champak.champabun.ui.TypefaceTextView
-            android:id="@+id/version"
-            style="@style/TextViewStyle.JosefinSans_Regular"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:gravity="right"
-            android:text="@string/ver_name2"
-            android:textColor="@color/TextColor_Secondary"
-            android:textSize="14sp" />
+                <champak.champabun.ui.TypefaceTextView
+                    android:id="@+id/language"
+                    style="@style/TextViewStyle.JosefinSans"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
+                    android:minHeight="0dip"
+                    android:text="@string/setting_not_set" />
 
-        <champak.champabun.ui.TypefaceTextView
-            android:id="@+id/version"
-            style="@style/TextViewStyle.JosefinSans_Regular"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:text="www.IamAnkitSrivastava.com"
-            android:textColor="@color/TextColor_Secondary"
-            android:textSize="14sp" />
-    </LinearLayout>
-    
-     <LinearLayout
-        android:id="@+id/llAds"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
-    </LinearLayout>
+                <champak.champabun.ui.TypefaceTextView
+                    style="@style/TextViewStyle.Settings.Item"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dip"
+                    android:layout_toLeftOf="@+id/language"
+                    android:background="@android:color/transparent"
+                    android:minHeight="0dip"
+                    android:text="@string/language" />
+            </RelativeLayout>
 
+            <champak.champabun.ui.TypefaceTextView
+                android:id="@+id/cross_fading"
+                style="@style/TextViewStyle.Settings.Item"
+                android:background="@drawable/selector"
+                android:text="@string/setting_cross_fading"
+                android:visibility="gone" />
 
-</RelativeLayout>
+            <champak.champabun.ui.TypefaceTextView
+                android:id="@+id/rescan_lib"
+                style="@style/TextViewStyle.Settings.Item"
+                android:background="@drawable/selector"
+                android:text="@string/setting_rescan_lib"
+                android:visibility="gone" />
+
+            <champak.champabun.ui.TypefaceTextView
+                android:id="@+id/choose_folder"
+                style="@style/TextViewStyle.Settings.Item"
+                android:background="@drawable/selector"
+                android:text="@string/setting_choose_folder"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/choose_background_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:visibility="gone">
+
+                <champak.champabun.ui.TypefaceTextView
+                    android:id="@+id/choose_background_value"
+                    style="@style/TextViewStyle.JosefinSans"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
+                    android:text="@string/setting_not_set" />
+
+                <champak.champabun.ui.TypefaceTextView
+                    android:id="@+id/choose_background"
+                    style="@style/TextViewStyle.Settings.Item"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dip"
+                    android:layout_toLeftOf="@+id/choose_background_value"
+                    android:background="@android:color/transparent"
+                    android:text="@string/setting_choose_background" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/auto_download_album_art"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:addStatesFromChildren="true"
+                android:background="@drawable/selector_list"
+                android:minHeight="?android:attr/listPreferredItemHeight">
+
+                <CheckBox
+                    android:id="@+id/auto_download_album_art_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right" />
+
+                <champak.champabun.ui.TypefaceTextView
+                    style="@style/TextViewStyle.Settings.Item"
+                    android:layout_centerHorizontal="true"
+                    android:layout_toLeftOf="@+id/auto_download_album_art_cb"
+                    android:text="@string/setting_auto_download_album_art" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/fullscreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:addStatesFromChildren="true"
+                android:background="@drawable/selector_list"
+                android:minHeight="?android:attr/listPreferredItemHeight">
+
+                <CheckBox
+                    android:id="@+id/fullscreen_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
+                    android:focusableInTouchMode="false" />
+
+                <champak.champabun.ui.TypefaceTextView
+                    style="@style/TextViewStyle.Settings.Item"
+                    android:layout_centerHorizontal="true"
+                    android:layout_toLeftOf="@+id/fullscreen_cb"
+                    android:text="@string/settings_fullscreen" />
+            </RelativeLayout>
+
+            <champak.champabun.ui.TypefaceTextView
+                android:id="@+id/request_feature"
+                style="@style/TextViewStyle.Settings.Item"
+                android:background="@drawable/selector_list"
+                android:text="@string/setting_request_feature"
+                android:visibility="gone" />
+
+            <champak.champabun.ui.TypefaceTextView
+                android:id="@+id/report_bug"
+                style="@style/TextViewStyle.Settings.Item"
+                android:background="@drawable/selector_list"
+                android:text="@string/setting_report_bug"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

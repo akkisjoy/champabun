@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/Transparent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
 
-    <View
+    <ImageView
+        android:id="@+id/backPager"
         android:layout_width="match_parent"
-        android:layout_height="0.4dp"
-        android:background="@android:color/darker_gray" />
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/dummy3" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +17,7 @@
         android:paddingBottom="@dimen/lsongs_TopViewBottomMargin"
         android:paddingLeft="18dp"
         android:paddingRight="0dp"
-        android:paddingTop="@dimen/lsongs_TopViewTopMargin" >
+        android:paddingTop="@dimen/lsongs_TopViewTopMargin">
 
         <champak.champabun.ui.TypefaceTextView
             style="@style/TextViewStyle.JosefinSans"
@@ -39,21 +38,17 @@
             android:singleLine="true"
             android:textColor="#ffffff"
             android:textSize="@dimen/lsongs_albumTextSize" />
+
+        <ListView
+            android:id="@+id/list"
+            style="@style/ListViewplaymee"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/rayMenu_marginTop"
+            android:layout_weight="1"
+            android:background="#46000000"
+            android:fastScrollEnabled="true" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1.5dp"
-        android:background="@android:color/darker_gray" />
 
-    <ListView
-        android:id="@+id/list"
-        style="@style/ListViewplaymee"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/rayMenu_marginTop"
-        android:layout_weight="1"
-        android:background="#46000000"
-        android:fastScrollEnabled="true" />
-
-</LinearLayout>
+</RelativeLayout>

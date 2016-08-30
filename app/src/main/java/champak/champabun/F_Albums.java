@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class F_Albums extends BaseFragment {
     LazyAdapter adapter;
     ArrayList<SongDetails> songdetails;
     float wt_px;
+    ImageView backPager;
     private Context context;
 
     @Override
@@ -39,6 +42,8 @@ public class F_Albums extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_albums, container, false);
         context = getActivity().getApplicationContext();
+        backPager = (ImageView) view.findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.bluePager), PorterDuff.Mode.MULTIPLY);
 
         list = (GridView) view.findViewById(R.id.grid_view);
         adapter = null;
@@ -97,6 +102,15 @@ public class F_Albums extends BaseFragment {
         adapter = null;
     }
 
+    @Override
+    public void Update() {
+    }
+
+    @Override
+    protected String GetGAScreenName() {
+        return "F_Albums";
+    }
+
     class FetchAlbumList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
@@ -144,14 +158,5 @@ public class F_Albums extends BaseFragment {
             result.clear();
             OnRefreshListview();
         }
-    }
-
-    @Override
-    public void Update() {
-    }
-
-    @Override
-    protected String GetGAScreenName() {
-        return "F_Albums";
     }
 }

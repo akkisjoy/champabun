@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/artistbg"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/dummy1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:background="@color/transparentblack"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/eqControlLayout"
@@ -31,12 +34,12 @@
                     android:layout_marginLeft="10dip"
                     android:layout_marginRight="10dip"
                     android:layout_marginTop="5dip"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="top" >
+                        android:gravity="top">
 
                         <champak.champabun.ui.TypefaceTextView
                             android:id="@+id/eqControlText"
@@ -56,7 +59,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/eqControlText"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/selector" >
+                            android:background="@drawable/selector">
 
                             <Button
                                 android:id="@+id/equalizerOnOff"
@@ -84,13 +87,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:weightSum="10" >
+                    android:weightSum="10">
 
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
-                        android:orientation="vertical" >
+                        android:orientation="vertical">
 
                         <ImageView
                             android:id="@+id/image"
@@ -107,19 +110,18 @@
                         android:layout_height="fill_parent"
                         android:layout_gravity="bottom"
                         android:layout_weight="7"
-                        android:orientation="vertical" >
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:id="@+id/button_layout"
                             android:layout_width="fill_parent"
-                            android:layout_height="fill_parent" >
+                            android:layout_height="fill_parent">
 
                             <RelativeLayout
                                 android:id="@+id/button1"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:background="@color/buttonbgcolor" >
-                            </RelativeLayout>
+                                android:background="@color/buttonbgcolor"></RelativeLayout>
 
                             <champak.champabun.ui.TypefaceTextView
                                 android:id="@+id/basstext"
@@ -140,8 +142,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:layout_toRightOf="@+id/button1"
-                                android:background="@color/buttonbgcolor" >
-                            </RelativeLayout>
+                                android:background="@color/buttonbgcolor"></RelativeLayout>
 
                             <champak.champabun.ui.TypefaceTextView
                                 android:id="@+id/voltext"
@@ -162,8 +163,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:layout_toRightOf="@+id/button2"
-                                android:background="@color/buttonbgcolor" >
-                            </RelativeLayout>
+                                android:background="@color/buttonbgcolor"></RelativeLayout>
 
                             <champak.champabun.ui.TypefaceTextView
                                 android:id="@+id/virtualizertext"
@@ -184,8 +184,7 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="match_parent"
                                 android:layout_below="@id/basstext"
-                                android:background="@color/buttonbgcolor" >
-                            </RelativeLayout>
+                                android:background="@color/buttonbgcolor"></RelativeLayout>
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -193,12 +192,5 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/llAds"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
-    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

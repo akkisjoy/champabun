@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/artistbg"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/dummy1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparentblack"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/headerBarLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             >
+            android:layout_height="wrap_content">
 
             <champak.champabun.ui.TypefaceTextView
                 android:id="@+id/playlistname"
@@ -29,7 +33,7 @@
                 android:paddingLeft="42dp"
                 android:paddingRight="42dp"
                 android:paddingTop="20dp"
-                android:singleLine="True"
+                android:singleLine="true"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/Heading_Size" />
 
@@ -38,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/playlistname"
                 android:paddingBottom="4dp"
-                android:paddingRight="10dp" >
+                android:paddingRight="10dp">
 
                 <ProgressBar
                     android:id="@+id/progressBar1"
@@ -54,7 +58,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ListView
                 android:id="@+id/listView1"
@@ -62,18 +66,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fastScrollEnabled="true" >
-            </ListView>
+                android:fastScrollEnabled="true" />
 
             <include
                 android:id="@+id/adLayout"
+                layout="@layout/ads_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                layout="@layout/ads_view"
                 android:background="@android:color/transparent"
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

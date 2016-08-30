@@ -36,10 +36,9 @@ public class Settings extends BaseActivity implements OnClickListener {
     final private static String TAG = "Settings";
     private CheckBox auto_download_album_art_cb, fullscreen_cb;
     private Calendar calendar;
-    private TypefaceTextView sleepTimerView, languageView, durationFilterView, chooseBGView;
+    private TypefaceTextView sleepTimerView, languageView, durationFilterView;
     private Dialog dialog;
     private ListView listview;
-    //private boolean isOverridePendingTransition = false;
     private boolean needRefresh = false;
     private boolean needRefreshLanguage = false;
     private boolean needRefreshFullscreen = false;
@@ -63,23 +62,15 @@ public class Settings extends BaseActivity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //	if(!IConstant.IS_PRO_VERSION)
-        //	   Appodeal.show(Settings.this, Appodeal.INTERSTITIAL);
         if (savedInstanceState != null) {
             needRefresh = savedInstanceState.getBoolean("needRefresh");
             needRefreshLanguage = savedInstanceState.getBoolean("needRefreshLanguage");
             needRefreshFullscreen = savedInstanceState.getBoolean("needRefreshFullscreen");
-            //	isOverridePendingTransition = savedInstanceState.getBoolean( "isOverridePendingTransition" );
         } else if (getIntent().getExtras() != null) {
             needRefresh = getIntent().getExtras().getBoolean("needRefresh", false);
             needRefreshLanguage = getIntent().getExtras().getBoolean("needRefreshLanguage", false);
             needRefreshFullscreen = getIntent().getExtras().getBoolean("needRefreshFullscreen", false);
-            //	isOverridePendingTransition = getIntent( ).getExtras( ).getBoolean( "isOverridePendingTransition", true );
         }
-        //if ( isOverridePendingTransition )
-        //{
-        //	overridePendingTransition( R.anim.slide_in_left, R.anim.slide_out_left );
-        //}
         calendar = Calendar.getInstance();
 
         View my_apps = findViewById(R.id.my_apps);
@@ -108,10 +99,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         TypefaceTextView choose_folder = (TypefaceTextView) findViewById(R.id.choose_folder);
         choose_folder.setOnClickListener(this);
 
-        View bgV = findViewById(R.id.choose_background_view);
-        chooseBGView = (TypefaceTextView) bgV.findViewById(R.id.choose_background_value);
-        bgV.setOnClickListener(this);
-
         View auto_download_album_art = findViewById(R.id.auto_download_album_art);
         auto_download_album_art.setOnClickListener(this);
         auto_download_album_art_cb = (CheckBox) auto_download_album_art.findViewById(R.id.auto_download_album_art_cb);
@@ -120,29 +107,11 @@ public class Settings extends BaseActivity implements OnClickListener {
         fullscreen.setOnClickListener(this);
         fullscreen_cb = (CheckBox) fullscreen.findViewById(R.id.fullscreen_cb);
 
-        // TypefaceTextView theme = ( TypefaceTextView ) findViewById( R.id.theme );
-        // theme.setOnClickListener( this );
-
-        // TypefaceTextView choose_album = ( TypefaceTextView ) findViewById( R.id.choose_album );
-        // choose_album.setOnClickListener( this );
-
-        // TypefaceTextView choose_color = ( TypefaceTextView ) findViewById( R.id.choose_color );
-        // choose_color.setOnClickListener( this );
-
-        // TypefaceTextView choose_font = ( TypefaceTextView ) findViewById( R.id.choose_font );
-        // choose_font.setOnClickListener( this );
-
         TypefaceTextView request_feature = (TypefaceTextView) findViewById(R.id.request_feature);
         request_feature.setOnClickListener(this);
 
         TypefaceTextView report_bug = (TypefaceTextView) findViewById(R.id.report_bug);
         report_bug.setOnClickListener(this);
-
-        TypefaceTextView remove_ads = (TypefaceTextView) findViewById(R.id.remove_ads);
-        remove_ads.setOnClickListener(this);
-
-        TypefaceTextView donate = (TypefaceTextView) findViewById(R.id.donate);
-        donate.setOnClickListener(this);
 
         UpdateView();
     }
@@ -226,20 +195,7 @@ public class Settings extends BaseActivity implements OnClickListener {
                 ShowEditDurationDialog();
                 break;
             }
-            case R.id.cross_fading: {
-                break;
-            }
-            case R.id.rescan_lib: {
-                break;
-            }
-            case R.id.choose_folder: {
-                break;
-            }
-            case R.id.choose_background_view: {
-                Intent intent = new Intent(Settings.this, ChooseBackground.class);
-                startActivityForResult(intent, IConstant.REQUEST_CODE_CHANGE_BACKGROUND);
-                break;
-            }
+
             case R.id.auto_download_album_art: {
                 auto_download_album_art_cb.setChecked(!auto_download_album_art_cb.isChecked());
                 break;
@@ -276,17 +232,7 @@ public class Settings extends BaseActivity implements OnClickListener {
                 startActivity(intent);
                 break;
             }
-            case R.id.remove_ads: {
 
-                ActivityUtil.OpenPlaystore(this, IConstant.PLAYMEE_PRO_PACKAGE);
-                break;
-            }
-            case R.id.donate: {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(IConstant.DONATE_URL));
-                startActivity(intent);
-                break;
-            }
             default:
                 break;
         }
@@ -299,9 +245,6 @@ public class Settings extends BaseActivity implements OnClickListener {
 
     @Override
     public void OnBackPressed() {
-//		if(!IConstant.IS_PRO_VERSION){
-        //Appodeal.hide(Settings.this,Appodeal.INTERSTITIAL);
-//		}
         if (needRefresh || needRefreshLanguage || needRefreshFullscreen) {
             Intent intent = getIntent();
             intent.putExtra("needRefreshLanguage", needRefreshLanguage);
@@ -316,26 +259,6 @@ public class Settings extends BaseActivity implements OnClickListener {
     @Override
     protected String GetGAScreenName() {
         return null;
-    }
-
-    @Override
-    protected void onActivityResult(int requestcode, int resultCode, Intent intent) {
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestcode) {
-                case IConstant.REQUEST_CODE_CHANGE_BACKGROUND: {
-                    Intent intent2 = getIntent();
-                    intent2.putExtra("isAppBGChanged", true);
-                    needRefresh = true;
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-        // else if ( resultCode == Activity.RESULT_CANCELED )
-        // {
-        // }
-        super.onActivityResult(requestcode, resultCode, intent);
     }
 
     private void ShowTimePickerDialog() {

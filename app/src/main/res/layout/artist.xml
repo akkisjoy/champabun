@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/artistbg"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/dummy1" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparentblack"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/headerBarLinearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <champak.champabun.ui.TypefaceTextView
                     android:id="@+id/tV1"
@@ -34,14 +39,14 @@
                     android:paddingTop="18dp"
                     android:singleLine="True"
                     android:textColor="#FFFFFF"
-                    android:textSize="@dimen/Heading_Size"  />
+                    android:textSize="@dimen/Heading_Size" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/tV1"
                     android:paddingBottom="4dp"
-                    android:paddingRight="10dp" >
+                    android:paddingRight="10dp">
 
                     <ProgressBar
                         android:id="@+id/progressBar1"
@@ -67,13 +72,12 @@
                 android:layout_marginBottom="@dimen/rayMenu_marginTop"
                 android:layout_marginTop="@dimen/rayMenu_marginTop"
                 android:paddingLeft="1dp"
-                android:paddingRight="18dp" >
+                android:paddingRight="18dp">
 
                 <champak.champabun.raymenu.RayMenu
                     android:id="@+id/ray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-                </champak.champabun.raymenu.RayMenu>
+                    android:layout_height="wrap_content"></champak.champabun.raymenu.RayMenu>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +85,7 @@
                     android:layout_marginBottom="12dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="13dp"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/bRBack"
@@ -130,18 +134,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fastScrollEnabled="true"
-                android:paddingTop="4dp" >
-            </ListView>
+                android:paddingTop="4dp"></ListView>
         </LinearLayout>
 
         <include
             android:id="@+id/adLayout"
+            layout="@layout/ads_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            layout="@layout/ads_view"
             android:background="@android:color/transparent"
             android:visibility="gone" />
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

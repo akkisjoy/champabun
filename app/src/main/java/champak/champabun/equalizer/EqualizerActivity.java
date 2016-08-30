@@ -20,7 +20,6 @@ import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Virtualizer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -45,51 +44,62 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import champak.champabun.BaseActivity;
 import champak.champabun.R;
 import champak.champabun.service.Music_service;
 import champak.champabun.util.PlayMeePreferences;
 import champak.champabun.util.Utilities;
 //** sixsquare **//
 
-public class EqualizerActivity extends AppCompatActivity {
-    private int Xvalue, Yvalue, Y1, Y2, Y3, Y4, Y5, X1, X2, X3, X4, X5, I1, I2, I3, I4, I5, D1, D2, D3, D4, D5,
-            DeviceHeight, DeviceWidth, End, Mid, W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, gap, Mgap1, Mgap2, Mgap3,
-            Mgap4, strokewidth, count, btn_width, padding_top, per1, per2, per3, buttonvaluecount, textsize, Boder_top,
-            Boder_bottom, C1, C2, C3, C4, C5, stator1, stator2, stator3, volume, bitmapheight, presetcount, l1, l2, l3,
-            l4, l5, h1, h2, h3, h4, h5, mid, spinnerposition, curPresetIndex, C, Y, I, D, setfocus,
-            systemvol;
-    Singleton m_Inst = Singleton.getInstance();
+public class EqualizerActivity extends BaseActivity {
     public int prevPresetIndex;
-    Double percent_to_vol;
-    //float titlesize;
-    short band;
-    Shader shaderTop, shaderBottom, shaderNormal;
     public Equalizer mEqualizer;
-    private Virtualizer virtualizer;
-    private BassBoost bassBoost;
-    private Dialog dialog;
-    private Bitmap bitmap;
     public MediaPlayer mMediaPlayer;
-    private ImageView drawingImageView, ivBack1, ivBack2, ivBack3;
-    private Canvas canvas;
     public DatabaseHandler db;
     public RoundKnobButton rv1, rv2, rv3;
     public Button eq_status;
-    Boolean eq;
-    View eq_wrapping;
     public PlayMeePreferences prefs;
     public ArrayAdapter<String> dataAdapter;
     public ArrayList<String> spinnerList;
     public Spinner spinner;
     public Paint paint1, paint2, paint3, paint4, paint5, midcolor, circle1, circle2, circle3, circle4, circle5,
             glowcolor1, glowcolor2, glowcolor3, glowcolor4, glowcolor5;
-
+    Singleton m_Inst = Singleton.getInstance();
+    Double percent_to_vol;
+    //float titlesize;
+    short band;
+    Shader shaderTop, shaderBottom, shaderNormal;
+    Boolean eq;
+    View eq_wrapping;
     AudioManager maudiomanager;
+    private int Xvalue, Yvalue, Y1, Y2, Y3, Y4, Y5, X1, X2, X3, X4, X5, I1, I2, I3, I4, I5, D1, D2, D3, D4, D5,
+            DeviceHeight, DeviceWidth, End, Mid, W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, gap, Mgap1, Mgap2, Mgap3,
+            Mgap4, strokewidth, count, btn_width, padding_top, per1, per2, per3, buttonvaluecount, textsize, Boder_top,
+            Boder_bottom, C1, C2, C3, C4, C5, stator1, stator2, stator3, volume, bitmapheight, presetcount, l1, l2, l3,
+            l4, l5, h1, h2, h3, h4, h5, mid, spinnerposition, curPresetIndex, C, Y, I, D, setfocus,
+            systemvol;
+    private Virtualizer virtualizer;
+    private BassBoost bassBoost;
+    BroadcastReceiver eq_init = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int x = maudiomanager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            // TODO
+            //getEffect( Music_service.mp.getAudioSessionId( ) );
+            checkEq();
+            maudiomanager.setStreamVolume(AudioManager.STREAM_MUSIC, x, 0);
+        }
+    };
+    private Dialog dialog;
+    private Bitmap bitmap;
+    private ImageView drawingImageView, ivBack1, ivBack2, ivBack3;
+    private Canvas canvas;
+    private ImageView backPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.equalizer_vertical);
+//        setContentView(R.layout.equalizer_vertical);
         //registerReceiver( eq_init, new IntentFilter( IConstant.BROADCAST_EQ ) );
         db = new DatabaseHandler(this);
 
@@ -98,6 +108,8 @@ public class EqualizerActivity extends AppCompatActivity {
         eq_status.getBackground().setColorFilter(Color.parseColor("#666666"), PorterDuff.Mode.SRC_ATOP);
         spinner = (Spinner) findViewById(R.id.saved_preset);
 
+        backPager = (ImageView) findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.purple), PorterDuff.Mode.MULTIPLY);
 
         prefs = new PlayMeePreferences(EqualizerActivity.this);
         eq = prefs.IsEqualizerOn();
@@ -491,17 +503,6 @@ public class EqualizerActivity extends AppCompatActivity {
         });
     }
 
-    BroadcastReceiver eq_init = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int x = maudiomanager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            // TODO
-            //getEffect( Music_service.mp.getAudioSessionId( ) );
-            checkEq();
-            maudiomanager.setStreamVolume(AudioManager.STREAM_MUSIC, x, 0);
-        }
-    };
-
     private void percentcalcBass() {
         int i = bassBoost.getRoundedStrength();
         per1 = i / 10;
@@ -725,10 +726,8 @@ public class EqualizerActivity extends AppCompatActivity {
                 l5 = DeviceHeight * 70 / 100;
                 if (spinnerposition == 0) {
                     setupEqualizerFxAndUI();
-                    return;
                 } else if (spinnerposition == 1) {
                     ShowNewPresetDialog();
-                    return;
                 } else if (spinnerposition == 2) {
                     Singleton.theEqualizer.usePreset((short) 0);
                     Y1 = h1;
@@ -739,7 +738,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition == 3) {
                     Singleton.theEqualizer.usePreset((short) 1);
                     Y1 = h2;
@@ -750,7 +748,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition == 4) {
                     Singleton.theEqualizer.usePreset((short) 2);
                     Y1 = h2;
@@ -761,7 +758,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition == 5) {
                     Singleton.theEqualizer.usePreset((short) 3);
                     Y1 = mid;
@@ -772,7 +768,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition == 6) {
                     Singleton.theEqualizer.usePreset((short) 4);
                     Y1 = h1;
@@ -783,8 +778,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
-
                 } else if (spinnerposition == 7) {
                     Singleton.theEqualizer.usePreset((short) 5);
                     Y1 = h2;
@@ -795,7 +788,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition == 8) {
                     Singleton.theEqualizer.usePreset((short) 6);
                     Y1 = h2;
@@ -806,7 +798,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition == 9) {
                     Singleton.theEqualizer.usePreset((short) 7);
                     Y1 = h2;
@@ -817,7 +808,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition == 10) {
                     Singleton.theEqualizer.usePreset((short) 8);
                     Y1 = l1;
@@ -828,7 +818,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition == 11) {
                     Singleton.theEqualizer.usePreset((short) 9);
                     Y1 = h2;
@@ -839,7 +828,6 @@ public class EqualizerActivity extends AppCompatActivity {
                     gapvalues();
                     createbitmap();
                     drawpath();
-                    return;
                 } else if (spinnerposition > 11) {
                     List<Presetvalues> presetvalues = db.getpresetbyid(spinnerposition - 11);
                     for (Presetvalues pv : presetvalues) {
@@ -988,39 +976,39 @@ public class EqualizerActivity extends AppCompatActivity {
         if (Y > mid && Y <= h1) {
             //Log.i("Equalizertest",mid+ "  "+ Y + "   "+ h1);
 
-            Singleton.theEqualizer.setBandLevel((short) band, (short) 300);
+            Singleton.theEqualizer.setBandLevel(band, (short) 300);
             return;
         } else if (Y < h1 && Y >= h2) {
             //Log.i("Equalizertest",h2+ "  "+ Y + "   "+ h1);
-            Singleton.theEqualizer.setBandLevel((short) band, (short) 600);
+            Singleton.theEqualizer.setBandLevel(band, (short) 600);
             return;
         } else if (Y < h2 && Y >= h3) {
             // Log.i("Equalizertest",h2+ "  "+ Y + "   "+ h3);
-            Singleton.theEqualizer.setBandLevel((short) band, (short) 900);
+            Singleton.theEqualizer.setBandLevel(band, (short) 900);
             return;
         } else if (Y < h3 && Y >= h4) {
-            Singleton.theEqualizer.setBandLevel((short) band, (short) 1200);
+            Singleton.theEqualizer.setBandLevel(band, (short) 1200);
             return;
         } else if (Y < h4 && Y >= h5) {
-            Singleton.theEqualizer.setBandLevel((short) band, (short) 1500);
+            Singleton.theEqualizer.setBandLevel(band, (short) 1500);
             return;
         } else if (Y == mid) {
-            Singleton.theEqualizer.setBandLevel((short) band, (short) 0);
+            Singleton.theEqualizer.setBandLevel(band, (short) 0);
             return;
         } else if (Y > mid && Y <= l1) {
-            Singleton.theEqualizer.setBandLevel((short) band, (short) -300);
+            Singleton.theEqualizer.setBandLevel(band, (short) -300);
             return;
         } else if (Y > l1 && Y <= l2) {
-            Singleton.theEqualizer.setBandLevel((short) band, (short) -600);
+            Singleton.theEqualizer.setBandLevel(band, (short) -600);
             return;
         } else if (Y > l2 && Y <= l3) {
-            Singleton.theEqualizer.setBandLevel((short) band, (short) -900);
+            Singleton.theEqualizer.setBandLevel(band, (short) -900);
             return;
         } else if (Y > l3 && Y <= l4) {
-            Singleton.theEqualizer.setBandLevel((short) band, (short) -1200);
+            Singleton.theEqualizer.setBandLevel(band, (short) -1200);
             return;
         } else if (Y > l4 && Y <= l5) {
-            Singleton.theEqualizer.setBandLevel((short) band, (short) -1500);
+            Singleton.theEqualizer.setBandLevel(band, (short) -1500);
             return;
         }
 
@@ -1141,49 +1129,34 @@ public class EqualizerActivity extends AppCompatActivity {
             volume = 0;
         } else if (per2 <= 6 && per2 > 0) {
             volume = 1;
-            return;
         } else if (per2 <= 13 && per2 > 6) {
             volume = 2;
-            return;
         } else if (per2 <= 20 && per2 > 13) {
             volume = 3;
-            return;
         } else if (per2 <= 26 && per2 > 20) {
             volume = 4;
-            return;
         } else if (per2 <= 33 && per2 > 26) {
             volume = 5;
-            return;
         } else if (per2 <= 40 && per2 > 33) {
             volume = 6;
-            return;
         } else if (per2 <= 46 && per2 > 40) {
             volume = 7;
-            return;
         } else if (per2 <= 53 && per2 > 40) {
             volume = 8;
-            return;
         } else if (per2 <= 59 && per2 > 53) {
             volume = 9;
-            return;
         } else if (per2 <= 66 && per2 > 59) {
             volume = 10;
-            return;
         } else if (per2 <= 73 && per2 > 66) {
             volume = 11;
-            return;
         } else if (per2 <= 79 && per2 > 73) {
             volume = 12;
-            return;
         } else if (per2 <= 86 && per2 > 79) {
             volume = 13;
-            return;
         } else if (per2 <= 94 && per2 > 86) {
             volume = 14;
-            return;
         } else if (per2 <= 99 && per2 > 94) {
             volume = 15;
-            return;
         }
     }
 
@@ -1192,63 +1165,43 @@ public class EqualizerActivity extends AppCompatActivity {
             stator1 = R.drawable.stator1;
         } else if (per1 >= 5 && per1 < 10) {
             stator1 = R.drawable.stator2;
-            return;
         } else if (per1 >= 10 && per1 < 15) {
             stator1 = R.drawable.stator3;
-            return;
         } else if (per1 >= 15 && per1 < 20) {
             stator1 = R.drawable.stator4;
-            return;
         } else if (per1 >= 20 && per1 < 24) {
             stator1 = R.drawable.stator5;
-            return;
         } else if (per1 >= 24 && per1 < 29) {
             stator1 = R.drawable.stator6;
-            return;
         } else if (per1 >= 29 && per1 < 34) {
             stator1 = R.drawable.stator7;
-            return;
         } else if (per1 >= 34 && per1 < 39) {
             stator1 = R.drawable.stator8;
-            return;
         } else if (per1 >= 39 && per1 < 44) {
             stator1 = R.drawable.stator9;
-            return;
         } else if (per1 >= 44 && per1 < 50) {
             stator1 = R.drawable.stator10;
-            return;
         } else if (per1 >= 50 && per1 < 54) {
             stator1 = R.drawable.stator11;
-            return;
         } else if (per1 >= 54 && per1 < 58) {
             stator1 = R.drawable.stator12;
-            return;
         } else if (per1 >= 58 && per1 < 64) {
             stator1 = R.drawable.stator13;
-            return;
         } else if (per1 >= 64 && per1 < 69) {
             stator1 = R.drawable.stator14;
-            return;
         } else if (per1 >= 69 && per1 < 74) {
             stator1 = R.drawable.stator15;
-            return;
         } else if (per1 >= 74 && per1 < 80) {
             stator1 = R.drawable.stator16;
-            return;
         } else if (per1 >= 80 && per1 < 84) {
             stator1 = R.drawable.stator17;
-            return;
         } else if (per1 >= 84 && per1 < 90) {
             stator1 = R.drawable.stator18;
-            return;
         } else if (per1 >= 90 && per1 < 95) {
             stator1 = R.drawable.stator19;
-            return;
         } else if (per1 >= 95 && per1 < 100) {
             stator1 = R.drawable.stator20;
-            return;
         }
-
     }
 
     private void statorselectorVolume() {
@@ -1256,61 +1209,42 @@ public class EqualizerActivity extends AppCompatActivity {
             stator2 = R.drawable.stator1;
         } else if (per2 >= 5 && per2 < 10) {
             stator2 = R.drawable.stator2;
-            return;
         } else if (per2 >= 10 && per2 < 15) {
             stator2 = R.drawable.stator3;
-            return;
         } else if (per2 >= 15 && per2 < 20) {
             stator2 = R.drawable.stator4;
-            return;
         } else if (per2 >= 20 && per2 < 24) {
             stator2 = R.drawable.stator5;
-            return;
         } else if (per2 >= 24 && per2 < 29) {
             stator2 = R.drawable.stator6;
-            return;
         } else if (per2 >= 29 && per2 < 34) {
             stator2 = R.drawable.stator7;
-            return;
         } else if (per2 >= 34 && per2 < 39) {
             stator2 = R.drawable.stator8;
-            return;
         } else if (per2 >= 39 && per2 < 44) {
             stator2 = R.drawable.stator9;
-            return;
         } else if (per2 >= 44 && per2 < 50) {
             stator2 = R.drawable.stator10;
-            return;
         } else if (per2 >= 50 && per2 < 54) {
             stator2 = R.drawable.stator11;
-            return;
         } else if (per2 >= 54 && per2 < 58) {
             stator2 = R.drawable.stator12;
-            return;
         } else if (per2 >= 58 && per2 < 64) {
             stator2 = R.drawable.stator13;
-            return;
         } else if (per2 >= 64 && per2 < 69) {
             stator2 = R.drawable.stator14;
-            return;
         } else if (per2 >= 69 && per2 < 74) {
             stator2 = R.drawable.stator15;
-            return;
         } else if (per2 >= 74 && per2 < 80) {
             stator2 = R.drawable.stator16;
-            return;
         } else if (per2 >= 80 && per2 < 84) {
             stator2 = R.drawable.stator17;
-            return;
         } else if (per2 >= 84 && per2 < 90) {
             stator2 = R.drawable.stator18;
-            return;
         } else if (per2 >= 90 && per2 < 95) {
             stator2 = R.drawable.stator19;
-            return;
         } else if (per2 >= 95 && per2 < 100) {
             stator2 = R.drawable.stator20;
-            return;
         }
     }
 
@@ -1319,61 +1253,42 @@ public class EqualizerActivity extends AppCompatActivity {
             stator3 = R.drawable.stator1;
         } else if (per3 >= 5 && per3 < 10) {
             stator3 = R.drawable.stator2;
-            return;
         } else if (per3 >= 10 && per3 < 15) {
             stator3 = R.drawable.stator3;
-            return;
         } else if (per3 >= 15 && per3 < 20) {
             stator3 = R.drawable.stator4;
-            return;
         } else if (per3 >= 20 && per3 < 24) {
             stator3 = R.drawable.stator5;
-            return;
         } else if (per3 >= 24 && per3 < 29) {
             stator3 = R.drawable.stator6;
-            return;
         } else if (per3 >= 29 && per3 < 34) {
             stator3 = R.drawable.stator7;
-            return;
         } else if (per3 >= 34 && per3 < 39) {
             stator3 = R.drawable.stator8;
-            return;
         } else if (per3 >= 39 && per3 < 44) {
             stator3 = R.drawable.stator9;
-            return;
         } else if (per3 >= 44 && per3 < 50) {
             stator3 = R.drawable.stator10;
-            return;
         } else if (per3 >= 50 && per3 < 54) {
             stator3 = R.drawable.stator11;
-            return;
         } else if (per3 >= 54 && per3 < 58) {
             stator3 = R.drawable.stator12;
-            return;
         } else if (per3 >= 58 && per3 < 64) {
             stator3 = R.drawable.stator13;
-            return;
         } else if (per3 >= 64 && per3 < 69) {
             stator3 = R.drawable.stator14;
-            return;
         } else if (per3 >= 69 && per3 < 74) {
             stator3 = R.drawable.stator15;
-            return;
         } else if (per3 >= 74 && per3 < 80) {
             stator3 = R.drawable.stator16;
-            return;
         } else if (per3 >= 80 && per3 < 84) {
             stator3 = R.drawable.stator17;
-            return;
         } else if (per3 >= 84 && per3 < 90) {
             stator3 = R.drawable.stator18;
-            return;
         } else if (per3 >= 90 && per3 < 95) {
             stator3 = R.drawable.stator19;
-            return;
         } else if (per3 >= 95 && per3 < 100) {
             stator3 = R.drawable.stator20;
-            return;
         }
 
     }
@@ -1401,25 +1316,25 @@ public class EqualizerActivity extends AppCompatActivity {
                         X2 = W3 + (W4 - W3) / 2;
                         Y2 = Yvalue;
 
-                        band = Short.valueOf((short) 1);
+                        band = (short) 1;
                         setfocus = 2;
                     } else if (Xvalue > W5 && Xvalue < W6) {
                         X3 = W5 + (W6 - W5) / 2;
                         Y3 = Yvalue;
 
-                        band = Short.valueOf((short) 2);
+                        band = (short) 2;
                         setfocus = 3;
                     } else if (Xvalue > W7 && Xvalue < W8) {
                         X4 = W7 + (W8 - W7) / 2;
                         Y4 = Yvalue;
 
-                        band = Short.valueOf((short) 3);
+                        band = (short) 3;
                         setfocus = 4;
                     } else if (Xvalue > W9 && Xvalue < W10) {
                         X5 = W9 + (W10 - W9) / 2;
                         Y5 = Yvalue;
 
-                        band = Short.valueOf((short) 4);
+                        band = (short) 4;
                         setfocus = 5;
                     }
 
@@ -1607,26 +1522,26 @@ public class EqualizerActivity extends AppCompatActivity {
         }
     }
 
-//	@Override
-//	public String GetActivityID() {
-//		return "EqualizerActivity";
-//	}
+    @Override
+    public String GetActivityID() {
+        return "EqualizerActivity";
+    }
 
-//	@Override
-//	public int GetLayoutResID() {
-//		// TODO Auto-generated method stub
-//		return 0x7f030019;
-//	}
-//
-//	@Override
-//	public void OnBackPressed() {
-//		finish();
-//	}
-//
-//	@Override
-//	protected String GetGAScreenName() {
-//		return "EqualizerActivity";
-//	}
+    @Override
+    public int GetLayoutResID() {
+        // TODO Auto-generated method stub
+        return R.layout.equalizer_vertical;
+    }
+
+    @Override
+    public void OnBackPressed() {
+        finish();
+    }
+
+    @Override
+    protected String GetGAScreenName() {
+        return "EqualizerActivity";
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -32,6 +34,7 @@ import champak.champabun.util.StorageAccessAPI;
 import champak.champabun.util.Utilities;
 
 public class Playlist extends BaseActivity implements SongHelper.OnQuickActionItemSelectListener {
+    static public int highlight_zero = 0;
     String click_no;
     ArrayList<SongDetails> play = new ArrayList<SongDetails>();
     Adapter_SongView ab;
@@ -41,11 +44,33 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
     ProgressBar spinner;
     int position2;
     Intent intent;
-    static public int highlight_zero = 0;
-
     //private LinearLayout ll;
     private SongHelper songHelper;
     private PlayMeePreferences prefs;
+    private ImageView backPager;
+
+    public static void addToPlaylist(ContentResolver resolver, int audioId, int YOUR_PLAYLIST_ID) {
+        String[] cols = new String[]{"count(*)"};
+        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", YOUR_PLAYLIST_ID);
+        Cursor cur = null;
+        try {
+            cur = resolver.query(uri, cols, null, null, null);
+            if (cur != null) {
+                cur.moveToFirst();
+                final int base = cur.getInt(0);
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, Integer.valueOf(base + audioId));
+                values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
+                resolver.insert(uri, values);
+            }
+        } catch (SQLiteException e) {
+        } finally {
+            if (cur != null) {
+                cur.close();
+                cur = null;
+            }
+        }
+    }
 
     @Override
     public int GetLayoutResID() {
@@ -59,16 +84,8 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
 
-        //ll = ( LinearLayout ) findViewById( R.id.bg );
-
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-        // {
-        //new SetBGTask( ).executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR, ( Void ) null );
-        // }
-        // else
-        // {
-        // new SetBGTask().execute((Void) null);
-        // }`
+        backPager = (ImageView) findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.purplePager), PorterDuff.Mode.MULTIPLY);
 
         prefs = new PlayMeePreferences(getApplicationContext());
 
@@ -161,37 +178,7 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
     }
 
     private void initializesongs() {
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-        // {
         new InitializeSongsTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, click_no);
-        // }
-        // else
-        // {
-        // new InitializeSongsTask().execute(s);
-        // }
-    }
-
-    public static void addToPlaylist(ContentResolver resolver, int audioId, int YOUR_PLAYLIST_ID) {
-        String[] cols = new String[]{"count(*)"};
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", YOUR_PLAYLIST_ID);
-        Cursor cur = null;
-        try {
-            cur = resolver.query(uri, cols, null, null, null);
-            if (cur != null) {
-                cur.moveToFirst();
-                final int base = cur.getInt(0);
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, Integer.valueOf(base + audioId));
-                values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
-                resolver.insert(uri, values);
-            }
-        } catch (SQLiteException e) {
-        } finally {
-            if (cur != null) {
-                cur.close();
-                cur = null;
-            }
-        }
     }
 
     public void removeFromPlaylist(int YOUR_PLAYLIST_ID) {
@@ -235,13 +222,11 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
                 public void OnEditTagsSuccessful() {
                     try {
                         OnRefreshSongList();
-                    } catch (NullPointerException e) {
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                 }
             }, null);
-        } catch (NullPointerException e) {
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -297,6 +282,61 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
         finish();
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+
+    {
+        super.onActivityResult(requestCode, resultCode, intent);
+        switch (requestCode) {
+            case StorageAccessAPI.Code:
+                // PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
+                if (resultCode == Activity.RESULT_OK) {
+
+                    StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Playlist.this);
+
+                    File file = new File(play.get(position2).getPath2());
+                    boolean canWrite;
+                    try {
+                        canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                    } catch (Exception e) {
+                        canWrite = false;
+                    }
+                    if (canWrite) {
+                        songHelper.EditTags(play.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
+
+                            @Override
+                            public void OnEditTagsSuccessful() {
+                                OnRefreshSongList();
+                            }
+                        }, null);
+
+                    } else
+                        ActivityUtil.showCrouton(Playlist.this, getString(R.string.tag_not_edited));
+
+                } else
+                    ActivityUtil.showCrouton(Playlist.this, getString(R.string.cancel));
+        }
+    }
+
+    @Override
+    public void QuickAction_OnRemoveSong() {
+        songHelper.RemoveSong(Playlist.this.getContentResolver(), play.get(position2).getAudioID(), position2, Integer.parseInt(click_no));
+        initializesongs();
+    }
+
+    @Override
+    public void QuickAction_OnSendSong() {
+        // never call for this case
+    }
+
+    @Override
+    protected String GetGAScreenName() {
+        return "Playlist";
+    }
+
+    private View GetRootView() {
+        return findViewById(GetRootViewID());
+    }
+
     class InitializeSongsTask extends AsyncTask<String, Void, ArrayList<SongDetails>> {
         private SongListUtil util;
 
@@ -325,98 +365,5 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
             OnRefreshSongList();
             util = null;
         }
-    }
-
-    //	class SetBGTask extends AsyncTask < Void, Void, Drawable >
-//	{
-//		@Override
-//		protected Drawable doInBackground( Void ... params )
-//		{
-//			return Utilities.returnbg( );
-//		}
-//
-//		@SuppressWarnings( "deprecation" )
-//		@Override
-//		protected void onPostExecute( Drawable p )
-//		{
-//			super.onPostExecute( p );
-//			if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN )
-//			{
-//				try
-//				{
-//					ll.setBackgroundDrawable( p );
-//				}
-//				catch ( Exception e )
-//				{
-//				}
-//			}
-//			else
-//			{
-//				try
-//				{
-//					ll.setBackground( p );
-//					;
-//				}
-//				catch ( Exception e )
-//				{
-//				}
-//			}
-//		}
-//	}
-    public void onActivityResult(int requestCode, int resultCode, Intent intent)
-
-    {
-        super.onActivityResult(requestCode, resultCode, intent);
-        switch (requestCode) {
-            case StorageAccessAPI.Code:
-                // PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
-                if (resultCode == Activity.RESULT_OK) {
-
-                    StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Playlist.this);
-
-
-                    File file = new File(play.get(position2).getPath2());
-                    boolean canwrite = false;
-                    try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
-                    } catch (Exception e) {
-                        canwrite = false;
-                    }
-                    if (canwrite) {
-                        songHelper.EditTags(play.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
-
-                            @Override
-                            public void OnEditTagsSuccessful() {
-                                OnRefreshSongList();
-                            }
-                        }, null);
-
-                    } else
-                        ActivityUtil.showCrouton(Playlist.this, getString(R.string.tag_not_edited));
-
-                } else
-                    ActivityUtil.showCrouton(Playlist.this, getString(R.string.cancel));
-        }
-    }
-
-
-    @Override
-    public void QuickAction_OnRemoveSong() {
-        songHelper.RemoveSong(Playlist.this.getContentResolver(), play.get(position2).getAudioID(), position2, Integer.parseInt(click_no));
-        initializesongs();
-    }
-
-    @Override
-    public void QuickAction_OnSendSong() {
-        // never call for this case
-    }
-
-    @Override
-    protected String GetGAScreenName() {
-        return "Playlist";
-    }
-
-    private View GetRootView() {
-        return findViewById(GetRootViewID());
     }
 }

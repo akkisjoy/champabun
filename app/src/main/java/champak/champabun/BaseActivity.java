@@ -51,15 +51,7 @@ import champak.champabun.util.Utilities;
 // import com.google.android.gms.analytics.Tracker;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private boolean isRegisterReceiver;
     public AppSetting appSettings;
-    // private com.google.android.gms.ads.AdView adView;
-    // private ViewGroup fbAdsViewGrp;
-    // private View adsLayout, closeAdsButton;
-    // private View appodealBannerView;
-
-    private boolean isAdsShown, isCloseAdsButtonShown;
-
     BroadcastReceiver stop = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -74,6 +66,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             ActivityUtil.CloseAllOpenActivities();
         }
     };
+    // private com.google.android.gms.ads.AdView adView;
+    // private ViewGroup fbAdsViewGrp;
+    // private View adsLayout, closeAdsButton;
+    // private View appodealBannerView;
+    private boolean isRegisterReceiver;
+    private boolean isAdsShown, isCloseAdsButtonShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             t.send(new HitBuilders.AppViewBuilder().build());
         }
 
-        if (!IConstant.IS_PRO_VERSION && isAdsOffer() && isAdsConfigOffer()) {
+        if (isAdsOffer() && isAdsConfigOffer()) {
             // Appodeal
             android.util.Log.d("BaseActivity", "isAdsConfigOffer..............");
             // Appodeal.disableLocationPermissionCheck( );
@@ -130,7 +128,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if (!IConstant.IS_PRO_VERSION && isAdsOffer()) {
+        if (isAdsOffer()) {
             // Appodeal.hide( this, Appodeal.BANNER );
             isAdsShown = false;
         }
@@ -140,42 +138,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        // if ( !IConstant.IS_PRO_VERSION && isAdsOffer( ) && isBannerAdsOffer( ) )
-        // {
-        // Appodeal.setBannerCallbacks( new BannerCallbacks( ) {
-        //
-        // @Override
-        // public void onBannerShown( )
-        // {
-        // // android.util.Log.d( "BaseActivity", "onBannerShown.............." );
-        // ShowCloseAdsButton( );
-        // }
-        //
-        // @Override
-        // public void onBannerLoaded( )
-        // {
-        // // android.util.Log.d( "BaseActivity", "onBannerLoaded....................." );
-        // if ( !isAdsShown )
-        // OnShowAds( );
-        // }
-        //
-        // @Override
-        // public void onBannerFailedToLoad( )
-        // {
-        // // android.util.Log.d( "BaseActivity", "onBannerFailedToLoad..............." );
-        // if ( isAdsShown )
-        // OnCloseAds( null );
-        // }
-        //
-        // @Override
-        // public void onBannerClicked( )
-        // {
-        // }
-        // } );
-        //
-        // Appodeal.show( this, Appodeal.BANNER );
-        // }
         ActivityUtil.SetCurrentActivity(this);
     }
 
@@ -197,7 +159,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         } catch (Exception e) {
         }
 
-        if (!IConstant.IS_PRO_VERSION && isAdsOffer())
+        if (isAdsOffer())
             // Appodeal.hide( this, Appodeal.BANNER );
 
             MyGarbageCollection();

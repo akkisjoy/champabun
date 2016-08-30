@@ -40,20 +40,20 @@ import champak.champabun.GlobalSongList;
 import champak.champabun.R;
 
 public class ImageLoader {
+    final private static int MAX_THREAD = 3;
+    static MemoryCache memoryCache = new MemoryCache();
+    private static FileCache fileCache;
     Context c;
     float ht_px;
     // Animation fadeIn;
     float wt_px;
     Bitmap draw;
-    static MemoryCache memoryCache = new MemoryCache();
-    private static FileCache fileCache;
     Uri s;
-    // static BitmapFactory.Options options;
-    private Map<ImageView, String> imageViews = Collections.synchronizedMap(new HashMap<ImageView, String>());
     ExecutorService executorService;
     // static int REQUIRED_SIZE = 220;
     Handler handler = new Handler();// handler to display images in UI thread
-    final private static int MAX_THREAD = 3;
+    // static BitmapFactory.Options options;
+    private Map<ImageView, String> imageViews = Collections.synchronizedMap(new HashMap<ImageView, String>());
 
     public ImageLoader(Context context) {
         setFileCache(new FileCache(context));
@@ -161,7 +161,7 @@ public class ImageLoader {
         if (albumname.equals("") || albumname.equals("unknown") || artistname.equals("") || artistname.equals("unknown"))
             return null;
 
-        String url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=SOMEKEYYYYYYYYYYYYYY&artist=" + artistname
+        String url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=ee51c315e1feda25a36d5523150ccdd4&artist=" + artistname
                 + "&album=" + albumname;
         try {
             URL url2 = new URL(url);
@@ -259,6 +259,30 @@ public class ImageLoader {
         return null;
     }
 
+    boolean imageViewReused(PhotoToLoad photoToLoad) {
+        String tag = imageViews.get(photoToLoad.imageView);
+        return tag == null || !tag.equals(photoToLoad.url);
+    }
+
+    public void clearCache() {
+        memoryCache.clear();
+        getFileCache().clear();
+        draw = null;
+    }
+
+    public void clearMCache() {
+        memoryCache.clear();
+        draw = null;
+    }
+
+    public FileCache getFileCache() {
+        return fileCache;
+    }
+
+    public static void setFileCache(FileCache fileCache) {
+        ImageLoader.fileCache = fileCache;
+    }
+
     // Task for the queue
     private class PhotoToLoad {
         public String url;
@@ -299,13 +323,6 @@ public class ImageLoader {
         }
     }
 
-    boolean imageViewReused(PhotoToLoad photoToLoad) {
-        String tag = imageViews.get(photoToLoad.imageView);
-        if (tag == null || !tag.equals(photoToLoad.url))
-            return true;
-        return false;
-    }
-
     // Used to display bitmap in the UI thread
     class BitmapDisplayer implements Runnable {
         Bitmap bitmap;
@@ -329,24 +346,5 @@ public class ImageLoader {
                 photoToLoad.imageView.setImageBitmap(draw);
             }
         }
-    }
-
-    public void clearCache() {
-        memoryCache.clear();
-        getFileCache().clear();
-        draw = null;
-    }
-
-    public void clearMCache() {
-        memoryCache.clear();
-        draw = null;
-    }
-
-    public FileCache getFileCache() {
-        return fileCache;
-    }
-
-    public static void setFileCache(FileCache fileCache) {
-        ImageLoader.fileCache = fileCache;
     }
 }

@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dslv="http://schemas.android.com/apk/lib/source.justanothermusicplayer.DragsortListView"
     android:id="@+id/bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/artistbg"
-    android:textColor="#FFFFFF" >
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/dummy1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparentblack"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/headerBarLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <champak.champabun.ui.TypefaceTextView
                 android:id="@+id/nowplaying"
@@ -28,7 +34,7 @@
                 android:paddingLeft="42dp"
                 android:paddingRight="42dp"
                 android:paddingTop="20dp"
-                android:singleLine="True"
+                android:singleLine="true"
                 android:text="@string/now_playing"
                 android:textColor="@color/TextColor_Primary"
                 android:textSize="@dimen/Heading_Size" />
@@ -38,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/nowplaying"
                 android:paddingBottom="4dp"
-                android:paddingRight="10dp" >
+                android:paddingRight="10dp">
 
                 <ProgressBar
                     android:id="@+id/progressBar1"
@@ -53,30 +59,27 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:background="@drawable/selector"
-                    android:onClick="OnSaveAsButtonClick"
-                    android:orientation="vertical"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:gravity="bottom"
+                    android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_marginLeft="8dp"
-                    >
+                    android:background="@drawable/selector"
+                    android:gravity="bottom"
+                    android:onClick="OnSaveAsButtonClick"
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/save_as"
                         android:layout_width="@dimen/now_playing_save_asSize"
                         android:layout_height="@dimen/now_playing_save_asSize"
-                        android:gravity="center_vertical|center_horizontal"
                         android:background="@drawable/save_as_tran"
-                        android:clickable="false" 
-                        />
+                        android:clickable="false"
+                        android:gravity="center_vertical|center_horizontal" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
 
         <champak.champabun.DragsortListView.DragSortListView
-            xmlns:dslv="http://schemas.android.com/apk/lib/source.justanothermusicplayer.DragsortListView"
             android:id="@+id/listview"
             style="@style/ListViewplaymee"
             android:layout_width="match_parent"
@@ -97,14 +100,5 @@
             dslv:track_drag_sort="false"
             dslv:use_default_controller="true" />
     </LinearLayout>
-
-    <include
-        android:id="@+id/adLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        layout="@layout/ads_view"
-        android:background="@android:color/transparent"
-        android:visibility="gone" />
 
 </RelativeLayout>

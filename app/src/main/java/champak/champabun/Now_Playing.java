@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import java.util.List;
@@ -32,180 +34,8 @@ import champak.champabun.ui.TypefaceTextView;
 import champak.champabun.util.ActivityUtil;
 
 public class Now_Playing extends BaseActivity {
-    private Adapter_DragSort adapter;
-    private ProgressBar spinner;
-    private Button save_as;
-
-    // private TypefaceTextView nowplaying;
-    // private Dialog dialog;
-    private DragSortController mController;
-    private DragSortListView SngList;
-
     Context context;
-
-    public DragSortController buildController(DragSortListView dslv) {
-        DragSortController controller = new DragSortController(dslv);
-        controller.setDragHandleId(R.id.drag_handle);
-        controller.setClickRemoveId(R.id.click_remove);
-        controller.setRemoveEnabled(true);
-        controller.setSortEnabled(true);
-        controller.setDragInitMode(DragSortController.ON_DOWN);
-        controller.setRemoveMode(DragSortController.FLING_REMOVE);
-
-        return controller;
-    }
-
-    @Override
-    public int GetLayoutResID() {
-        return R.layout.now_playing;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        context = this;
-
-        spinner = (ProgressBar) findViewById(R.id.progressBar1);
-        spinner.setVisibility(View.GONE);
-
-        SngList = (DragSortListView) findViewById(R.id.listview);
-        save_as = (Button) findViewById(R.id.save_as);
-        // nowplaying = (TypefaceTextView) findViewById(R.id.nowplaying);
-        mController = buildController(SngList);
-        SngList.setDropListener(onDrop);
-        SngList.setRemoveListener(onRemove);
-        SngList.setFloatViewManager(mController);
-        SngList.setOnTouchListener(mController);
-        SngList.setDragEnabled(true);
-        adapter = new Adapter_DragSort(GlobalSongList.GetInstance().GetNowPlayingList());
-
-        SngList.setAdapter(adapter);
-
-        SngList.setSelection(GlobalSongList.GetInstance().getPosition());
-        SngList.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                GlobalSongList.GetInstance().setPosition(position);
-                GlobalSongList.GetInstance().boolMusicPlaying1 = true;
-                // boolean temp=ma.boolshuffled;
-                Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
-                sendBroadcast(intentswap);
-                // ma.boolshuffled=temp;
-            }
-        });
-
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-        // {
-        //new SetBG( ).executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR, ( Void ) null );
-        // }
-        // else
-        // {
-        // new SetBG().execute((Void) null);
-        // }
-    }
-
-    public void OnSaveAsButtonClick(View view) {
-        final Dialog dialog;
-        dialog = new Dialog(this, R.style.playmee);
-        final Window window = dialog.getWindow();
-        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
-        window.setBackgroundDrawableResource(R.drawable.dialogbg);
-        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        ;
-        lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
-        dialog.getWindow().setAttributes(lp);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-
-        dialog.setContentView(R.layout.dialog_create_new_playlist);
-        Button bDOK = (Button) dialog.findViewById(R.id.dBOK);
-        Button bDCancle = (Button) dialog.findViewById(R.id.dBCancel);
-
-        bDOK.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                EditText save = (EditText) dialog.findViewById(R.id.save_as);
-                if (save.getText().toString() != null) {
-                    int YOUR_PLAYLIST_ID = createPlaylist(save.getText().toString(), context);
-                    if (YOUR_PLAYLIST_ID == -1)
-                        return;
-                    // TODO
-                    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                    // {
-                    new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
-                    // }
-                    // else
-                    // {
-                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
-                    // }
-                }
-                dialog.dismiss();
-            }
-        });
-        bDCancle.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                dialog.dismiss();
-            }
-
-        });
-        dialog.show();
-    }
-
-    class AddToPl extends AsyncTask<Integer, String, String> {
-        @Override
-        protected void onPostExecute(String x) {
-            save_as.setVisibility(View.VISIBLE);
-            spinner.setVisibility(View.GONE);
-            ActivityUtil.showCrouton(Now_Playing.this, getString(R.string.playlist_created));
-        }
-
-        @Override
-        protected void onPreExecute() {
-            save_as.setVisibility(View.GONE);
-            spinner.setVisibility(View.VISIBLE);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Integer... params) {
-            for (int index = 0; index < GlobalSongList.GetInstance().GetNowPlayingList().size(); index++) {
-                try {
-                    addToPlaylist(getApplicationContext(), GlobalSongList.GetInstance().GetNowPlayingList().get(index).getPath2(),
-                            params[0].intValue());
-                } catch (IllegalStateException e) {
-                    ActivityUtil.showCrouton(Now_Playing.this, getString(R.string.playlist_name_already_exists));
-                    return null;
-                } catch (Exception e) {
-                    ActivityUtil.showCrouton(Now_Playing.this, getString(R.string.an_error_occurred));
-                    return null;
-                }
-            }
-
-            return null;
-        }
-    }
-
-    private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
-        @Override
-        public void drop(int from, int to) {
-            SongDetails item = adapter.getItem(from);
-            if (GlobalSongList.GetInstance().getPosition() == from) {
-                GlobalSongList.GetInstance().setPosition(to);
-            } else if ((from < GlobalSongList.GetInstance().getPosition() && to < GlobalSongList.GetInstance().getPosition())
-                    || (from > GlobalSongList.GetInstance().getPosition() && to > GlobalSongList.GetInstance().getPosition())) {
-            } else if (from < GlobalSongList.GetInstance().getPosition() && to >= GlobalSongList.GetInstance().getPosition()) {
-                GlobalSongList.GetInstance().decreasePosition();
-            } else if (from > GlobalSongList.GetInstance().getPosition() && to <= GlobalSongList.GetInstance().getPosition()) {
-                GlobalSongList.GetInstance().increasePosition();
-            }
-            GlobalSongList.GetInstance().RemoveFromNowPlaying(from);
-            SngList.removeItem(from);
-            adapter.insert(item, to);
-            adapter.notifyDataSetChanged();
-        }
-    };
-
+    private Adapter_DragSort adapter;
     public DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener() {
         @Override
         public void remove(int which) {
@@ -228,43 +58,32 @@ public class Now_Playing extends BaseActivity {
             adapter.notifyDataSetChanged();
         }
     };
-
-    public class Adapter_DragSort extends ArrayAdapter<SongDetails> {
-        private List<SongDetails> songs;
-
-        public Adapter_DragSort(List<SongDetails> songs) {
-            super(Now_Playing.this, R.layout.item_now_playing, R.id.Songs, songs);
-            this.songs = songs;
-        }
-
+    private ProgressBar spinner;
+    private Button save_as;
+    // private TypefaceTextView nowplaying;
+    // private Dialog dialog;
+    private DragSortController mController;
+    private DragSortListView SngList;
+    private ImageView backPager;
+    private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {
         @Override
-        public int getCount() {
-            if (songs == null) {
-                return 0;
-            } else {
-                return songs.size();
+        public void drop(int from, int to) {
+            SongDetails item = adapter.getItem(from);
+            if (GlobalSongList.GetInstance().getPosition() == from) {
+                GlobalSongList.GetInstance().setPosition(to);
+            } else if ((from < GlobalSongList.GetInstance().getPosition() && to < GlobalSongList.GetInstance().getPosition())
+                    || (from > GlobalSongList.GetInstance().getPosition() && to > GlobalSongList.GetInstance().getPosition())) {
+            } else if (from < GlobalSongList.GetInstance().getPosition() && to >= GlobalSongList.GetInstance().getPosition()) {
+                GlobalSongList.GetInstance().decreasePosition();
+            } else if (from > GlobalSongList.GetInstance().getPosition() && to <= GlobalSongList.GetInstance().getPosition()) {
+                GlobalSongList.GetInstance().increasePosition();
             }
+            GlobalSongList.GetInstance().RemoveFromNowPlaying(from);
+            SngList.removeItem(from);
+            adapter.insert(item, to);
+            adapter.notifyDataSetChanged();
         }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = super.getView(position, convertView, parent);
-            if (v != convertView && v != null) {
-                ViewHolder holder = new ViewHolder();
-
-                holder.albumsView = (TypefaceTextView) v.findViewById(R.id.Songs);
-                v.setTag(holder);
-            }
-            ViewHolder holder = (ViewHolder) v.getTag();
-            String albums = songs.get(position).getSong();
-            holder.albumsView.setText(albums);
-            return v;
-        }
-    }
-
-    class ViewHolder {
-        public TypefaceTextView albumsView;
-    }
+    };
 
     public static void addToPlaylist(Context context, String path, int YOUR_PLAYLIST_ID) { // TODO just a marker
         ContentResolver resolver = context.getContentResolver();
@@ -333,6 +152,117 @@ public class Now_Playing extends BaseActivity {
         return mPlaylistId;
     }
 
+    public DragSortController buildController(DragSortListView dslv) {
+        DragSortController controller = new DragSortController(dslv);
+        controller.setDragHandleId(R.id.drag_handle);
+        controller.setClickRemoveId(R.id.click_remove);
+        controller.setRemoveEnabled(true);
+        controller.setSortEnabled(true);
+        controller.setDragInitMode(DragSortController.ON_DOWN);
+        controller.setRemoveMode(DragSortController.FLING_REMOVE);
+
+        return controller;
+    }
+
+    @Override
+    public int GetLayoutResID() {
+        return R.layout.now_playing;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = this;
+
+        backPager = (ImageView) findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.maroon), PorterDuff.Mode.MULTIPLY);
+
+        spinner = (ProgressBar) findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
+
+        SngList = (DragSortListView) findViewById(R.id.listview);
+        save_as = (Button) findViewById(R.id.save_as);
+        // nowplaying = (TypefaceTextView) findViewById(R.id.nowplaying);
+        mController = buildController(SngList);
+        SngList.setDropListener(onDrop);
+        SngList.setRemoveListener(onRemove);
+        SngList.setFloatViewManager(mController);
+        SngList.setOnTouchListener(mController);
+        SngList.setDragEnabled(true);
+        adapter = new Adapter_DragSort(GlobalSongList.GetInstance().GetNowPlayingList());
+
+        SngList.setAdapter(adapter);
+
+        SngList.setSelection(GlobalSongList.GetInstance().getPosition());
+        SngList.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                GlobalSongList.GetInstance().setPosition(position);
+                GlobalSongList.GetInstance().boolMusicPlaying1 = true;
+                // boolean temp=ma.boolshuffled;
+                Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
+                sendBroadcast(intentswap);
+                // ma.boolshuffled=temp;
+            }
+        });
+
+        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
+        // {
+        //new SetBG( ).executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR, ( Void ) null );
+        // }
+        // else
+        // {
+        // new SetBG().execute((Void) null);
+        // }
+    }
+
+    public void OnSaveAsButtonClick(View view) {
+        final Dialog dialog;
+        dialog = new Dialog(this, R.style.playmee);
+        final Window window = dialog.getWindow();
+        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
+        window.setBackgroundDrawableResource(R.drawable.dialogbg);
+        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
+        dialog.getWindow().setAttributes(lp);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+        dialog.setContentView(R.layout.dialog_create_new_playlist);
+        Button bDOK = (Button) dialog.findViewById(R.id.dBOK);
+        Button bDCancle = (Button) dialog.findViewById(R.id.dBCancel);
+
+        bDOK.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                EditText save = (EditText) dialog.findViewById(R.id.save_as);
+                if (save.getText().toString() != null) {
+                    int YOUR_PLAYLIST_ID = createPlaylist(save.getText().toString(), context);
+                    if (YOUR_PLAYLIST_ID == -1)
+                        return;
+                    // TODO
+                    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
+                    // {
+                    new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
+                    // }
+                    // else
+                    // {
+                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
+                    // }
+                }
+                dialog.dismiss();
+            }
+        });
+        bDCancle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+            }
+
+        });
+        dialog.show();
+    }
+
     @Override
     public String GetActivityID() {
         return "Now_Playing";
@@ -350,6 +280,78 @@ public class Now_Playing extends BaseActivity {
     @Override
     public void OnBackPressed() {
         finish();
+    }
+
+    @Override
+    protected String GetGAScreenName() {
+        return "Now_Playing";
+    }
+
+    class AddToPl extends AsyncTask<Integer, String, String> {
+        @Override
+        protected void onPostExecute(String x) {
+            save_as.setVisibility(View.VISIBLE);
+            spinner.setVisibility(View.GONE);
+            ActivityUtil.showCrouton(Now_Playing.this, getString(R.string.playlist_created));
+        }
+
+        @Override
+        protected void onPreExecute() {
+            save_as.setVisibility(View.GONE);
+            spinner.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Integer... params) {
+            for (int index = 0; index < GlobalSongList.GetInstance().GetNowPlayingList().size(); index++) {
+                try {
+                    addToPlaylist(getApplicationContext(), GlobalSongList.GetInstance().GetNowPlayingList().get(index).getPath2(),
+                            params[0].intValue());
+                } catch (IllegalStateException e) {
+                    ActivityUtil.showCrouton(Now_Playing.this, getString(R.string.playlist_name_already_exists));
+                    return null;
+                } catch (Exception e) {
+                    ActivityUtil.showCrouton(Now_Playing.this, getString(R.string.an_error_occurred));
+                    return null;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    public class Adapter_DragSort extends ArrayAdapter<SongDetails> {
+        private List<SongDetails> songs;
+
+        public Adapter_DragSort(List<SongDetails> songs) {
+            super(Now_Playing.this, R.layout.item_now_playing, R.id.Songs, songs);
+            this.songs = songs;
+        }
+
+        @Override
+        public int getCount() {
+            if (songs == null) {
+                return 0;
+            } else {
+                return songs.size();
+            }
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = super.getView(position, convertView, parent);
+            if (v != convertView && v != null) {
+                ViewHolder holder = new ViewHolder();
+
+                holder.albumsView = (TypefaceTextView) v.findViewById(R.id.Songs);
+                v.setTag(holder);
+            }
+            ViewHolder holder = (ViewHolder) v.getTag();
+            String albums = songs.get(position).getSong();
+            holder.albumsView.setText(albums);
+            return v;
+        }
     }
 
 //	class SetBG extends AsyncTask < Void, Void, Drawable >
@@ -378,8 +380,7 @@ public class Now_Playing extends BaseActivity {
 //		}
 //	}
 
-    @Override
-    protected String GetGAScreenName() {
-        return "Now_Playing";
+    class ViewHolder {
+        public TypefaceTextView albumsView;
     }
 }

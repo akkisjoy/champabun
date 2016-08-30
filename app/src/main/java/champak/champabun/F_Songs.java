@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,37 +61,43 @@ import champak.champabun.util.Utilities;
 
 public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionItemSelectListener {
     static final int ANIMATION_DURATION = 300;
+    static public int highlight_zero = 0;
+    public ProgressBar spinner;
     int whichanimation = 0;
     int playlistid;
-    public ProgressBar spinner;
     Animation fadeOut, fadeIn;
     ArrayList<SongDetails> songdetails;
     TypefaceTextView songs, album2;
     ArrayList<SongDetails> multiplecheckedListforaddtoplaylist, pl;
     View openactivity;
-    static public int highlight_zero = 0;
     Button bRBack, bRAdd, bRPlay, bRDel, bRBackSearch;
     RayMenu rayMenu;
 
-    ImageView play2;
+    ImageView play2, backPager;
     AdapterView.AdapterContextMenuInfo info;
     String oldalbum, oldsong;
+    public BroadcastReceiver broadcastCoverReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent serviceIntent) {
+            // check that whether the audio file can play or not
+            if (!serviceIntent.getBooleanExtra("setDataSourceFailed", false)) {
+                // ok, the audio file can play
+                inandout();
+            }
+        }
+    };
     Handler handler = new Handler();
     Dialog dialog2;
     Fragment fragment;
     ListView mListView;
     Adapter_SongView adapter;
     int i, curItemSelect;
-
     View local;
     private EditText searchView;
-
     private Activity_Fragments mActivity;
     private SongHelper songHelper;
-
     // private Dialog dialog;
     private FetchSongList fetchSongList;
-
     private BroadcastReceiver checkagain = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent serviceIntent) {
@@ -116,6 +123,8 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         oldsong = getString(R.string.total_songs);
         mActivity = (Activity_Fragments) getActivity();
 
+        backPager = (ImageView) view.findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
         mActivity.registerReceiver(broadcastCoverReceiver, new IntentFilter(IConstant.BROADCAST_COVER));
         songs = (TypefaceTextView) view.findViewById(R.id.songstop);
         album2 = (TypefaceTextView) view.findViewById(R.id.albumtop);
@@ -409,6 +418,25 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         });
     }
 
+    // private void set_listview_animation()
+    // {
+    // AnimationSet set = new AnimationSet(true);
+    //
+    // Animation animation = new AlphaAnimation(0.0f, 1.0f);
+    // animation.setDuration(600);
+    // set.addAnimation(animation);
+    //
+    // animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+    // Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
+    // Animation.RELATIVE_TO_SELF, 0.0f);
+    // animation.setDuration(600);
+    // set.addAnimation(animation);
+    //
+    // LayoutAnimationController controller = new LayoutAnimationController(
+    // set, 0.25f);
+    // mListView.setLayoutAnimation(controller);
+    // }
+
     private void SetupRawMenu() {
         int[] ITEM_DRAWABLES = {R.drawable.composer_button_multiselect, R.drawable.composer_button_sort, R.drawable.composer_button_shuffle,
                 R.drawable.composer_icn_search, R.drawable.composer_icn_settings};
@@ -566,7 +594,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                                 public void run() {
                                     // open setting
                                     Intent intent = new Intent(getActivity(), Settings.class);
-                                    ((Activity_Fragments) getActivity()).startActivityForResult(intent, IConstant.REQUEST_CODE_CHANGE_SETTINGS);
+                                    getActivity().startActivityForResult(intent, IConstant.REQUEST_CODE_CHANGE_SETTINGS);
                                 }
                             }, 760);
                             break;
@@ -578,25 +606,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             });
         }
     }
-
-    // private void set_listview_animation()
-    // {
-    // AnimationSet set = new AnimationSet(true);
-    //
-    // Animation animation = new AlphaAnimation(0.0f, 1.0f);
-    // animation.setDuration(600);
-    // set.addAnimation(animation);
-    //
-    // animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-    // Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
-    // Animation.RELATIVE_TO_SELF, 0.0f);
-    // animation.setDuration(600);
-    // set.addAnimation(animation);
-    //
-    // LayoutAnimationController controller = new LayoutAnimationController(
-    // set, 0.25f);
-    // mListView.setLayoutAnimation(controller);
-    // }
 
     private void Animate_raymenu() {
         handler.removeCallbacksAndMessages(null);
@@ -712,17 +721,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         });
         dialog2.show();
     }
-
-    public BroadcastReceiver broadcastCoverReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent serviceIntent) {
-            // check that whether the audio file can play or not
-            if (!serviceIntent.getBooleanExtra("setDataSourceFailed", false)) {
-                // ok, the audio file can play
-                inandout();
-            }
-        }
-    };
 
     @Override
     public void onResume() {
@@ -896,6 +894,196 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         }
     }
 
+    private void SetupSearchView() {
+        searchView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Logger.d("F_Songs", "onTextChanged.................. " + searchView.getText().toString() + " s = " + s);
+
+                try {
+                    adapter.getFilter().filter(searchView.getText().toString());
+                } catch (NullPointerException e) {
+                }
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void toggleSearchView() {
+        if (searchView.getVisibility() == View.GONE) {
+            searchView.setVisibility(View.VISIBLE);
+            searchView.requestFocus();
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
+        } else {
+            searchView.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+            adapter.getFilter().filter(null);
+        }
+    }
+
+    @Override
+    public void QuickAction_OnRemoveSong() {
+    }
+
+    @Override
+    public void QuickAction_OnSendSong() {
+        SendSong();
+    }
+
+    public void create_new_playlist() { // TODO
+        final Dialog dialog;
+        dialog = new Dialog(mActivity, R.style.playmee);
+        final Window window = dialog.getWindow();
+        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
+        window.setBackgroundDrawableResource(R.drawable.dialogbg);
+        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
+        dialog.getWindow().setAttributes(lp);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+        dialog.setContentView(R.layout.dialog_create_new_playlist);
+        Button bDOK = (Button) dialog.findViewById(R.id.dBOK);
+        Button bDCancle = (Button) dialog.findViewById(R.id.dBCancel);
+
+        bDOK.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                EditText save = (EditText) dialog.findViewById(R.id.save_as);
+                if (save.getText().toString() != null) {
+                    int YOUR_PLAYLIST_ID = Now_Playing.createPlaylist(save.getText().toString(), mActivity);
+                    if (YOUR_PLAYLIST_ID == -1)
+                        return;
+                    // TODO
+                    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
+                    // {
+                    new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
+                    // }
+                    // else
+                    // {
+                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
+                    // }
+                }
+                dialog.dismiss();
+            }
+        });
+        bDCancle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+            }
+
+        });
+        dialog.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+
+    {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        switch (requestCode) {
+            case StorageAccessAPI.CodetoDelte: {
+                StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, F_Songs.this.getActivity());
+                File file = new File(adapter.getItem(curItemSelect).getPath2());
+                boolean canwrite = false;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP
+                        && !(file.getAbsolutePath().toString().contains("emulated") || file.getAbsolutePath().toString().contains("storage0"))
+                        ) {
+
+                    try {
+                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                    } catch (Exception e) {
+                        canwrite = false;
+                    }
+
+                    if (canwrite) {
+                        try {
+                            StorageAccessAPI.getDocumentFile(file, false).delete();
+                            SongHelper.removefromMediastore(adapter.GetData(), curItemSelect, new SongHelper.OnDeleteSongListener() {
+
+                                        @Override
+                                        public void OnSongDeleted() {
+                                            OnRefreshSongList();
+                                        }
+                                    }
+                                    , mActivity);
+                        } catch (Exception e) {
+                        }
+
+                    } else
+                        ActivityUtil.showCrouton(F_Songs.this.getActivity(), getString(R.string.song_not_deleted));
+                }
+                break;
+            }
+            case StorageAccessAPI.Code: {
+                if (resultCode == Activity.RESULT_OK) {
+
+                    StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, F_Songs.this.getActivity());
+
+
+                    File file = new File(adapter.getItem(curItemSelect).getPath2());
+                    boolean canwrite = false;
+                    try {
+                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                    } catch (Exception e) {
+                        canwrite = false;
+                    }
+                    if (canwrite) {
+                        songHelper.EditTags(adapter.getItem(curItemSelect), spinner, play2, new SongHelper.OnEditTagsListener() {
+
+                            @Override
+                            public void OnEditTagsSuccessful() {
+                                OnRefreshSongList();
+                            }
+                        }, fragment);
+
+                    } else
+                        ActivityUtil.showCrouton(F_Songs.this.getActivity(), getString(R.string.tag_not_edited));
+
+                } else
+                    ActivityUtil.showCrouton(F_Songs.this.getActivity(), getString(R.string.cancel));
+            }
+            break;
+        }
+
+
+    }
+
+    private void SendSong() {
+        Uri uri = Uri.parse("file://" + songdetails.get(curItemSelect).getPath2());
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("audio/*");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        getActivity().startActivityForResult(Intent.createChooser(share, getString(R.string.complete_action_using)),
+                IConstant.REQUEST_CODE_SEND_AUDIO);
+    }
+
+    @Override
+    public void Update() {
+        // Logger.d( "Activity_Fragments", "............................Update" );
+        fetchSongList = new FetchSongList();
+        fetchSongList.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+    }
+
+    @Override
+    protected String GetGAScreenName() {
+        return "F_Songs";
+    }
+
     class AddToPlayListMultiple extends AsyncTask<Void, String, String> {
         @Override
         protected void onPostExecute(String x) {
@@ -1004,102 +1192,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         }
     }
 
-    private void SetupSearchView() {
-        searchView.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Logger.d("F_Songs", "onTextChanged.................. " + searchView.getText().toString() + " s = " + s);
-
-                try {
-                    adapter.getFilter().filter(searchView.getText().toString());
-                } catch (NullPointerException e) {
-                }
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-    }
-
-    private void toggleSearchView() {
-        if (searchView.getVisibility() == View.GONE) {
-            searchView.setVisibility(View.VISIBLE);
-            searchView.requestFocus();
-            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
-        } else {
-            searchView.setVisibility(View.GONE);
-            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-            adapter.getFilter().filter(null);
-        }
-    }
-
-    @Override
-    public void QuickAction_OnRemoveSong() {
-    }
-
-    @Override
-    public void QuickAction_OnSendSong() {
-        SendSong();
-    }
-
-    public void create_new_playlist() { // TODO
-        final Dialog dialog;
-        dialog = new Dialog(mActivity, R.style.playmee);
-        final Window window = dialog.getWindow();
-        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
-        window.setBackgroundDrawableResource(R.drawable.dialogbg);
-        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        ;
-        lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
-        dialog.getWindow().setAttributes(lp);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-
-        dialog.setContentView(R.layout.dialog_create_new_playlist);
-        Button bDOK = (Button) dialog.findViewById(R.id.dBOK);
-        Button bDCancle = (Button) dialog.findViewById(R.id.dBCancel);
-
-        bDOK.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                EditText save = (EditText) dialog.findViewById(R.id.save_as);
-                if (save.getText().toString() != null) {
-                    int YOUR_PLAYLIST_ID = Now_Playing.createPlaylist(save.getText().toString(), mActivity);
-                    if (YOUR_PLAYLIST_ID == -1)
-                        return;
-                    // TODO
-                    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                    // {
-                    new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
-                    // }
-                    // else
-                    // {
-                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
-                    // }
-                }
-                dialog.dismiss();
-            }
-        });
-        bDCancle.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                dialog.dismiss();
-            }
-
-        });
-        dialog.show();
-    }
-
     class AddToPl extends AsyncTask<Integer, String, String> {
         @Override
         protected void onPostExecute(String x) {
@@ -1130,101 +1222,5 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
             return null;
         }
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent)
-
-    {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        switch (requestCode) {
-            case StorageAccessAPI.CodetoDelte: {
-                StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, F_Songs.this.getActivity());
-                File file = new File(adapter.getItem(curItemSelect).getPath2());
-                boolean canwrite = false;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP
-                        && !(file.getAbsolutePath().toString().contains("emulated") || file.getAbsolutePath().toString().contains("storage0"))
-                        ) {
-
-                    try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
-                    } catch (Exception e) {
-                        canwrite = false;
-                    }
-
-                    if (canwrite) {
-                        try {
-                            StorageAccessAPI.getDocumentFile(file, false).delete();
-                            SongHelper.removefromMediastore(adapter.GetData(), curItemSelect, new SongHelper.OnDeleteSongListener() {
-
-                                        @Override
-                                        public void OnSongDeleted() {
-                                            OnRefreshSongList();
-                                        }
-                                    }
-                                    , mActivity);
-                        } catch (Exception e) {
-                        }
-
-                    } else
-                        ActivityUtil.showCrouton(F_Songs.this.getActivity(), getString(R.string.song_not_deleted));
-                }
-                break;
-            }
-            case StorageAccessAPI.Code: {
-                if (resultCode == Activity.RESULT_OK) {
-
-                    StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, F_Songs.this.getActivity());
-
-
-                    File file = new File(adapter.getItem(curItemSelect).getPath2());
-                    boolean canwrite = false;
-                    try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
-                    } catch (Exception e) {
-                        canwrite = false;
-                    }
-                    if (canwrite) {
-                        songHelper.EditTags(adapter.getItem(curItemSelect), spinner, play2, new SongHelper.OnEditTagsListener() {
-
-                            @Override
-                            public void OnEditTagsSuccessful() {
-                                OnRefreshSongList();
-                            }
-                        }, fragment);
-
-                    } else
-                        ActivityUtil.showCrouton(F_Songs.this.getActivity(), getString(R.string.tag_not_edited));
-
-                } else
-                    ActivityUtil.showCrouton(F_Songs.this.getActivity(), getString(R.string.cancel));
-            }
-            break;
-        }
-
-
-    }
-
-    private void SendSong() {
-        Uri uri = Uri.parse("file://" + songdetails.get(curItemSelect).getPath2());
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("audio/*");
-        share.putExtra(Intent.EXTRA_STREAM, uri);
-        getActivity().startActivityForResult(Intent.createChooser(share, getString(R.string.complete_action_using)),
-                IConstant.REQUEST_CODE_SEND_AUDIO);
-    }
-
-    @Override
-    public void Update() {
-        // Logger.d( "Activity_Fragments", "............................Update" );
-        fetchSongList = new FetchSongList();
-        fetchSongList.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-    }
-
-    @Override
-    protected String GetGAScreenName() {
-        return "F_Songs";
     }
 }

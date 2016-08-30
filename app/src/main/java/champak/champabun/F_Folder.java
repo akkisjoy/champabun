@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -24,16 +26,15 @@ import champak.champabun.ui.TypefaceTextView;
 import champak.champabun.util.Utilities;
 
 public class F_Folder extends BaseFragment {
+    ImageView backPager;
     private String rootPath = "/";
     private TypefaceTextView mPathTextView;
     private ListView mListView;
     private Adapter_Folder mAdapter;
     private Activity_Fragments mActivity;
-
     private MediaFilesObject mMediaFilesObject;
     private MediaFilesObject mCurMediaFilesObject;
     private ArrayList<SongDetails> songDetails;
-
     private boolean isRegistered;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -64,7 +65,8 @@ public class F_Folder extends BaseFragment {
 
         mActivity = (Activity_Fragments) getActivity();
         mAdapter = null;
-
+        backPager = (ImageView) view.findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.purplePager), PorterDuff.Mode.MULTIPLY);
         mPathTextView = (TypefaceTextView) view.findViewById(R.id.path);
         mListView = (ListView) view.findViewById(R.id.list);
         mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -207,6 +209,15 @@ public class F_Folder extends BaseFragment {
         super.onDestroy();
     }
 
+    @Override
+    public void Update() {
+    }
+
+    @Override
+    protected String GetGAScreenName() {
+        return "F_Folder";
+    }
+
     class GetMediaFiles extends AsyncTask<Void, Void, MediaFilesObject> {
         int start;
         ArrayList<SongDetails> songDetails;
@@ -334,14 +345,5 @@ public class F_Folder extends BaseFragment {
             mCurMediaFilesObject = mMediaFilesObject;
             OnRefreshListview();
         }
-    }
-
-    @Override
-    public void Update() {
-    }
-
-    @Override
-    protected String GetGAScreenName() {
-        return "F_Folder";
     }
 }

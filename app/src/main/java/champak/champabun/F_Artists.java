@@ -2,6 +2,7 @@ package champak.champabun;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class F_Artists extends BaseFragment {
     ListView mListView;
     Adapter_playlist adapter;
     ArrayList<SongDetails> Artistdetails;
+    ImageView backPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,9 @@ public class F_Artists extends BaseFragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.l_playlists, container, false);
+        View view = inflater.inflate(R.layout.l_artists, container, false);
+        backPager = (ImageView) view.findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.yellowPager), PorterDuff.Mode.MULTIPLY);
 
         mListView = (ListView) view.findViewById(R.id.PlayList);
         adapter = null;
@@ -93,6 +98,15 @@ public class F_Artists extends BaseFragment {
         }
     }
 
+    @Override
+    public void Update() {
+    }
+
+    @Override
+    protected String GetGAScreenName() {
+        return "F_Artists";
+    }
+
     class FetchArtistList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
@@ -135,14 +149,5 @@ public class F_Artists extends BaseFragment {
             result.clear();
             OnRefreshListview();
         }
-    }
-
-    @Override
-    public void Update() {
-    }
-
-    @Override
-    protected String GetGAScreenName() {
-        return "F_Artists";
     }
 }

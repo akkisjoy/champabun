@@ -1,205 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sat="http://schemas.android.com/apk/lib/source.justanothermusicplayer.satellitemenu"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
-    xmlns:demoapp="http://schemas.android.com/apk/lib/source.justanothermusicplayer.classes"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Transparent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <View
+    <ImageView
+        android:id="@+id/backPager"
         android:layout_width="match_parent"
-        android:layout_height="0.4dp"
-        android:background="@android:color/darker_gray" />
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/dummy3" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/top"
+        <RelativeLayout
+            android:id="@+id/openactivity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:background="@drawable/selector"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/lsongs_TopViewBottomMargin"
+            android:paddingLeft="18dp"
+            android:paddingRight="0dp"
+            android:paddingTop="@dimen/lsongs_TopViewTopMargin">
 
-            <RelativeLayout
-                android:id="@+id/openactivity"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="10"
-                android:background="@drawable/selector"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/lsongs_TopViewBottomMargin"
-                android:paddingLeft="18dp"
-                android:paddingRight="0dp"
-                android:paddingTop="@dimen/lsongs_TopViewTopMargin" >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/lsongs_RightTextMargin"
-                    android:orientation="vertical" >
-
-                    <champak.champabun.ui.TypefaceTextView
-                        android:id="@+id/songstop"
-                        style="@style/TextViewStyle.JosefinSans"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:singleLine="true"
-                        android:textColor="@color/TextColor_Primary"
-                        android:textSize="@dimen/lsongs_songTextSize" />
-
-                    <champak.champabun.ui.TypefaceTextView
-                        android:id="@+id/albumtop"
-                        style="@style/TextViewStyle.JosefinSans"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:singleLine="true"
-                        android:textColor="@color/TextColor_Secondary"
-                        android:textSize="@dimen/lsongs_albumTextSize" />
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/lsongs_playButton_Size"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="16dp" >
-
-                    <ImageView
-                        android:id="@+id/play2"
-                        android:layout_width="@dimen/lsongs_playButton_Size"
-                        android:layout_height="@dimen/lsongs_playButton_Size"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="4dp" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar1"
-                        style="?android:attr/progressBarStyleLarge"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="4dp" />
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.4dp"
-                android:background="@android:color/darker_gray" />
-
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/rayMenu_marginTop"
-                android:layout_marginTop="@dimen/rayMenu_marginTop"
-                android:background="#46000000"
-                android:paddingLeft="1dp"
-                android:paddingRight="18dp" >
+                android:layout_marginRight="@dimen/lsongs_RightTextMargin"
+                android:orientation="vertical">
 
-                <champak.champabun.raymenu.RayMenu
-                    android:id="@+id/ray"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-                </champak.champabun.raymenu.RayMenu>
-
-                <LinearLayout
+                <champak.champabun.ui.TypefaceTextView
+                    android:id="@+id/songstop"
+                    style="@style/TextViewStyle.JosefinSans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal" >
+                    android:layout_gravity="left"
+                    android:singleLine="true"
+                    android:textColor="@color/TextColor_Primary"
+                    android:textSize="@dimen/lsongs_songTextSize" />
 
-                    <Button
-                        android:id="@+id/bRBackSearch"
-                        android:layout_width="@dimen/lsongs_ButtonSize"
-                        android:layout_height="@dimen/lsongs_ButtonSize"
-                        android:background="@drawable/composer_button_back" />
-
-                    <champak.champabun.ui.TypefaceEditText
-                        android:id="@+id/search_view"
-                        style="@style/EditTextStyle.JosefinSans"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/lsongs_listview_item_padding_left_right"
-                        android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
-                        android:hint="@string/search"
-                        android:paddingLeft="5dip"
-                        android:singleLine="true"
-                        android:textColor="#FFFFFF"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <LinearLayout
+                <champak.champabun.ui.TypefaceTextView
+                    android:id="@+id/albumtop"
+                    style="@style/TextViewStyle.JosefinSans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="13dp"
-                    android:orientation="horizontal" >
+                    android:layout_gravity="left"
+                    android:singleLine="true"
+                    android:textColor="@color/TextColor_Secondary"
+                    android:textSize="@dimen/lsongs_albumTextSize" />
+            </LinearLayout>
 
-                    <Button
-                        android:id="@+id/bRBack"
-                        android:layout_width="@dimen/lsongs_ButtonSize"
-                        android:layout_height="@dimen/lsongs_ButtonSize"
-                        android:background="@drawable/composer_button_back" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/lsongs_playButton_Size"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="16dp">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
+                <ImageView
+                    android:id="@+id/play2"
+                    android:layout_width="@dimen/lsongs_playButton_Size"
+                    android:layout_height="@dimen/lsongs_playButton_Size"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="4dp" />
 
-                    <Button
-                        android:id="@+id/bRAdd"
-                        android:layout_width="@dimen/lsongs_ButtonSize"
-                        android:layout_height="@dimen/lsongs_ButtonSize"
-                        android:background="@drawable/composer_button_queue" />
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="4dp" />
+            </RelativeLayout>
+        </RelativeLayout>
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:background="@android:color/darker_gray" />
 
-                    <Button
-                        android:id="@+id/bRPlay"
-                        android:layout_width="@dimen/lsongs_ButtonSize"
-                        android:layout_height="@dimen/lsongs_ButtonSize"
-                        android:background="@drawable/composer_button_play" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/rayMenu_marginTop"
+            android:layout_marginTop="@dimen/rayMenu_marginTop"
+            android:background="#46000000"
+            android:paddingLeft="1dp"
+            android:paddingRight="18dp">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
+            <champak.champabun.raymenu.RayMenu
+                android:id="@+id/ray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></champak.champabun.raymenu.RayMenu>
 
-                    <Button
-                        android:id="@+id/bRDelete"
-                        android:layout_width="@dimen/lsongs_ButtonSize"
-                        android:layout_height="@dimen/lsongs_ButtonSize"
-                        android:background="@drawable/composer_button_delete" />
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/llList"
+                <Button
+                    android:id="@+id/bRBackSearch"
+                    android:layout_width="@dimen/lsongs_ButtonSize"
+                    android:layout_height="@dimen/lsongs_ButtonSize"
+                    android:background="@drawable/composer_button_back" />
+
+                <champak.champabun.ui.TypefaceEditText
+                    android:id="@+id/search_view"
+                    style="@style/EditTextStyle.JosefinSans"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/lsongs_listview_item_padding_left_right"
+                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
+                    android:hint="@string/search"
+                    android:paddingLeft="5dip"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bRBack"
+                    android:layout_width="@dimen/lsongs_ButtonSize"
+                    android:layout_height="@dimen/lsongs_ButtonSize"
+                    android:background="@drawable/composer_button_back" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/bRAdd"
+                    android:layout_width="@dimen/lsongs_ButtonSize"
+                    android:layout_height="@dimen/lsongs_ButtonSize"
+                    android:background="@drawable/composer_button_queue" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/bRPlay"
+                    android:layout_width="@dimen/lsongs_ButtonSize"
+                    android:layout_height="@dimen/lsongs_ButtonSize"
+                    android:background="@drawable/composer_button_play" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/bRDelete"
+                    android:layout_width="@dimen/lsongs_ButtonSize"
+                    android:layout_height="@dimen/lsongs_ButtonSize"
+                    android:background="@drawable/composer_button_delete" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top"
+        android:background="#46000000"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/list"
+            style="@style/ListViewplaymee"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/top"
-            android:background="#46000000"
-            android:orientation="vertical" >
+            android:fastScrollEnabled="true" />
+    </LinearLayout>
 
-            <ListView
-                android:id="@+id/list"
-                style="@style/ListViewplaymee"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fastScrollEnabled="true" />
-        </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

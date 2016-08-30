@@ -20,7 +20,7 @@
     <dimen name="itemsongs_text_size">20sp</dimen>
     <dimen name="setting_item_desc_size">17sp</dimen>
     <dimen name="itemsongs_album_size">12sp</dimen>
-    <dimen name="itemalbum_albumimage_size">155dp</dimen>
+    <dimen name="itemalbum_albumimage_size">140dp</dimen>
     <dimen name="itemalbum_albumtextLayout_size">25dp</dimen>
     <dimen name="itemalbum_albumtext_size">15sp</dimen>
     <dimen name="arcmenu_child_size">30dp</dimen>

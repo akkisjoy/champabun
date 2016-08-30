@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -53,12 +54,14 @@ import champak.champabun.util.StorageAccessAPI;
 import champak.champabun.util.Utilities;
 
 public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemSelectListener {
+    static public int highlight_zero = 0;
+    public ListView mListView;
+    public ProgressBar spinner;
     String sexy;
     ArrayList<SongDetails> img = new ArrayList<SongDetails>();
     Adapter_SongView ab;
     // ArrayList < String > img2;// = new ArrayList<String>();
     String genre_id, genre_title;
-    static public int highlight_zero = 0;
     LinearLayout ll;
     ArrayList<SongDetails> play;
     TypefaceTextView tV1;// album2;
@@ -68,14 +71,12 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
     int position2;
     Dialog dialog2;
     ArrayList<SongDetails> multiplecheckedListforaddtoplaylist, pl;
-    public ListView mListView;
-    public ProgressBar spinner;
-
     Button bRBack, bRAdd, bRPlay, bRDel;
     RayMenu rayMenu;
+    Animation fadeOut, fadeIn;
     // Context c;
     private SongHelper songHelper;
-    Animation fadeOut, fadeIn;
+    private ImageView backPager;
 
     protected void fadeout(int offset, int duration) {
         fadeOut = null;
@@ -103,6 +104,9 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        backPager = (ImageView) findViewById(R.id.backPager);
+        backPager.setColorFilter(getResources().getColor(R.color.redPager), PorterDuff.Mode.MULTIPLY);
 
         bRBack = (Button) findViewById(R.id.bRBack);
         bRAdd = (Button) findViewById(R.id.bRAdd);
@@ -355,30 +359,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         });
     }
 
-    class LazyLoad extends AsyncTask<String, String, ArrayList<SongDetails>> {
-        @Override
-        protected void onPreExecute() {
-            // album2.setText(img.get(pos).getAlbum());
-            play.clear();
-            OnRefreshListView();
-            super.onPreExecute();
-        }
-
-        @Override
-        protected ArrayList<SongDetails> doInBackground(String... params) {
-            return addToLisView(pos, params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<SongDetails> x) {
-            if (x != null) {
-                play.addAll(x);
-                // album2.setText(img.get(pos).getAlbum());
-                OnRefreshListView();
-            }
-        }
-    }
-
     private ArrayList<SongDetails> addToLisView(int position, String sexy) {
         ArrayList<SongDetails> list = new ArrayList<SongDetails>();
         this.sexy = sexy;
@@ -433,146 +413,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
             }
         }
         return list;
-    }
-
-    class FetchListItems extends AsyncTask<Integer, Void, Void> {
-        int duration;
-        ArrayList<SongDetails> img__ = new ArrayList<SongDetails>();
-        ArrayList<String> albumIdArray = new ArrayList<String>();
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            duration = appSettings.getDurationFilterTime();
-        }
-
-        @Override
-        protected Void doInBackground(Integer... arg0) {
-            Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external", Long.parseLong(genre_id));
-            final String[] columns = {MediaStore.Audio.Genres.Members.ALBUM_ID, MediaStore.Audio.Genres.Members.ALBUM,
-                    MediaStore.Audio.Genres.Members.ARTIST, MediaStore.Audio.Genres.Members.DATA, MediaStore.Audio.AudioColumns.DURATION};
-            Cursor cursor = null;
-
-            try {
-                cursor = getContentResolver().query(uri, columns, MediaStore.Audio.Media.DURATION + ">=" + duration, null, null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    do {
-                        String albumId = cursor.getString(0);
-                        if (!albumIdArray.contains(albumId)) {
-                            albumIdArray.add(albumId);
-                            SongDetails alb = new SongDetails();
-                            alb.setAlbum(cursor.getString(1));
-                            alb.setArtist(cursor.getString(2));
-
-                            String[] columns1 = {MediaStore.Audio.Albums.ALBUM_ART};
-                            Cursor cursor1 = getContentResolver().query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, columns1,
-                                    MediaStore.Audio.Albums._ID + "=?", new String[]{String.valueOf(albumId)}, null);
-                            if (cursor1.moveToFirst()) {
-                                alb.setPath2(cursor1.getString(0));
-                                cursor1.close();
-                            }
-                            img__.add(alb);
-                        }
-                    }
-                    while (cursor.moveToNext());
-                }
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                    cursor = null;
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (img != null) {
-                img.clear();
-            } else {
-                img = new ArrayList<SongDetails>();
-            }
-            img.addAll(img__);
-            img__.clear();
-
-            if (Utilities.isEmpty(genre_title)) {
-                tV1.setText(getString(R.string.no_songs));
-            } else {
-                tV1.setText(genre_title);
-            }
-
-            EcoGallery ecoGallery = (EcoGallery) findViewById(R.id.gallery);
-            try {
-                ecoGallery.setAdapter(new Adapter_gallery(img));
-                setupListeners(ecoGallery);
-            } catch (NullPointerException e) {
-            }
-
-            // if (img2 != null)
-            {
-                // img2.clear();
-            }
-            // else
-            {
-                // img2 = new ArrayList < String >();
-            }
-            // img2.addAll(img2__);
-            // img2__.clear();
-
-            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            // {
-            // new tV1Task().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-            // }
-            // else
-            // {
-            // new tV1Task().execute((Void) null);
-            // }
-        }
-    }
-
-    class tV1Task extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... arg0) {
-            String sexy = null;
-            Uri uri2 = MediaStore.Audio.Genres.Members.getContentUri("external", Long.parseLong(genre_id));
-            String[] columns2 = {MediaStore.Audio.Genres.Members.ARTIST, MediaStore.Audio.Genres.Members.ARTIST_ID};
-            Cursor cursor2 = null;
-            try {
-                cursor2 = getContentResolver().query(uri2, columns2, null, null, null);
-                if (cursor2 != null && cursor2.moveToFirst()) {
-                    sexy = cursor2.getString(0);
-                }
-            } finally {
-                if (cursor2 != null) {
-                    cursor2.close();
-                    cursor2 = null;
-                }
-            }
-            return sexy;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            if (Utilities.isEmpty(result)) {
-                tV1.setText(getString(R.string.no_songs));
-            } else {
-                // tV1.setText(result);
-                tV1.setText(genre_title);
-
-                EcoGallery ecoGallery = (EcoGallery) findViewById(R.id.gallery);
-                ecoGallery.setAdapter(new Adapter_gallery(img));
-                // setAlbum(cursor.getString(0));//name of album
-                // setPath2(cursor.getString(1));//path of image
-                // setClick_no(cursor.getString(2));// number of songs.
-
-                setupListeners(ecoGallery, result);
-            }
-        }
     }
 
     private void SetupButton() {
@@ -753,7 +593,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         window.setBackgroundDrawableResource(R.drawable.dialogbg);
         // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        ;
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog.getWindow().setAttributes(lp);
         window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -791,38 +630,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
 
         });
         dialog.show();
-    }
-
-    class AddToPl extends AsyncTask<Integer, String, String> {
-        @Override
-        protected void onPostExecute(String x) {
-            spinner.setVisibility(View.GONE);
-            ActivityUtil.showCrouton(Genre.this, getString(R.string.playlist_created));
-        }
-
-        @Override
-        protected void onPreExecute() {
-            spinner.setVisibility(View.VISIBLE);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Integer... params) {
-            for (int index = 0; index < multiplecheckedListforaddtoplaylist.size(); index++) {
-                try {
-                    Now_Playing.addToPlaylist(getApplicationContext(), multiplecheckedListforaddtoplaylist.get(index).getPath2(),
-                            params[0].intValue());
-                } catch (IllegalStateException e) {
-                    ActivityUtil.showCrouton(Genre.this, getString(R.string.playlist_name_already_exists));
-                    return null;
-                } catch (Exception e) {
-                    ActivityUtil.showCrouton(Genre.this, getString(R.string.an_error_occurred));
-                    return null;
-                }
-            }
-
-            return null;
-        }
     }
 
     private void SetupRayMenu() {
@@ -1080,6 +887,202 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
     @Override
     protected String GetGAScreenName() {
         return "Genre";
+    }
+
+    class LazyLoad extends AsyncTask<String, String, ArrayList<SongDetails>> {
+        @Override
+        protected void onPreExecute() {
+            // album2.setText(img.get(pos).getAlbum());
+            play.clear();
+            OnRefreshListView();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ArrayList<SongDetails> doInBackground(String... params) {
+            return addToLisView(pos, params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<SongDetails> x) {
+            if (x != null) {
+                play.addAll(x);
+                // album2.setText(img.get(pos).getAlbum());
+                OnRefreshListView();
+            }
+        }
+    }
+
+    class FetchListItems extends AsyncTask<Integer, Void, Void> {
+        int duration;
+        ArrayList<SongDetails> img__ = new ArrayList<SongDetails>();
+        ArrayList<String> albumIdArray = new ArrayList<String>();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            duration = appSettings.getDurationFilterTime();
+        }
+
+        @Override
+        protected Void doInBackground(Integer... arg0) {
+            Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external", Long.parseLong(genre_id));
+            final String[] columns = {MediaStore.Audio.Genres.Members.ALBUM_ID, MediaStore.Audio.Genres.Members.ALBUM,
+                    MediaStore.Audio.Genres.Members.ARTIST, MediaStore.Audio.Genres.Members.DATA, MediaStore.Audio.AudioColumns.DURATION};
+            Cursor cursor = null;
+
+            try {
+                cursor = getContentResolver().query(uri, columns, MediaStore.Audio.Media.DURATION + ">=" + duration, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        String albumId = cursor.getString(0);
+                        if (!albumIdArray.contains(albumId)) {
+                            albumIdArray.add(albumId);
+                            SongDetails alb = new SongDetails();
+                            alb.setAlbum(cursor.getString(1));
+                            alb.setArtist(cursor.getString(2));
+
+                            String[] columns1 = {MediaStore.Audio.Albums.ALBUM_ART};
+                            Cursor cursor1 = getContentResolver().query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, columns1,
+                                    MediaStore.Audio.Albums._ID + "=?", new String[]{String.valueOf(albumId)}, null);
+                            if (cursor1.moveToFirst()) {
+                                alb.setPath2(cursor1.getString(0));
+                                cursor1.close();
+                            }
+                            img__.add(alb);
+                        }
+                    }
+                    while (cursor.moveToNext());
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                    cursor = null;
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            if (img != null) {
+                img.clear();
+            } else {
+                img = new ArrayList<SongDetails>();
+            }
+            img.addAll(img__);
+            img__.clear();
+
+            if (Utilities.isEmpty(genre_title)) {
+                tV1.setText(getString(R.string.no_songs));
+            } else {
+                tV1.setText(genre_title);
+            }
+
+            EcoGallery ecoGallery = (EcoGallery) findViewById(R.id.gallery);
+            try {
+                ecoGallery.setAdapter(new Adapter_gallery(img));
+                setupListeners(ecoGallery);
+            } catch (NullPointerException e) {
+            }
+
+            // if (img2 != null)
+            {
+                // img2.clear();
+            }
+            // else
+            {
+                // img2 = new ArrayList < String >();
+            }
+            // img2.addAll(img2__);
+            // img2__.clear();
+
+            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
+            // {
+            // new tV1Task().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+            // }
+            // else
+            // {
+            // new tV1Task().execute((Void) null);
+            // }
+        }
+    }
+
+    class tV1Task extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... arg0) {
+            String sexy = null;
+            Uri uri2 = MediaStore.Audio.Genres.Members.getContentUri("external", Long.parseLong(genre_id));
+            String[] columns2 = {MediaStore.Audio.Genres.Members.ARTIST, MediaStore.Audio.Genres.Members.ARTIST_ID};
+            Cursor cursor2 = null;
+            try {
+                cursor2 = getContentResolver().query(uri2, columns2, null, null, null);
+                if (cursor2 != null && cursor2.moveToFirst()) {
+                    sexy = cursor2.getString(0);
+                }
+            } finally {
+                if (cursor2 != null) {
+                    cursor2.close();
+                    cursor2 = null;
+                }
+            }
+            return sexy;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if (Utilities.isEmpty(result)) {
+                tV1.setText(getString(R.string.no_songs));
+            } else {
+                // tV1.setText(result);
+                tV1.setText(genre_title);
+
+                EcoGallery ecoGallery = (EcoGallery) findViewById(R.id.gallery);
+                ecoGallery.setAdapter(new Adapter_gallery(img));
+                // setAlbum(cursor.getString(0));//name of album
+                // setPath2(cursor.getString(1));//path of image
+                // setClick_no(cursor.getString(2));// number of songs.
+
+                setupListeners(ecoGallery, result);
+            }
+        }
+    }
+
+    class AddToPl extends AsyncTask<Integer, String, String> {
+        @Override
+        protected void onPostExecute(String x) {
+            spinner.setVisibility(View.GONE);
+            ActivityUtil.showCrouton(Genre.this, getString(R.string.playlist_created));
+        }
+
+        @Override
+        protected void onPreExecute() {
+            spinner.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Integer... params) {
+            for (int index = 0; index < multiplecheckedListforaddtoplaylist.size(); index++) {
+                try {
+                    Now_Playing.addToPlaylist(getApplicationContext(), multiplecheckedListforaddtoplaylist.get(index).getPath2(),
+                            params[0].intValue());
+                } catch (IllegalStateException e) {
+                    ActivityUtil.showCrouton(Genre.this, getString(R.string.playlist_name_already_exists));
+                    return null;
+                } catch (Exception e) {
+                    ActivityUtil.showCrouton(Genre.this, getString(R.string.an_error_occurred));
+                    return null;
+                }
+            }
+
+            return null;
+        }
     }
 
     class AddToPlayListMultiple extends AsyncTask<Void, String, String> {
