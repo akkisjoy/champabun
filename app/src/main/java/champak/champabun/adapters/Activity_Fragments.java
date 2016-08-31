@@ -64,44 +64,44 @@ public class Activity_Fragments extends BaseActivity {
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_first),
+                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_genre, null),
                         Color.parseColor(colors[0]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .selectedIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_genre, null))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_second),
+                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_artists, null),
                         Color.parseColor(colors[1]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .selectedIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_artists, null))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_third),
+                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_songs, null),
                         Color.parseColor(colors[2]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .selectedIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_songs, null))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_fourth, null),
+                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_albums, null),
                         Color.parseColor(colors[3]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .selectedIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_albums, null))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_fifth),
+                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_playlists, null),
                         Color.parseColor(colors[4]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .selectedIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_playlists, null))
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_sixth),
+                        ResourcesCompat.getDrawable(getResources(), R.drawable.ic_folder, null),
                         Color.parseColor(colors[5]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .selectedIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_folder, null))
                         .build()
         );
 
