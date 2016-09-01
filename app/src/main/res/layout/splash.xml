@@ -21,7 +21,7 @@
             android:layout_height="100dp"
             android:src="@drawable/logo2" />
 
-        <champak.champabun.ui.TypefaceTextView
+        <champak.champabun.business.utilities.utilClass.TypefaceTextView
             style="@style/TextViewStyle.Splash"
             android:text="@string/app_name"
             android:textColor="@color/TextColor_Primary"
@@ -34,17 +34,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" 
-        android:orientation="vertical"
         android:gravity="right"
+        android:orientation="vertical"
         >
 
-        
-        <champak.champabun.ui.TypefaceTextView
+
+        <champak.champabun.business.utilities.utilClass.TypefaceTextView
             android:id="@+id/version"
             style="@style/TextViewStyle.JosefinSans_Regular"
             android:gravity="right"
-            android:textColor="@color/TextColor_Secondary"
             android:text="@string/ver_name2"
+            android:textColor="@color/TextColor_Secondary"
             android:textSize="14sp" />
         
     </LinearLayout>

@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     android:id="@+id/tV1"
                     style="@style/TextViewStyle.julius_sans_one"
                     android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                 </RelativeLayout>
             </RelativeLayout>
 
-            <champak.champabun.ecogallery.EcoGallery
+            <champak.champabun.business.utilities.ecoGallery.EcoGallery
                 android:id="@+id/gallery"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/artist_Image_Size"
@@ -74,10 +74,10 @@
                 android:paddingLeft="1dp"
                 android:paddingRight="18dp">
 
-                <champak.champabun.raymenu.RayMenu
+                <champak.champabun.business.utilities.rayMenu.RayMenu
                     android:id="@+id/ray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></champak.champabun.raymenu.RayMenu>
+                    android:layout_height="wrap_content"></champak.champabun.business.utilities.rayMenu.RayMenu>
 
                 <LinearLayout
                     android:layout_width="match_parent"

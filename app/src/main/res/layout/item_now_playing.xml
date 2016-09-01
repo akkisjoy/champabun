@@ -15,7 +15,7 @@
         android:layout_weight="0"
         android:background="@drawable/drag" />
 
-    <champak.champabun.ui.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TypefaceTextView
         android:id="@+id/Songs"
         style="@style/TextViewStyle.JosefinSans"
         android:layout_width="wrap_content"

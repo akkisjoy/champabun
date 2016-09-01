@@ -28,7 +28,7 @@
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip" />
 
-    <champak.champabun.ui.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TypefaceTextView
         android:id="@+id/tv_title"
         style="@style/TextViewStyle.QuickAction"
         android:layout_width="wrap_content"

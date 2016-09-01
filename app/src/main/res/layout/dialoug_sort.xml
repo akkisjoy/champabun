@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:orientation="vertical"
-    android:background="@color/Background_Dialog"
     android:layout_margin="@dimen/dialog_padding"
+    android:background="@color/Background_Dialog"
+    android:orientation="vertical"
     >
 
-    <champak.champabun.ui.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TypefaceTextView
         style="@style/TextViewStyle.Dialouge.heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

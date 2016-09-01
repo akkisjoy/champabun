@@ -40,19 +40,19 @@
         android:smallScreens="true" />
 
     <application
-        android:name="champak.champabun.GlobalSongList"
+        android:name=".AmuzicgApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/playmee">
 
         <activity
-            android:name="champak.champabun.equalizer.EqualizerActivity"
+            android:name=".framework.equalizer.EqualizerActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="champak.champabun.Splash"
+            android:name=".view.activity.Splash"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="champak.champabun.adapters.Activity_Fragments"
+            android:name=".view.adapters.Activity_Fragments"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -71,7 +71,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name="champak.champabun.Player"
+            android:name=".view.activity.Player"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -83,7 +83,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="champak.champabun.Now_Playing"
+            android:name=".view.activity.NowPlaying"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -94,7 +94,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="champak.champabun.Artist"
+            android:name=".view.activity.Artist"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -106,7 +106,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="champak.champabun.Genre"
+            android:name=".view.activity.Genre"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -118,7 +118,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="champak.champabun.Album"
+            android:name=".view.activity.Album"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -130,7 +130,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="champak.champabun.Playlist"
+            android:name=".view.activity.Playlist"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask">
@@ -141,19 +141,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="champak.champabun.Settings"
+            android:name=".view.activity.Settings"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="standard"
             android:screenOrientation="portrait" />
 
-        <receiver android:name="champak.champabun.service.AlarmService">
+        <receiver android:name=".framework.service.AlarmService">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_SLEEP_TIMER" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name="champak.champabun.service.MyWidget"
+            android:name=".framework.service.MyWidget"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -163,13 +163,13 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
-        <receiver android:name="champak.champabun.service.MediaButtonIntentReceiver">
+        <receiver android:name=".framework.service.MediaButtonIntentReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name="champak.champabun.service.OpenPlayerReceiver"
+            android:name=".framework.service.OpenPlayerReceiver"
             android:permission="bitsie.OPEN_PLAYER_PERMISSION">
             <intent-filter>
                 <action android:name="bitsie.action.BROADCAST_OPEN_ACTIVITY" />
@@ -180,10 +180,10 @@
         </receiver>
 
         <service
-            android:name="champak.champabun.service.Music_service"
+            android:name=".framework.service.Music_service"
             android:enabled="true" />
         <service
-            android:name="champak.champabun.service.UpdateWidgetService"
+            android:name=".framework.service.UpdateWidgetService"
             android:enabled="true" />
 
     </application>

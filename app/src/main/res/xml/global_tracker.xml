@@ -5,21 +5,22 @@
 
     <bool name="ga_autoActivityTracking">true</bool>
 
-    <screenName name="champak.champabun.adapters.Activity_Fragments">Activity_Fragments</screenName>
-    <screenName name="champak.champabun.Album">Album</screenName>
-    <screenName name="champak.champabun.Artist">Artist</screenName>
-    <screenName name="champak.champabun.Genre">Genre</screenName>
-    <screenName name="champak.champabun.Now_Playing">Now_Playing</screenName>
-    <screenName name="champak.champabun.Player">Player</screenName>
-    <screenName name="champak.champabun.Playlist">Playlist</screenName>
-    <screenName name="champak.champabun.Splash">Splash</screenName>
+    <screenName name="champak.champabun.view.adapters.Activity_Fragments">Activity_Fragments
+    </screenName>
+    <screenName name="champak.champabun.view.activity.Album">Album</screenName>
+    <screenName name="champak.champabun.view.activity.Artist">Artist</screenName>
+    <screenName name="champak.champabun.view.activity.Genre">Genre</screenName>
+    <screenName name="champak.champabun.view.activity.NowPlaying">Now_Playing</screenName>
+    <screenName name="champak.champabun.view.activity.Player">Player</screenName>
+    <screenName name="champak.champabun.view.activity.Playlist">Playlist</screenName>
+    <screenName name="champak.champabun.view.activity.Splash">Splash</screenName>
     <screenName name="champak.playmee.musicplayer.free.equalizer.Equalizer2">Equalizer</screenName>
-    <screenName name="champak.champabun.F_Albums">F_Albums</screenName>
-    <screenName name="champak.champabun.F_Artists">F_Artists</screenName>
-    <screenName name="champak.champabun.F_Folder">F_Folder</screenName>
-    <screenName name="champak.champabun.F_Genres">F_Genres</screenName>
-    <screenName name="champak.champabun.F_Playlists">F_Playlists</screenName>
-    <screenName name="champak.champabun.F_Songs">F_Songs</screenName>
+    <screenName name="champak.champabun.view.fragment.F_Albums">F_Albums</screenName>
+    <screenName name="champak.champabun.view.fragment.F_Artists">F_Artists</screenName>
+    <screenName name="champak.champabun.view.fragment.F_Folder">F_Folder</screenName>
+    <screenName name="champak.champabun.view.fragment.F_Genres">F_Genres</screenName>
+    <screenName name="champak.champabun.view.fragment.F_Playlists">F_Playlists</screenName>
+    <screenName name="champak.champabun.view.fragment.F_Songs">F_Songs</screenName>
     
     <!-- The following value should be replaced with correct property id. -->
     <string name="ga_trackingId">@string/GA_ID</string>

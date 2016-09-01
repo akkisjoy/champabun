@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="top">
 
-                        <champak.champabun.ui.TypefaceTextView
+                        <champak.champabun.business.utilities.utilClass.TypefaceTextView
                             android:id="@+id/eqControlText"
                             style="@style/TextViewStyle.julius_sans_one"
                             android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                                 android:layout_height="0dp"
                                 android:background="@color/buttonbgcolor"></RelativeLayout>
 
-                            <champak.champabun.ui.TypefaceTextView
+                            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                                 android:id="@+id/basstext"
                                 style="@style/TextViewStyle.JosefinSans"
                                 android:layout_width="0dp"
@@ -144,7 +144,7 @@
                                 android:layout_toRightOf="@+id/button1"
                                 android:background="@color/buttonbgcolor"></RelativeLayout>
 
-                            <champak.champabun.ui.TypefaceTextView
+                            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                                 android:id="@+id/voltext"
                                 style="@style/TextViewStyle.JosefinSans"
                                 android:layout_width="0dp"
@@ -165,7 +165,7 @@
                                 android:layout_toRightOf="@+id/button2"
                                 android:background="@color/buttonbgcolor"></RelativeLayout>
 
-                            <champak.champabun.ui.TypefaceTextView
+                            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                                 android:id="@+id/virtualizertext"
                                 style="@style/TextViewStyle.JosefinSans"
                                 android:layout_width="0dp"

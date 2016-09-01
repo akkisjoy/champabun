@@ -12,7 +12,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <champak.champabun.ui.TypefaceTextView
+        <champak.champabun.business.utilities.utilClass.TypefaceTextView
             android:id="@+id/settings"
             style="@style/TextViewStyle.julius_sans_one"
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:orientation="vertical"
             android:paddingBottom="6dp">
 
-            <champak.champabun.ui.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                 android:id="@+id/my_apps"
                 style="@style/TextViewStyle.Settings.Item"
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:background="@drawable/selector_list"
                 android:minHeight="?android:attr/listPreferredItemHeight">
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     android:id="@+id/sleep_timer_time"
                     style="@style/TextViewStyle.JosefinSans"
                     android:layout_alignParentRight="true"
@@ -67,7 +67,7 @@
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                     android:text="@string/setting_not_set" />
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     android:id="@+id/sleep_timer"
                     style="@style/TextViewStyle.Settings.Item"
                     android:layout_centerVertical="true"
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <champak.champabun.ui.TypefaceTextView
+                    <champak.champabun.business.utilities.utilClass.TypefaceTextView
                         android:id="@+id/duration_filter_time"
                         style="@style/TextViewStyle.JosefinSans"
                         android:layout_alignParentRight="true"
@@ -102,7 +102,7 @@
                         android:minHeight="0dip"
                         android:text="@string/setting_not_set" />
 
-                    <champak.champabun.ui.TypefaceTextView
+                    <champak.champabun.business.utilities.utilClass.TypefaceTextView
                         style="@style/TextViewStyle.Settings.Item"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dip"
@@ -112,7 +112,7 @@
                         android:text="@string/hide_small_clips" />
                 </RelativeLayout>
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     style="@style/TextViewStyle.Settings.Item.Desc"
                     android:layout_marginTop="3dip"
                     android:background="@android:color/transparent"
@@ -130,7 +130,7 @@
                 android:paddingBottom="3dip"
                 android:paddingTop="3dip">
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     android:id="@+id/language"
                     style="@style/TextViewStyle.JosefinSans"
                     android:layout_alignParentRight="true"
@@ -139,7 +139,7 @@
                     android:minHeight="0dip"
                     android:text="@string/setting_not_set" />
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     style="@style/TextViewStyle.Settings.Item"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dip"
@@ -149,21 +149,21 @@
                     android:text="@string/language" />
             </RelativeLayout>
 
-            <champak.champabun.ui.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                 android:id="@+id/cross_fading"
                 style="@style/TextViewStyle.Settings.Item"
                 android:background="@drawable/selector"
                 android:text="@string/setting_cross_fading"
                 android:visibility="gone" />
 
-            <champak.champabun.ui.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                 android:id="@+id/rescan_lib"
                 style="@style/TextViewStyle.Settings.Item"
                 android:background="@drawable/selector"
                 android:text="@string/setting_rescan_lib"
                 android:visibility="gone" />
 
-            <champak.champabun.ui.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                 android:id="@+id/choose_folder"
                 style="@style/TextViewStyle.Settings.Item"
                 android:background="@drawable/selector"
@@ -178,7 +178,7 @@
                 android:minHeight="?android:attr/listPreferredItemHeight"
                 android:visibility="gone">
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     android:id="@+id/choose_background_value"
                     style="@style/TextViewStyle.JosefinSans"
                     android:layout_alignParentRight="true"
@@ -186,7 +186,7 @@
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                     android:text="@string/setting_not_set" />
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     android:id="@+id/choose_background"
                     style="@style/TextViewStyle.Settings.Item"
                     android:layout_centerVertical="true"
@@ -212,7 +212,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right" />
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     style="@style/TextViewStyle.Settings.Item"
                     android:layout_centerHorizontal="true"
                     android:layout_toLeftOf="@+id/auto_download_album_art_cb"
@@ -236,21 +236,21 @@
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                     android:focusableInTouchMode="false" />
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     style="@style/TextViewStyle.Settings.Item"
                     android:layout_centerHorizontal="true"
                     android:layout_toLeftOf="@+id/fullscreen_cb"
                     android:text="@string/settings_fullscreen" />
             </RelativeLayout>
 
-            <champak.champabun.ui.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                 android:id="@+id/request_feature"
                 style="@style/TextViewStyle.Settings.Item"
                 android:background="@drawable/selector_list"
                 android:text="@string/setting_request_feature"
                 android:visibility="gone" />
 
-            <champak.champabun.ui.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                 android:id="@+id/report_bug"
                 style="@style/TextViewStyle.Settings.Item"
                 android:background="@drawable/selector_list"

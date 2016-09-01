@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <champak.champabun.ui.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                 android:id="@+id/playlistname"
                 style="@style/TextViewStyle.julius_sans_one"
                 android:layout_width="match_parent"

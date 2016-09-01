@@ -25,7 +25,7 @@
             android:background="#44000000"
             android:gravity="center" >
 
-            <champak.champabun.ui.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TypefaceTextView
                 android:id="@+id/text"
                 style="@style/TextViewStyle.JosefinSans"
                 android:layout_width="wrap_content"

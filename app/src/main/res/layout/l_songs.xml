@@ -35,7 +35,7 @@
                 android:layout_marginRight="@dimen/lsongs_RightTextMargin"
                 android:orientation="vertical">
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     android:id="@+id/songstop"
                     style="@style/TextViewStyle.JosefinSans"
                     android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                     android:textColor="@color/TextColor_Primary"
                     android:textSize="@dimen/lsongs_songTextSize" />
 
-                <champak.champabun.ui.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TypefaceTextView
                     android:id="@+id/albumtop"
                     style="@style/TextViewStyle.JosefinSans"
                     android:layout_width="match_parent"
@@ -95,10 +95,10 @@
             android:paddingLeft="1dp"
             android:paddingRight="18dp">
 
-            <champak.champabun.raymenu.RayMenu
+            <champak.champabun.business.utilities.rayMenu.RayMenu
                 android:id="@+id/ray"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></champak.champabun.raymenu.RayMenu>
+                android:layout_height="wrap_content"></champak.champabun.business.utilities.rayMenu.RayMenu>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,7 +113,7 @@
                     android:layout_height="@dimen/lsongs_ButtonSize"
                     android:background="@drawable/composer_button_back" />
 
-                <champak.champabun.ui.TypefaceEditText
+                <champak.champabun.business.utilities.utilClass.TypefaceEditText
                     android:id="@+id/search_view"
                     style="@style/EditTextStyle.JosefinSans"
                     android:layout_width="match_parent"

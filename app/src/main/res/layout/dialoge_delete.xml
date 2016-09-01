@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/Background_Dialog"
     android:layout_margin="@dimen/dialog_padding"
+    android:background="@color/Background_Dialog"
     android:orientation="vertical"
     >
 
-    <champak.champabun.ui.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TypefaceTextView
+        android:id="@+id/heading"
         style="@style/TextViewStyle.Dialouge.heading"
         android:layout_width="match_parent"
-        android:id="@+id/heading"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
         android:layout_marginTop="8dp"
@@ -27,21 +27,21 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp" >
 
-        <champak.champabun.ui.TypefaceTextView
-            style="@style/TextViewStyle.Dialouge.secondary"
+        <champak.champabun.business.utilities.utilClass.TypefaceTextView
             android:id="@+id/title"
-            android:gravity="center"
+            style="@style/TextViewStyle.Dialouge.secondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
              />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|bottom"
         android:layout_marginTop="28dp"
         android:gravity="center_horizontal|bottom"
-        android:layout_gravity="center_horizontal|bottom"
         android:orientation="horizontal"
         android:paddingBottom="6dp"
         android:paddingLeft="10dp"

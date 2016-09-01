@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/lsongs_listview_item_padding_left_right"
     android:paddingRight="@dimen/lsongs_listview_item_padding_left_right" >
 
-    <champak.champabun.ui.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TypefaceTextView
         android:id="@+id/Song"
         style="@style/TextViewStyle.JosefinSans"
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="-3dp" >
 
-        <champak.champabun.ui.TypefaceTextView
+        <champak.champabun.business.utilities.utilClass.TypefaceTextView
             android:id="@+id/Time"
             style="@style/TextViewStyle.JosefinSans"
             android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
             android:textColor="@color/TextColor_Secondary"
             android:textSize="@dimen/itemsongs_album_size" />
 
-        <champak.champabun.ui.TypefaceTextView
+        <champak.champabun.business.utilities.utilClass.TypefaceTextView
             android:id="@+id/Artist"
             style="@style/TextViewStyle.JosefinSans"
             android:layout_width="match_parent"
@@ -59,7 +59,7 @@
         android:id="@+id/fl_adplaceholder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:visibility="gone" />
     
 </LinearLayout>
