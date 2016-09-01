@@ -52,19 +52,15 @@ public class NowPlaying extends BaseActivity {
                 sendBroadcast(intentswap);
             } else if (AmuzicgApp.GetInstance().getPosition() == 0 && AmuzicgApp.GetInstance().GetNowPlayingSize() == 1) {
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = false;
-                // stopService(intent);
                 Intent intent = new Intent(IConstant.BROADCAST_STOP_NOW);
                 sendBroadcast(intent);
             }
             AmuzicgApp.GetInstance().RemoveFromNowPlaying(which);
-            // adapter.remove(adapter.getItem(which));
             adapter.notifyDataSetChanged();
         }
     };
     private ProgressBar spinner;
     private Button save_as;
-    // private TypefaceTextView nowplaying;
-    // private Dialog dialog;
     private DragSortController mController;
     private DragSortListView SngList;
     private ImageView backPager;
@@ -107,7 +103,6 @@ public class NowPlaying extends BaseActivity {
         } finally {
             if (cur != null) {
                 cur.close();
-                cur = null;
             }
         }
     }
@@ -127,7 +122,6 @@ public class NowPlaying extends BaseActivity {
         } finally {
             if (c != null) {
                 c.close();
-                c = null;
             }
         }
         return songId;
@@ -185,7 +179,6 @@ public class NowPlaying extends BaseActivity {
 
         SngList = (DragSortListView) findViewById(R.id.listview);
         save_as = (Button) findViewById(R.id.save_as);
-        // nowplaying = (TypefaceTextView) findViewById(R.id.nowplaying);
         mController = buildController(SngList);
         SngList.setDropListener(onDrop);
         SngList.setRemoveListener(onRemove);
@@ -201,21 +194,10 @@ public class NowPlaying extends BaseActivity {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 AmuzicgApp.GetInstance().setPosition(position);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
-                // boolean temp=ma.boolshuffled;
                 Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
                 sendBroadcast(intentswap);
-                // ma.boolshuffled=temp;
             }
         });
-
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-        // {
-        //new SetBG( ).executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR, ( Void ) null );
-        // }
-        // else
-        // {
-        // new SetBG().execute((Void) null);
-        // }
     }
 
     public void OnSaveAsButtonClick(View view) {
@@ -225,7 +207,6 @@ public class NowPlaying extends BaseActivity {
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
         window.setBackgroundDrawableResource(R.drawable.dialogbg);
-        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog.getWindow().setAttributes(lp);
@@ -243,15 +224,7 @@ public class NowPlaying extends BaseActivity {
                     int YOUR_PLAYLIST_ID = createPlaylist(save.getText().toString(), context);
                     if (YOUR_PLAYLIST_ID == -1)
                         return;
-                    // TODO
-                    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                    // {
                     new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
-                    // }
-                    // else
-                    // {
-                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
-                    // }
                 }
                 dialog.dismiss();
             }
@@ -310,7 +283,7 @@ public class NowPlaying extends BaseActivity {
             for (int index = 0; index < AmuzicgApp.GetInstance().GetNowPlayingList().size(); index++) {
                 try {
                     addToPlaylist(getApplicationContext(), AmuzicgApp.GetInstance().GetNowPlayingList().get(index).getPath2(),
-                            params[0].intValue());
+                            params[0]);
                 } catch (IllegalStateException e) {
                     ActivityUtil.showCrouton(NowPlaying.this, getString(R.string.playlist_name_already_exists));
                     return null;
@@ -350,38 +323,14 @@ public class NowPlaying extends BaseActivity {
                 holder.albumsView = (TypefaceTextView) v.findViewById(R.id.Songs);
                 v.setTag(holder);
             }
-            ViewHolder holder = (ViewHolder) v.getTag();
+            ViewHolder holder = (ViewHolder) (v != null ? v.getTag() : null);
             String albums = songs.get(position).getSong();
-            holder.albumsView.setText(albums);
+            if (holder != null) {
+                holder.albumsView.setText(albums);
+            }
             return v;
         }
     }
-
-//	class SetBG extends AsyncTask < Void, Void, Drawable >
-//	{
-//		@Override
-//		protected Drawable doInBackground( Void ... params )
-//		{
-//			return Utilities.returnbg( );
-//		}
-//
-//		@SuppressWarnings( "deprecation" )
-//		@Override
-//		protected void onPostExecute( Drawable result )
-//		{
-//			super.onPostExecute( result );
-//
-//			RelativeLayout ll = ( RelativeLayout ) findViewById( R.id.bg );
-//			if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN )
-//			{
-//				ll.setBackgroundDrawable( result );
-//			}
-//			else
-//			{
-//				ll.setBackground( result );
-//			}
-//		}
-//	}
 
     class ViewHolder {
         public TypefaceTextView albumsView;

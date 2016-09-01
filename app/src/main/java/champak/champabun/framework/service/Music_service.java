@@ -57,11 +57,6 @@ public class Music_service extends Service
     private static int songEnded;
     // Intent intentcoveradapter;
     private final Handler handler = new Handler();
-    private final OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
-        public void onAudioFocusChange(int focusChange) {
-            mMediaplayerHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
-        }
-    };
     /**
      * Initialiser equaliser, bassbooster and Virtualiser
      * <p/>
@@ -277,6 +272,11 @@ public class Music_service extends Service
                     }
                     break;
             }
+        }
+    };
+    private final OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            mMediaplayerHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
         }
     };
     private int mServiceStartId = -1;
@@ -692,7 +692,7 @@ public class Music_service extends Service
         if (bitmap != null)
             bitmap = Bitmap.createScaledBitmap(bitmap, wt_px, wt_px, false);
         if (bitmap == null)
-            bitmap = BitmapUtil.GetBitmapFromSongPath(getResources(), AmuzicgApp.GetInstance().GetCurSongDetails().getAlbumID(),
+            bitmap = BitmapUtil.GetBitmapFromSongPath(
                     wt_px, wt_px, AmuzicgApp.GetInstance().GetCurSongDetails().getPath2());
         if (bitmap == null)
             bitmap = BitmapUtil.GetRandomBitmap(Music_service.this.getResources(), AmuzicgApp.GetInstance().GetCurSongDetails().getAlbumID(),
@@ -745,7 +745,7 @@ public class Music_service extends Service
 
         if (bitmap == null) {
 
-            bitmap = BitmapUtil.GetBitmapFromSongPath(getResources(), AmuzicgApp.GetInstance().GetCurSongDetails().getAlbumID(), 300, 300,
+            bitmap = BitmapUtil.GetBitmapFromSongPath(300, 300,
                     AmuzicgApp.GetInstance().GetCurSongDetails().getPath2());
         }
         if (bitmap == null) {

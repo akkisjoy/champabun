@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
@@ -27,13 +26,10 @@ public class AmuzicgApp extends Application {
     final public static int REPEAT_ALL = 2;
 
     public static boolean alreadyshuffled = false;
-    //	public static boolean isShowInterstitialAds;
-//	public static int  splashscreenopen=1;
     public static int secondtimeplayershown = 0;
     private static AmuzicgApp mInstance;
-    public ArrayList<SongDetails> NP_List;// = new ArrayList < SongDetails >();
+    public ArrayList<SongDetails> NP_List;
     public ArrayList<SongDetails> backup;
-    // public Context c;
     public boolean boolMusicPlaying1 = false;
     public boolean boolshuffled = false;
     public String path;
@@ -44,8 +40,6 @@ public class AmuzicgApp extends Application {
     private int position;
     private int check = 0;
 
-    // public String song;
-    // public String album;
     private int repeatmode;// 0 for no repeat 1 for repeat 1 or repeat song and 2 for repeat all
     private AppSetting appSettings;
     private PlayMeeConfig playMeeConfig;
@@ -67,17 +61,6 @@ public class AmuzicgApp extends Application {
         return mTrackers.get(trackerId);
     }
 
-    public void TrackPageview(String page) {
-        Tracker t = getTracker(TrackerName.APP_TRACKER);
-        t.setScreenName(page);
-        t.send(new HitBuilders.AppViewBuilder().build());
-    }
-
-    public void TrackEvent(String category, String action, String label, long value) {
-        Tracker t = getTracker(TrackerName.APP_TRACKER);
-        t.send(new HitBuilders.EventBuilder().setCategory(category).setAction(action).setLabel(label).setValue(value).build());
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -85,14 +68,13 @@ public class AmuzicgApp extends Application {
 
         PlayMeePreferences prefs = new PlayMeePreferences(getApplicationContext());
         repeatmode = prefs.GetRepeatMode();
-        prefs = null;
 
         sizeofimage = (int) mInstance.getResources().getDimension(R.dimen.player_image_size) + 20;
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
         editor.remove("shuffle_setting");
-        editor.commit();
+        editor.apply();
 
         boolshuffled = false;
 
@@ -111,22 +93,10 @@ public class AmuzicgApp extends Application {
                 });
     }
 
-    public boolean isAdsConfigOffer() {
-        return playMeeConfig.getAdsConfig().isAdsConfigOffer();
-    }
-
-    public void setArrayListMapData(ArrayList<SongDetails> setData) {
-        NP_List = setData;
-    }
 
     public int getCheck() {
         return check;
     }
-
-    // public ArrayList < SongDetails > getArrayListMapData()
-    // {
-    // return NP_List;
-    // }
 
     public void setCheck(int check) {
         this.check = check;
@@ -157,7 +127,7 @@ public class AmuzicgApp extends Application {
 
     public void Add2NowPlaying(SongDetails sd) {
         if (NP_List == null) {
-            NP_List = new ArrayList<SongDetails>();
+            NP_List = new ArrayList<>();
             position = 0;
         }
         NP_List.add(sd);
@@ -165,7 +135,7 @@ public class AmuzicgApp extends Application {
 
     public void Add2CurSongDetails(SongDetails sd) {
         if (NP_List == null) {
-            NP_List = new ArrayList<SongDetails>();
+            NP_List = new ArrayList<>();
             position = 0;
         }
         NP_List.add(position, sd);
@@ -173,7 +143,7 @@ public class AmuzicgApp extends Application {
 
     public void Add2NowPlaying(ArrayList<SongDetails> list) {
         if (NP_List == null) {
-            NP_List = new ArrayList<SongDetails>();
+            NP_List = new ArrayList<>();
             position = 0;
         }
         NP_List.addAll(list);
@@ -193,11 +163,8 @@ public class AmuzicgApp extends Application {
                     if (position >= NP_List.size()) {
                         position = NP_List.size() - 1;
                     }
-                } catch (IndexOutOfBoundsException e) {
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
-
-
             }
         }
     }
@@ -232,7 +199,6 @@ public class AmuzicgApp extends Application {
         repeatmode = mode;
         PlayMeePreferences prefs = new PlayMeePreferences(getApplicationContext());
         prefs.SetRepeatMode(mode);
-        prefs = null;
     }
 
     public int GetRepeatMode() {
@@ -256,7 +222,6 @@ public class AmuzicgApp extends Application {
         prefs.SetFromRecentAdded(isFromRecentAdded);
         prefs.SaveLastPlaylistIndex(getPosition());
         prefs.SaveLastplayClickNo(click_no);
-        prefs = null;
         isPlaylistAdded = true;
     }
 
@@ -264,20 +229,12 @@ public class AmuzicgApp extends Application {
         return appSettings;
     }
 
-    public void setAppSettings(AppSetting appSettings) {
-        this.appSettings = appSettings;
-    }
-
-    public PlayMeeConfig getPlayMeeConfig() {
-        return playMeeConfig;
-    }
-
     public void setPlayMeeConfig(PlayMeeConfig playMeeConfig) {
         this.playMeeConfig = playMeeConfig;
     }
 
     public void ChangeLanguage() {
-        Locale locale = null;
+        Locale locale;
         try {
             if (appSettings.getLanguage().getLocale().equals("pt_PT"))
                 locale = new Locale("pt", "PT");

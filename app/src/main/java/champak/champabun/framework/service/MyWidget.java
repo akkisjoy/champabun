@@ -14,15 +14,6 @@ import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
 
 public class MyWidget extends AppWidgetProvider {
-    public static final String CMDAPPWIDGETUPDATE = "appwidgetupdate";
-    private static MyWidget sInstance;
-
-    static synchronized MyWidget getInstance() {
-        if (sInstance == null) {
-            sInstance = new MyWidget();
-        }
-        return sInstance;
-    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -42,7 +33,6 @@ public class MyWidget extends AppWidgetProvider {
     private void defaultAppWidget(Context context, int[] appWidgetIds) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 
-        //remoteViews.setTextViewText(R.id.song, "");
         remoteViews.setTextViewText(R.id.artist, "");
         remoteViews.setImageViewResource(R.id.bPlay, R.drawable.play);
 
@@ -135,62 +125,4 @@ public class MyWidget extends AppWidgetProvider {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.parent, openactivityPendingIntent);
     }
-
-    // public BroadcastReceiver broadcastCoverReceiver = new BroadcastReceiver() {
-    // @Override
-    // public void onReceive(Context context, Intent serviceIntent)
-    // {
-    // AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
-    // ComponentName thisWidget = new ComponentName(context.getApplicationContext(), MyWidget.class);
-    // int [] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-    // if (appWidgetIds != null && appWidgetIds.length > 0)
-    // {
-    // onUpdate(context, appWidgetManager, appWidgetIds);
-    // }
-    // }
-    // };
-
-    // public BroadcastReceiver broadcastPlayPause = new BroadcastReceiver() {
-    // @Override
-    // public void onReceive(Context context, Intent serviceIntent)
-    // {
-    // AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
-    // ComponentName thisWidget = new ComponentName(context.getApplicationContext(), MyWidget.class);
-    // int [] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-    // if (appWidgetIds != null && appWidgetIds.length > 0)
-    // {
-    // onUpdate(context, appWidgetManager, appWidgetIds);
-    // }
-    // }
-    //
-    // };
-    // public BroadcastReceiver checkagain = new BroadcastReceiver() {
-    // @Override
-    // public void onReceive(Context context, Intent serviceIntent)
-    // {
-    // AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
-    // ComponentName thisWidget = new ComponentName(context.getApplicationContext(), MyWidget.class);
-    // int [] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-    // if (appWidgetIds != null && appWidgetIds.length > 0)
-    // {
-    // onUpdate(context, appWidgetManager, appWidgetIds);
-    // }
-    // }
-    // };
-
-    // public BroadcastReceiver stop = new BroadcastReceiver() {
-    // @Override
-    // public void onReceive(Context context, Intent serviceIntent)
-    // {
-    // Logger.d("MyWidget", "onReceive........................." + serviceIntent.getAction());
-    // AmuzicgApp.GetInstance().CLearNowPlaying();
-    // AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
-    // ComponentName thisWidget = new ComponentName(context.getApplicationContext(), MyWidget.class);
-    // int [] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-    // if (appWidgetIds != null && appWidgetIds.length > 0)
-    // {
-    // onUpdate(context, appWidgetManager, appWidgetIds);
-    // }
-    // }
-    // };
 }

@@ -330,7 +330,7 @@ public class EcoGallery extends EcoGalleryAbsSpinner implements GestureDetector.
         super.onLayout(changed, l, t, r, b);
 
 		/*
-		 * Remember that we are in layout to prevent more layout request from
+         * Remember that we are in layout to prevent more layout request from
 		 * being generated.
 		 */
         mInLayout = true;

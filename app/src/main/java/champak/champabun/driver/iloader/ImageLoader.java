@@ -3,7 +3,6 @@ package champak.champabun.driver.iloader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Handler;
 import android.util.TypedValue;
 import android.widget.ImageView;
@@ -15,7 +14,6 @@ import org.w3c.dom.NodeList;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,14 +43,10 @@ public class ImageLoader {
     private static FileCache fileCache;
     Context c;
     float ht_px;
-    // Animation fadeIn;
     float wt_px;
     Bitmap draw;
-    Uri s;
     ExecutorService executorService;
-    // static int REQUIRED_SIZE = 220;
     Handler handler = new Handler();// handler to display images in UI thread
-    // static BitmapFactory.Options options;
     private Map<ImageView, String> imageViews = Collections.synchronizedMap(new HashMap<ImageView, String>());
 
     public ImageLoader(Context context) {
@@ -68,17 +62,6 @@ public class ImageLoader {
         // fadein(0,400);
     }
 
-    // protected void fadein(int offset, int duration)
-    // {
-    // fadeIn = null;
-    // fadeIn = new AlphaAnimation(0, 1);
-    // fadeIn.setInterpolator(new AccelerateInterpolator()); // and this
-    // fadeIn.setFillAfter(true);
-    // fadeIn.setStartOffset(offset);
-    // fadeIn.setDuration(duration);
-    // }
-
-    // final int stub_id=R.drawable.stub;
     public void DisplayImage(String url, ImageView imageView, String album, String artist) {
         imageViews.put(imageView, url);
         Bitmap bitmap = memoryCache.get(url);
@@ -122,8 +105,7 @@ public class ImageLoader {
                     FileOutputStream fo = new FileOutputStream(f);
                     fo.write(bytes.toByteArray());
                     fo.close();
-                } catch (IOException e) {
-                    // e.printStackTrace();
+                } catch (IOException ignored) {
                 }
             }
             return b;
@@ -151,7 +133,7 @@ public class ImageLoader {
         artistname = artistname.trim();
 
         albumname = albumname.trim();
-        File f = getFileCache().getFile(artistname.toString() + "_" + albumname.toString());
+        File f = getFileCache().getFile(artistname + "_" + albumname);
         artistname = artistname.replace(" ", "%20");
         artistname = artistname.replace("/", "");
 
@@ -177,7 +159,6 @@ public class ImageLoader {
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xPathEvaluator = xPathfactory.newXPath();
             XPathExpression nameExpr = xPathEvaluator.compile("//lfm/album/image");
-            // XPathExpression nameExpr = xPathEvaluator.compile("//lfm/tracks/track/image");
             NodeList nl = (NodeList) nameExpr.evaluate(document, XPathConstants.NODESET);
             Node currentItem;
 
@@ -185,19 +166,16 @@ public class ImageLoader {
                 currentItem = nl.item(zzz);
                 key = currentItem.getTextContent();
 
-                // key = currentItem.getAttributes().getNamedItem("uri").getNodeValue();
             }
-            Bitmap bitmap = null;
+            Bitmap bitmap;
 
             URL imageUrl = new URL(key);
-            // URL imageUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
             conn.setConnectTimeout(10000);
             conn.setReadTimeout(30000);
             conn.setInstanceFollowRedirects(true);
             InputStream is = conn.getInputStream();
 
-            // File f = fileCache.getFile(artistname + "_" + albumname);
             OutputStream os = new FileOutputStream(f);
             Utils.CopyStream(is, os);
             os.close();
@@ -214,7 +192,6 @@ public class ImageLoader {
             }
             return bitmap;
         } catch (Throwable ex) {
-            // ex.printStackTrace();
             if (ex instanceof OutOfMemoryError)
                 memoryCache.clear();
             return null;
@@ -250,11 +227,7 @@ public class ImageLoader {
             Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
             stream2.close();
             return bitmap;
-        } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-            // e.printStackTrace();
-        } catch (OutOfMemoryError e) {
-            // e.printStackTrace();
+        } catch (IOException | OutOfMemoryError ignored) {
         }
         return null;
     }
@@ -262,12 +235,6 @@ public class ImageLoader {
     boolean imageViewReused(PhotoToLoad photoToLoad) {
         String tag = imageViews.get(photoToLoad.imageView);
         return tag == null || !tag.equals(photoToLoad.url);
-    }
-
-    public void clearCache() {
-        memoryCache.clear();
-        getFileCache().clear();
-        draw = null;
     }
 
     public void clearMCache() {
@@ -341,7 +308,6 @@ public class ImageLoader {
             // TODO Animation
             {
                 photoToLoad.imageView.setImageBitmap(bitmap);
-                // photoToLoad.imageView.startAnimation(fadeIn);
             } else {
                 photoToLoad.imageView.setImageBitmap(draw);
             }

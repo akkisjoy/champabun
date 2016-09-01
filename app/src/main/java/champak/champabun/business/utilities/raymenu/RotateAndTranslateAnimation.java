@@ -22,7 +22,6 @@ import android.view.animation.Transformation;
 /**
  * An animation that controls the position of an object, and make the object
  * rotate on its center at the same time.
- * 
  */
 public class RotateAndTranslateAnimation extends Animation {
     private int mFromXType = ABSOLUTE;
@@ -67,23 +66,16 @@ public class RotateAndTranslateAnimation extends Animation {
 
     /**
      * Constructor to use when building a TranslateAnimation from code
-     * 
-     * @param fromXDelta
-     *            Change in X coordinate to apply at the start of the animation
-     * @param toXDelta
-     *            Change in X coordinate to apply at the end of the animation
-     * @param fromYDelta
-     *            Change in Y coordinate to apply at the start of the animation
-     * @param toYDelta
-     *            Change in Y coordinate to apply at the end of the animation
-     * 
-     * @param fromDegrees
-     *            Rotation offset to apply at the start of the animation.
-     * @param toDegrees
-     *            Rotation offset to apply at the end of the animation.
+     *
+     * @param fromXDelta  Change in X coordinate to apply at the start of the animation
+     * @param toXDelta    Change in X coordinate to apply at the end of the animation
+     * @param fromYDelta  Change in Y coordinate to apply at the start of the animation
+     * @param toYDelta    Change in Y coordinate to apply at the end of the animation
+     * @param fromDegrees Rotation offset to apply at the start of the animation.
+     * @param toDegrees   Rotation offset to apply at the end of the animation.
      */
     public RotateAndTranslateAnimation(float fromXDelta, float toXDelta, float fromYDelta, float toYDelta,
-            float fromDegrees, float toDegrees) {
+                                       float fromDegrees, float toDegrees) {
         mFromXValue = fromXDelta;
         mToXValue = toXDelta;
         mFromYValue = fromYDelta;
@@ -106,10 +98,10 @@ public class RotateAndTranslateAnimation extends Animation {
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
         final float degrees = mFromDegrees + ((mToDegrees - mFromDegrees) * interpolatedTime);
-     //   if (mPivotX == 0.0f && mPivotY == 0.0f) {
-       //     t.getMatrix().setRotate(degrees);
-       // } else {
-         //   t.getMatrix().setRotate(degrees, mPivotX, mPivotY);
+        //   if (mPivotX == 0.0f && mPivotY == 0.0f) {
+        //     t.getMatrix().setRotate(degrees);
+        // } else {
+        //   t.getMatrix().setRotate(degrees, mPivotX, mPivotY);
         //}
 
         float dx = mFromXDelta;

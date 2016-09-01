@@ -21,16 +21,12 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -56,268 +52,229 @@ import champak.champabun.view.adapters.Adapter_SongView;
 import champak.champabun.view.adapters.Adapter_gallery;
 import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
-public class Artist extends BaseActivity implements
-		SongHelper.OnQuickActionItemSelectListener {
+public class Artist extends BaseActivity implements SongHelper.OnQuickActionItemSelectListener {
     static public int highlight_zero = 0;
     public ListView mListView;
     public ProgressBar spinner;
     String artistname;
-	ArrayList<SongDetails> img = new ArrayList<SongDetails>();
-	Adapter_SongView ab;
-	// ArrayList < String > img2;// = new ArrayList<String>();
-	String artist_id;
-	LinearLayout ll;
-	ArrayList<SongDetails> play;
-	TypefaceTextView tV1;// album2;
-	int pos;
-	int playlistid;
-	Handler handler = new Handler();
-	int position2;
-	int albumNameCheck;
-	Dialog dialog2;
-	ArrayList<SongDetails> multiplecheckedListforaddtoplaylist, pl;
-	Button bRBack, bRAdd, bRPlay, bRDel;
-	RayMenu rayMenu;
+    ArrayList<SongDetails> img = new ArrayList<>();
+    Adapter_SongView ab;
+    String artist_id;
+    ArrayList<SongDetails> play;
+    TypefaceTextView tV1;// album2;
+    int pos;
+    int playlistid;
+    Handler handler = new Handler();
+    int position2;
+    int albumNameCheck;
+    Dialog dialog2;
+    ArrayList<SongDetails> multiplecheckedListforaddtoplaylist, pl;
+    Button bRBack, bRAdd, bRPlay, bRDel;
+    RayMenu rayMenu;
     Animation fadeOut, fadeIn;
-    // Context c;
-	private SongHelper songHelper;
+    private SongHelper songHelper;
     private ImageView backPager;
 
-	protected void fadeout(int offset, int duration) {
-		fadeOut = null;
-		fadeOut = new AlphaAnimation(1, 0);
-		fadeOut.setInterpolator(new AccelerateInterpolator());
-		fadeOut.setFillAfter(true);
-		fadeOut.setStartOffset(offset);
-		fadeOut.setDuration(duration);
-	}
+    protected void fadeout(int offset, int duration) {
+        fadeOut = null;
+        fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setFillAfter(true);
+        fadeOut.setStartOffset(offset);
+        fadeOut.setDuration(duration);
+    }
 
-	protected void fadein(int offset, int duration) {
-		fadeIn = null;
-		fadeIn = new AlphaAnimation(0, 1);
-		fadeIn.setInterpolator(new AccelerateInterpolator()); // and this
-		fadeIn.setFillAfter(true);
-		fadeIn.setStartOffset(offset);
-		fadeIn.setDuration(duration);
-	}
+    protected void fadein(int offset, int duration) {
+        fadeIn = null;
+        fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new AccelerateInterpolator()); // and this
+        fadeIn.setFillAfter(true);
+        fadeIn.setStartOffset(offset);
+        fadeIn.setDuration(duration);
+    }
 
-	@Override
-	public int GetLayoutResID() {
-		return R.layout.artist;
-	}
+    @Override
+    public int GetLayoutResID() {
+        return R.layout.artist;
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         backPager = (ImageView) findViewById(R.id.backPager);
         backPager.setColorFilter(getResources().getColor(R.color.yellowPager), PorterDuff.Mode.MULTIPLY);
 
-		bRBack = (Button) findViewById(R.id.bRBack);
-		bRAdd = (Button) findViewById(R.id.bRAdd);
-		bRPlay = (Button) findViewById(R.id.bRPlay);
-		bRDel = (Button) findViewById(R.id.bRDelete);
+        bRBack = (Button) findViewById(R.id.bRBack);
+        bRAdd = (Button) findViewById(R.id.bRAdd);
+        bRPlay = (Button) findViewById(R.id.bRPlay);
+        bRDel = (Button) findViewById(R.id.bRDelete);
 
-		bRBack.setVisibility(View.INVISIBLE);
-		bRAdd.setVisibility(View.INVISIBLE);
-		bRPlay.setVisibility(View.INVISIBLE);
-		bRDel.setVisibility(View.INVISIBLE);
+        bRBack.setVisibility(View.INVISIBLE);
+        bRAdd.setVisibility(View.INVISIBLE);
+        bRPlay.setVisibility(View.INVISIBLE);
+        bRDel.setVisibility(View.INVISIBLE);
 
-		rayMenu = (RayMenu) findViewById(R.id.ray);
-		SetupButton();
-		SetupRayMenu();
+        rayMenu = (RayMenu) findViewById(R.id.ray);
+        SetupButton();
+        SetupRayMenu();
 
-		// img2 = new ArrayList < String >();
-		play = new ArrayList<SongDetails>();
-		spinner = (ProgressBar) findViewById(R.id.progressBar1);
-		spinner.setVisibility(View.GONE);
+        play = new ArrayList<>();
+        spinner = (ProgressBar) findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
 
-		mListView = (ListView) findViewById(R.id.listview);
-		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				position2 = arg2;
-				if (songHelper == null) {
-					songHelper = new SongHelper();
-				}
-				songHelper.Show(Artist.this, mListView, Artist.this,
-						SongHelper.ARTIST);
-				return true;
-			}
-		});
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> a, View v, int position,
-					long id) {
-				Intent intent = new Intent("android.intent.action.p");
-				if (play.size() > 800) {
+        mListView = (ListView) findViewById(R.id.listview);
+        mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int arg2, long arg3) {
+                position2 = arg2;
+                if (songHelper == null) {
+                    songHelper = new SongHelper();
+                }
+                songHelper.Show(Artist.this, mListView, Artist.this,
+                        SongHelper.ARTIST);
+                return true;
+            }
+        });
+        mListView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position,
+                                    long id) {
+                Intent intent = new Intent("android.intent.action.p");
+                if (play.size() > 800) {
                     AmuzicgApp.GetInstance().SetNowPlayingList(play);
                 } else {
                     AmuzicgApp.GetInstance().SetNowPlayingList(
-                            new ArrayList<SongDetails>(play));
-				}
+                            new ArrayList<>(play));
+                }
                 AmuzicgApp.GetInstance().setPosition(position);
                 AmuzicgApp.GetInstance().setCheck(0);
                 startActivity(intent);
-			}
-		});
+            }
+        });
 
-		// animate_ListView( );
-		Intent i = getIntent();
+        Intent i = getIntent();
 
-		artist_id = i.getStringExtra("click_no");
+        artist_id = i.getStringExtra("click_no");
 
-		int s = Integer.parseInt(artist_id);
+        int s = Integer.parseInt(artist_id);
 
-		// if (android.os.Build.VERSION.SDK_INT >=
-		// android.os.Build.VERSION_CODES.HONEYCOMB)
-		// {
-		new FetchListItems().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, s);
-		tV1 = (TypefaceTextView) findViewById(R.id.tV1);
-		tV1.setSelected(true);
-	}
+        new FetchListItems().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, s);
+        tV1 = (TypefaceTextView) findViewById(R.id.tV1);
+        tV1.setSelected(true);
+    }
 
-	@Override
-	public void QuickAction_OnPlaySong() {
-		songHelper.PlaySong(play, position2);
-	}
+    @Override
+    public void QuickAction_OnPlaySong() {
+        songHelper.PlaySong(play, position2);
+    }
 
-	@Override
-	public void QuickAction_OnAdd2Playlist() {
-		songHelper.Add2Playlist(play.get(position2));
-	}
+    @Override
+    public void QuickAction_OnAdd2Playlist() {
+        songHelper.Add2Playlist(play.get(position2));
+    }
 
-	@Override
-	public void QuickAction_OnEditTags() {
-		songHelper.EditTags(play.get(position2), spinner, null,
-				new SongHelper.OnEditTagsListener() {
+    @Override
+    public void QuickAction_OnEditTags() {
+        songHelper.EditTags(play.get(position2), spinner, null,
+                new SongHelper.OnEditTagsListener() {
 
-					@Override
-					public void OnEditTagsSuccessful() {
-						OnRefreshListView();
-					}
-				},null);
-	}
+                    @Override
+                    public void OnEditTagsSuccessful() {
+                        OnRefreshListView();
+                    }
+                }, null);
+    }
 
-	@Override
-	public void onResume() {
-		if (!rayMenu.mRayLayout.isExpanded())
-			Animate_raymenu();
-		super.onResume();
+    @Override
+    public void onResume() {
+        if (!rayMenu.mRayLayout.isExpanded())
+            Animate_raymenu();
+        super.onResume();
 
-	}
+    }
 
-	@Override
-	public void QuickAction_OnSetAsRingtone() {
-		songHelper.SetAsRingtone(play.get( position2));
-	}
+    @Override
+    public void QuickAction_OnSetAsRingtone() {
+        songHelper.SetAsRingtone(play.get(position2));
+    }
 
-	@Override
-	public void QuickAction_OnViewDetails() {
-	}
+    @Override
+    public void QuickAction_OnViewDetails() {
+    }
 
-	@Override
-	public void QuickAction_OnDeleteSong() {
-		songHelper.DeleteSong(play, position2,
-				new SongHelper.OnDeleteSongListener() {
+    @Override
+    public void QuickAction_OnDeleteSong() {
+        songHelper.DeleteSong(play, position2,
+                new SongHelper.OnDeleteSongListener() {
 
-					@Override
-					public void OnSongDeleted() {
-						OnRefreshListView();
-					}
-				},null);
-	}
+                    @Override
+                    public void OnSongDeleted() {
+                        OnRefreshListView();
+                    }
+                }, null);
+    }
 
-	private void OnRefreshListView() {
-		if (ab == null) {
-			ab = new Adapter_SongView(play,
-					Artist.this.getApplicationContext(), 3);
-			mListView.setAdapter(ab);
-		} else {
-			ab.OnUpdate(play);
-		}
-	}
+    private void OnRefreshListView() {
+        if (ab == null) {
+            ab = new Adapter_SongView(play,
+                    Artist.this.getApplicationContext(), 3);
+            mListView.setAdapter(ab);
+        } else {
+            ab.OnUpdate(play);
+        }
+    }
 
-	private void Animate_raymenu() {
-		handler.removeCallbacksAndMessages(null);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				rayMenu.mHintView.startAnimation(rayMenu
-						.createHintSwitchAnimation(rayMenu.mRayLayout
-								.isExpanded()));
-				rayMenu.mRayLayout.switchState(true);
-			}
-		}, 800);
-	}
+    private void Animate_raymenu() {
+        handler.removeCallbacksAndMessages(null);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rayMenu.mHintView.startAnimation(rayMenu
+                        .createHintSwitchAnimation(rayMenu.mRayLayout
+                                .isExpanded()));
+                rayMenu.mRayLayout.switchState(true);
+            }
+        }, 800);
+    }
 
-	private void animate_ListView() {
-		AnimationSet set = new AnimationSet(true);
+    /**
+     * Sets the up listeners.
+     *
+     * @param mCoverFlow the new up listeners
+     */
+    private void setupListeners(final EcoGallery mCoverFlow, final String artistname) {
+        mCoverFlow.setOnItemSelectedListener(new EcoGalleryAdapterView.OnItemSelectedListener() {
 
-		Animation animation = new AlphaAnimation(0.0f, 1.0f);
-		animation.setDuration(600);
-		set.addAnimation(animation);
+            @Override
+            public void onItemSelected(EcoGalleryAdapterView<?> parent,
+                                       View view, int position, long id) {
+                pos = position;
+                Logger.d("Artist", "onItemSelected................." + position);
+                highlight_zero = 0;
+                SparseBooleanArray checked = mListView
+                        .getCheckedItemPositions();
+                if (checked != null)
+                    for (int i = 0; i < checked.size(); i++) {
+                        if (checked.valueAt(i)) {
+                            mListView.setItemChecked(checked.keyAt(i), false);
+                        }
+                    }
+                if (mListView.getChoiceMode() == ListView.CHOICE_MODE_NONE)
+                    mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+                OnRefreshListView();
 
-		animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-				Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-				-1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-		animation.setDuration(600);
-		set.addAnimation(animation);
+                new LazyLoad().executeOnExecutor(
+                        AsyncTask.THREAD_POOL_EXECUTOR, artistname);
+            }
 
-		LayoutAnimationController controller = new LayoutAnimationController(
-				set, 0.25f);
-		mListView.setLayoutAnimation(controller);
+            @Override
+            public void onNothingSelected(EcoGalleryAdapterView<?> parent) {
 
-		// controller = null;
-		// animation = null;
-		// set = null;
-	}
+            }
 
-	/**
-	 * Sets the up listeners.
-	 * 
-	 * @param mCoverFlow
-	 *            the new up listeners
-	 */
-	private void setupListeners(final EcoGallery mCoverFlow, final String artistname) {
-		mCoverFlow.setOnItemSelectedListener(new EcoGalleryAdapterView.OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(EcoGalleryAdapterView<?> parent,
-					View view, int position, long id) {
-				pos = position;
-				Logger.d("Artist", "onItemSelected................." + position);
-				// if (android.os.Build.VERSION.SDK_INT >=
-				// android.os.Build.VERSION_CODES.HONEYCOMB)
-				// {
-
-				highlight_zero = 0;
-				SparseBooleanArray checked = mListView
-						.getCheckedItemPositions();
-				if (checked != null)
-					for (int i = 0; i < checked.size(); i++) {
-						if (checked.valueAt(i)) {
-							mListView.setItemChecked(checked.keyAt(i), false);
-						}
-					}
-				if (mListView.getChoiceMode() == ListView.CHOICE_MODE_NONE)
-					mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-				OnRefreshListView();
-				// ab.OnUpdate(play);
-				checked = null;
-
-				new LazyLoad().executeOnExecutor(
-						AsyncTask.THREAD_POOL_EXECUTOR, artistname);
-
-			}
-
-			@Override
-			public void onNothingSelected(EcoGalleryAdapterView<?> parent) {
-
-			}
-
-		});
-	}
+        });
+    }
 
     //
     private ArrayList<SongDetails> addToLisView(int position, String artistname) {
@@ -344,8 +301,6 @@ public class Artist extends BaseActivity implements
             albumNameCheck = 1;
         }
         where += " AND (" + MediaStore.Audio.Media.DURATION + ">=" + appSettings.getDurationFilterTime() + ")";
-        // String orderBy =
-        // android.provider.MediaStore.Audio.Media.TRACK;//MediaStore.Audio.Media.TITLE;
         String sortOrder = appSettings.getArtistSortKey();
         if (Utilities.IsEmpty(sortOrder)) {
             sortOrder = MediaStore.Audio.Media.TRACK;// android.provider.MediaStore.Audio.Media.TITLE;
@@ -380,7 +335,7 @@ public class Artist extends BaseActivity implements
                             max2 = newTimeMinutes + ":" + newTimeSeconds;
                         }
                         pl.setTime(max2);
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
 
                     list.add(pl);
@@ -388,11 +343,10 @@ public class Artist extends BaseActivity implements
                 } while (cursor.moveToNext());
 
             }
-        } catch (SQLiteException e) {
+        } catch (SQLiteException ignored) {
         } finally {
             if (cursor != null) {
                 cursor.close();
-                cursor = null;
             }
         }
 
@@ -427,7 +381,6 @@ public class Artist extends BaseActivity implements
                     np = new SongDetails();
                     np.setSong(getString(R.string.create_new));
                     pl.add(1, np);
-                    np = null;
                     ab = new Adapter_playlist_Dialog(pl);
                     ListView dlgLV = (ListView) dialog2
                             .findViewById(R.id.listView1);
@@ -453,18 +406,9 @@ public class Artist extends BaseActivity implements
                                 // id of the playlist
                                 String plId = pl.get(position).getArtist();
                                 playlistid = Integer.parseInt(plId);
-                                // if (android.os.Build.VERSION.SDK_INT >=
-                                // android.os.Build.VERSION_CODES.HONEYCOMB)
-                                // {
                                 new AddToPlayListMultiple().executeOnExecutor(
                                         AsyncTask.THREAD_POOL_EXECUTOR,
                                         (Void) null);
-                                // }
-                                // else
-                                // {
-                                // new AddToPlayListMultiple().execute((Void
-                                // ) null);
-                                // }
                             }
                             dialog2.dismiss();
                         }
@@ -505,16 +449,12 @@ public class Artist extends BaseActivity implements
 
                     Intent intent = new Intent(Artist.this, Player.class);
                     AmuzicgApp.GetInstance().setPosition(0);
-                    // intent.putParcelableArrayListExtra("Data1",
-                    // adapter.GetData(
-                    // ));
-                    // intent.putExtra("Data2", position);
                     if (checkedList.size() > 800) {
                         AmuzicgApp.GetInstance().SetNowPlayingList(
                                 checkedList);
                     } else {
                         AmuzicgApp.GetInstance().SetNowPlayingList(
-                                new ArrayList<SongDetails>(checkedList));
+                                new ArrayList<>(checkedList));
                     }
 
                     AmuzicgApp.GetInstance().setCheck(0);
@@ -559,8 +499,6 @@ public class Artist extends BaseActivity implements
                             }
                         mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
                         ab.OnUpdate(play);
-                        checked = null;
-
                         mListView
                                 .setOnItemClickListener(new OnItemClickListener() {
                                     public void onItemClick(AdapterView<?> a,
@@ -569,22 +507,9 @@ public class Artist extends BaseActivity implements
                                                 Player.class);
                                         AmuzicgApp.GetInstance()
                                                 .setPosition(position);
-                                        // intent.putParcelableArrayListExtra("Data1",
-                                        // adapter.GetData(
-                                        // ));
-                                        // intent.putExtra("Data2", position);
-                                        // if (adapter.GetData().size() > 800)
-                                        // {
                                         AmuzicgApp
                                                 .GetInstance()
                                                 .SetNowPlayingList(ab.GetData());
-                                        // }
-                                        // else
-                                        // {
-                                        // AmuzicgApp.GetInstance().SetNowPlayingList(new
-                                        // ArrayList < SongDetails
-                                        // >(adapter.GetData()));
-                                        // }
                                         AmuzicgApp.GetInstance()
                                                 .setCheck(0);
                                         startActivity(intent);
@@ -613,7 +538,6 @@ public class Artist extends BaseActivity implements
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
                 (int) pixels);
         window.setBackgroundDrawableResource(R.drawable.dialogbg);
-        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog.getWindow().setAttributes(lp);
@@ -633,16 +557,8 @@ public class Artist extends BaseActivity implements
                     if (YOUR_PLAYLIST_ID == -1)
                         return;
 
-                    // if (android.os.Build.VERSION.SDK_INT >=
-                    // android.os.Build.VERSION_CODES.HONEYCOMB)
-                    // {
                     new AddToPl().executeOnExecutor(
                             AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
-                    // }
-                    // else
-                    // {
-                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
-                    // }
                 }
                 dialog.dismiss();
             }
@@ -661,10 +577,10 @@ public class Artist extends BaseActivity implements
         int[] ITEM_DRAWABLES = {R.drawable.composer_button_multiselect,
                 R.drawable.composer_button_sort,
                 R.drawable.composer_button_shuffle};
-        for (int i = 0; i < ITEM_DRAWABLES.length; i++) {
+        for (int ITEM_DRAWABLE : ITEM_DRAWABLES) {
             ImageView item = new ImageView(this);
-            item.setTag(ITEM_DRAWABLES[i]);
-            item.setImageResource(ITEM_DRAWABLES[i]);
+            item.setTag(ITEM_DRAWABLE);
+            item.setImageResource(ITEM_DRAWABLE);
             rayMenu.addItem(item, new OnClickListener() {
 
                 @Override
@@ -700,14 +616,14 @@ public class Artist extends BaseActivity implements
                                                         View view, int position,
                                                         long id) {
                                                     if (position == 0) {
-                                                        highlight2(position);
+                                                        highlight2();
                                                     }
                                                     if (position > 0) {
                                                         highlight(position);
                                                     }
                                                 }
 
-                                                private void highlight2(int position) {
+                                                private void highlight2() {
                                                     highlight_zero = highlight_zero + 1;
                                                     ab.OnUpdate(play);
                                                 }
@@ -716,7 +632,6 @@ public class Artist extends BaseActivity implements
                                                     mListView.setItemChecked(
                                                             position, true);
                                                     ab.OnUpdate(play);
-                                                    return;
                                                 }
                                             });
                                 }
@@ -766,17 +681,13 @@ public class Artist extends BaseActivity implements
                                     Intent intent = new Intent(Artist.this,
                                             Player.class);
                                     AmuzicgApp.GetInstance().setPosition(0);
-                                    // intent.putParcelableArrayListExtra("Data1",
-                                    // adapter.GetData(
-                                    // ));
-                                    // intent.putExtra("Data2", position);
                                     if (play.size() > 800) {
                                         AmuzicgApp.GetInstance()
                                                 .SetNowPlayingList(play);
                                     } else {
                                         AmuzicgApp.GetInstance()
                                                 .SetNowPlayingList(
-                                                        new ArrayList<SongDetails>(
+                                                        new ArrayList<>(
                                                                 play));
                                     }
 
@@ -786,50 +697,6 @@ public class Artist extends BaseActivity implements
                             }, 540);
                             break;
                         }
-                        // case 3:
-                        // {
-                        // fadein( 0, 700 );
-                        // fadeIn.setAnimationListener( new AnimationListener( ) {
-                        //
-                        // @Override
-                        // public void onAnimationStart( Animation animation )
-                        // {
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationEnd( Animation animation )
-                        // {
-                        //
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationRepeat( Animation animation )
-                        // {
-                        // }
-                        // } );
-                        //
-                        // fadeOut.setAnimationListener( new AnimationListener( ) {
-                        // @Override
-                        // public void onAnimationEnd( Animation animation )
-                        // {
-                        //
-                        // rayMenu.setVisibility( View.INVISIBLE );
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationStart( Animation animation )
-                        // {
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationRepeat( Animation animation )
-                        // {
-                        // }
-                        // } );
-                        // rayMenu.startAnimation( fadeOut );
-                        //
-                        // break;
-                        // }
                         default:
                             break;
                     }
@@ -877,30 +744,12 @@ public class Artist extends BaseActivity implements
                                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                                 MediaStore.MediaColumns.DATA + "=?",
                                 new String[]{checkedList.get(i).getPath2()});
-                    } catch (SQLiteException e) {
+                    } catch (SQLiteException ignored) {
                     }
-                    // try
-                    // {
-                    // MediaScannerConnection.scanFile( Artist.this, new String
-                    // [ ] { checkedList.get( i ).getPath2( ) }, null,
-                    // new MediaScannerConnection.OnScanCompletedListener( ) {
-                    // public void onScanCompleted( String path, Uri uri )
-                    // {
-                    // Logger.i( "ExternalStorage", "Scanned " + path + ":" );
-                    // Logger.i( "ExternalStorage", "-> uri=" + uri );
-                    // Artist.this.getContentResolver( ).delete( uri, null, null
-                    // );
-                    // }
-                    // } );
-                    // }
-                    // catch ( Exception e )
-                    // {
-                    // e.printStackTrace( );
-                    // }
                 }
                 dialog2.dismiss();
             }
-		});
+        });
         dialog2.show();
     }
 
@@ -910,20 +759,19 @@ public class Artist extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, intent);
         switch (requestCode) {
             case StorageAccessAPI.Code:
-                // PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
                 if (resultCode == Activity.RESULT_OK) {
 
                     StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Artist.this);
 
 
                     File file = new File(play.get(position2).getPath2());
-                    boolean canwrite = false;
+                    boolean canWrite;
                     try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                        canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
                     } catch (Exception e) {
-                        canwrite = false;
+                        canWrite = false;
                     }
-                    if (canwrite) {
+                    if (canWrite) {
                         songHelper.EditTags(play.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
 
                             @Override
@@ -963,15 +811,15 @@ public class Artist extends BaseActivity implements
         finish();
     }
 
-	@Override
+    @Override
     public void QuickAction_OnRemoveSong() {
     }
 
-	@Override
+    @Override
     public void QuickAction_OnSendSong() {
     }
 
-	@Override
+    @Override
     protected String GetGAScreenName() {
         return "Artist";
     }
@@ -979,7 +827,6 @@ public class Artist extends BaseActivity implements
     class LazyLoad extends AsyncTask<String, String, ArrayList<SongDetails>> {
         @Override
         protected void onPreExecute() {
-            // album2.setText(img.get(pos).getAlbum());
             play.clear();
             OnRefreshListView();
             super.onPreExecute();
@@ -994,7 +841,6 @@ public class Artist extends BaseActivity implements
         protected void onPostExecute(ArrayList<SongDetails> x) {
             if (x != null) {
                 play.addAll(x);
-                // album2.setText(img.get(pos).getAlbum());
                 OnRefreshListView();
             }
         }
@@ -1013,14 +859,13 @@ public class Artist extends BaseActivity implements
         @Override
         protected Void doInBackground(Integer... arg0) {
             Uri uri = MediaStore.Audio.Artists.Albums.getContentUri("external",
-                    arg0[0].intValue());
+                    arg0[0]);
             final String[] columns = {MediaStore.Audio.Artists.Albums.ALBUM,
                     MediaStore.Audio.Artists.Albums.ALBUM_ART,
                     MediaStore.Audio.Artists.ARTIST,
                     MediaStore.Audio.Artists.Albums.NUMBER_OF_SONGS_FOR_ARTIST};
             Cursor cursor = null;
-            img__ = new ArrayList<SongDetails>();
-            // img2__ = new ArrayList < String >();
+            img__ = new ArrayList<>();
             try {
                 cursor = getContentResolver().query(
                         uri,
@@ -1042,7 +887,6 @@ public class Artist extends BaseActivity implements
             } finally {
                 if (cursor != null) {
                     cursor.close();
-                    cursor = null;
                 }
             }
 
@@ -1056,7 +900,7 @@ public class Artist extends BaseActivity implements
             if (img != null) {
                 img.clear();
             } else {
-                img = new ArrayList<SongDetails>();
+                img = new ArrayList<>();
             }
             img.addAll(img__);
             img__.clear();
@@ -1083,7 +927,6 @@ public class Artist extends BaseActivity implements
             } finally {
                 if (cursor2 != null) {
                     cursor2.close();
-                    cursor2 = null;
                 }
             }
             return artistname;
@@ -1104,9 +947,6 @@ public class Artist extends BaseActivity implements
                 tV1.setText(artistname);
                 EcoGallery ecoGallery = (EcoGallery) findViewById(R.id.gallery);
                 ecoGallery.setAdapter(new Adapter_gallery(img, artistname));
-                // setAlbum(cursor.getString(0));//name of album
-                // setPath2(cursor.getString(1));//path of image
-                // setClick_no(cursor.getString(2));// number of songs.
 
                 setupListeners(ecoGallery, artistname);
             }
@@ -1153,41 +993,40 @@ public class Artist extends BaseActivity implements
         }
     }
 
-	class AddToPlayListMultiple extends AsyncTask<Void, String, String> {
-		@Override
-		protected void onPostExecute(String x) {
-			spinner.setVisibility(View.GONE);
-			multiplecheckedListforaddtoplaylist.clear();
-			highlight_zero = 0;
-			ActivityUtil.showCrouton(Artist.this,
-					getString(R.string.songs_were_added_to_playlist));
-			SparseBooleanArray checked = mListView.getCheckedItemPositions();
-			if (checked != null)
-				for (int i = 0; i < checked.size(); i++) {
-					if (checked.valueAt(i)) {
-						mListView.setItemChecked(checked.keyAt(i), false);
-					}
-				}
-			mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-			mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-			ab.OnUpdate(play);
-			checked = null;
-		}
+    class AddToPlayListMultiple extends AsyncTask<Void, String, String> {
+        @Override
+        protected void onPostExecute(String x) {
+            spinner.setVisibility(View.GONE);
+            multiplecheckedListforaddtoplaylist.clear();
+            highlight_zero = 0;
+            ActivityUtil.showCrouton(Artist.this,
+                    getString(R.string.songs_were_added_to_playlist));
+            SparseBooleanArray checked = mListView.getCheckedItemPositions();
+            if (checked != null)
+                for (int i = 0; i < checked.size(); i++) {
+                    if (checked.valueAt(i)) {
+                        mListView.setItemChecked(checked.keyAt(i), false);
+                    }
+                }
+            mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+            mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            ab.OnUpdate(play);
+        }
 
-		@Override
-		protected void onPreExecute() {
-			spinner.setVisibility(View.VISIBLE);
-			super.onPreExecute();
-		}
+        @Override
+        protected void onPreExecute() {
+            spinner.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
 
-		@Override
-		protected String doInBackground(Void... params) {
-			for (int i = 0; i < multiplecheckedListforaddtoplaylist.size(); i++)
+        @Override
+        protected String doInBackground(Void... params) {
+            for (int i = 0; i < multiplecheckedListforaddtoplaylist.size(); i++)
                 NowPlaying.addToPlaylist(Artist.this.getApplicationContext(),
                         multiplecheckedListforaddtoplaylist.get(i).getPath2(),
-						playlistid);
+                        playlistid);
 
-			return null;
-		}
-	}
+            return null;
+        }
+    }
 }

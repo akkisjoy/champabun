@@ -15,10 +15,8 @@ import android.widget.RelativeLayout;
 
 import champak.champabun.R;
 
-public class RoundKnobButton extends RelativeLayout
-        implements GestureDetector.OnGestureListener {
+public class RoundKnobButton extends RelativeLayout implements GestureDetector.OnGestureListener {
     public int eventValue;
-    public ImageView ivBack;
     public int percent;
     public float posDegrees;
     public int stator;
@@ -30,16 +28,15 @@ public class RoundKnobButton extends RelativeLayout
     private ImageView ivRotor;
     private float mAngleDown;
     private float mAngleUp;
-    private boolean mState;
     private RoundKnobButtonListener m_listener;
     private int m_nHeight;
     private int m_nWidth;
     private Bitmap srcoff;
     private Bitmap srcon;
+
     public RoundKnobButton(Context context, int i, int j, int k, int l, int i1) {
         super(context);
         eventValue = 10;
-        mState = false;
         m_nWidth = 0;
         m_nHeight = 0;
         width = l;
@@ -85,17 +82,13 @@ public class RoundKnobButton extends RelativeLayout
     public void onLongPress(MotionEvent motionevent) {
         if (motionevent.getAction() == 0) {
             ivRotor.setImageBitmap(bmpRotorOff);
-            return;
         } else {
             ivRotor.setImageBitmap(bmpRotorOn);
-            return;
         }
     }
 
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                             float distanceY) {
-        boolean flag1 = false;
-        boolean flag;
         if (e1.getAction() == (MotionEvent.ACTION_SCROLL)) {
             ivRotor.setImageBitmap(bmpRotorOn);
         } else {
@@ -209,7 +202,6 @@ public class RoundKnobButton extends RelativeLayout
     }
 
     public interface RoundKnobButtonListener {
-
         void onRotate(int i, int j);
     }
 }

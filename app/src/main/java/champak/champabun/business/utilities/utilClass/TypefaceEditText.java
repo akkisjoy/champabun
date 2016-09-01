@@ -48,7 +48,7 @@ public class TypefaceEditText extends EditText {
         super(context, attrs, defStyle);
 
         if (TypefaceTextView.mTypefaces == null) {
-            TypefaceTextView.mTypefaces = new HashMap<String, Typeface>();
+            TypefaceTextView.mTypefaces = new HashMap<>();
         }
 
         final TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.TypefaceTextView);

@@ -9,20 +9,12 @@ import android.os.Build;
 
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
-import champak.champabun.business.dataclasses.PresetValue;
-import champak.champabun.framework.equalizer.EqualizerValue;
 
 public class PlayMeePreferences {
     final public static String key_uri_for_access = "key_uri_for_access";
     final public static String key_flag = "key_flag";
     final private static String filename = "playmee";
     final private static String key_equalizer = "equalizer";
-    // final private static String key_equalizer_save_setting = "isSave";
-    final private static String key_equalizer_band_id = "eqBandId";
-    final private static String key_equalizer_band_min = "eqBandMin";
-    final private static String key_equalizer_band_max = "eqBandMax";
-    final private static String key_equalizer_band_value = "eqBandValue";
-    final private static String key_equalizer_band_unit = "eqBandUnit";
     final private static String key_playlist_recent_add_name = "pl_re_name";
     final private static String key_player_repeat_mode = "repeat_mode";
     final private static String key_last_playlist = "last_playlist";
@@ -30,7 +22,6 @@ public class PlayMeePreferences {
     final private static String key_isFromRecentAdded = "isFromRecentAdded";
     final private static String key_click_no = "click_no";
     final private static String key_saved_presets = "saved_presets";
-    final private static String key_prev_presets_index = "prev_presets_index";
     private Context context;
 
     public PlayMeePreferences(Context context) {
@@ -41,7 +32,7 @@ public class PlayMeePreferences {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putBoolean(key_equalizer, value);
-        editor.commit();
+        editor.apply();
     }
 
     public boolean IsEqualizerOn() {
@@ -49,64 +40,11 @@ public class PlayMeePreferences {
         return prefs.getBoolean(key_equalizer, true);
     }
 
-    // public void SaveEqualizerSetting(boolean value)
-    // {
-    // SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
-    // Editor editor = prefs.edit();
-    // editor.putBoolean(key_equalizer_save_setting, value);
-    // editor.commit();
-    // }
-    //
-    // public boolean IsEqualizerSettingOn()
-    // {
-    // SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
-    // return prefs.getBoolean(key_equalizer_save_setting, true);
-    // }
-
-    public void SaveEqualizerValue(String presetName, EqualizerValue eqValue) {
-        if (eqValue == null) {
-            return;
-        }
-        SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
-        Editor editor = prefs.edit();
-        editor.putInt(presetName + "_" + key_equalizer_band_id + eqValue.getId(), eqValue.getId());
-        // editor.putInt(presetName + "_" + key_equalizer_band_min + eqValue.getId(), eqValue.getMin());
-        // editor.putInt(presetName + "_" + key_equalizer_band_max + eqValue.getId(), eqValue.getMax());
-        editor.putInt(presetName + "_" + key_equalizer_band_value + eqValue.getId(), eqValue.getValue());
-        // editor.putString(presetName + "_" + key_equalizer_band_unit + eqValue.getId(), eqValue.getUnit());
-        editor.commit();
-    }
-
-    public EqualizerValue GetEqualizerValue(String presetName, int id) {
-        SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
-        EqualizerValue eqValue = null;
-        int _id = prefs.getInt(presetName + "_" + key_equalizer_band_id + id, -1);
-        if (id == _id) {
-            // int min = prefs.getInt(presetName + "_" + key_equalizer_band_min + id, 0);
-            // int max = prefs.getInt(presetName + "_" + key_equalizer_band_max + id, 0);
-            int value = prefs.getInt(presetName + "_" + key_equalizer_band_value + id, 0);
-            // String unit = prefs.getString(presetName + "_" + key_equalizer_band_unit + id, "");
-            eqValue = new EqualizerValue(_id, value);
-        } else if (_id == -1) {
-            eqValue = new EqualizerValue(id, 0);
-        }
-        return eqValue;
-    }
-
-    // public void ClearAllEqValues(int id)
-    // {
-    // SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
-    // Editor editor = prefs.edit();
-    // editor.remove(key_equalizer_band_id + id);
-    // editor.remove(key_equalizer_band_value + id);
-    // editor.commit();
-    // }
-
     public void SetPlaylistRecentName(String recentName) {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putString(key_playlist_recent_add_name, recentName);
-        editor.commit();
+        editor.apply();
     }
 
     public String GetPlaylistRecentName() {
@@ -123,7 +61,7 @@ public class PlayMeePreferences {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putInt(key_player_repeat_mode, mode);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -140,7 +78,7 @@ public class PlayMeePreferences {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putString(key_last_playlist, lastPlaylistIDs);
-        editor.commit();
+        editor.apply();
     }
 
     public String[] GetLastPlaylist() {
@@ -162,7 +100,7 @@ public class PlayMeePreferences {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putBoolean(key_isFromRecentAdded, isFromRecentAdded);
-        editor.commit();
+        editor.apply();
     }
 
     public int GetLastPlaylistIndex() {
@@ -174,7 +112,7 @@ public class PlayMeePreferences {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putString(key_click_no, click_no);
-        editor.commit();
+        editor.apply();
     }
 
     public String GetLastplayClickNo() {
@@ -186,7 +124,7 @@ public class PlayMeePreferences {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putInt(key_last_playlist_index, index);
-        editor.commit();
+        editor.apply();
     }
 
     public boolean HasLastPlayed() {
@@ -203,7 +141,7 @@ public class PlayMeePreferences {
             SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
             Editor editor = prefs.edit();
             editor.putString(key_saved_presets, addPreset);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -220,68 +158,11 @@ public class PlayMeePreferences {
         return ref.split(",");
     }
 
-    public void SaveAllPresetValue(PresetValue[] presetValue) {
-        if (presetValue == null) {
-            return;
-        }
-        for (int i = 0; i < presetValue.length; i++) {
-            SavePresetValue(presetValue[i]);
-        }
-    }
-
-    public void SavePresetValue(PresetValue presetValue) {
-        if (presetValue == null) {
-            return;
-        }
-        for (int i = 0; i < presetValue.getEqualizerValue().length; i++) {
-            SavePresetTitle(presetValue.getName());
-            SaveEqualizerValue(presetValue.getName(), presetValue.getEqualizerValue()[i]);
-        }
-    }
-
-//	private EqualizerValue [] GetPresetValue(String presetName)
-//	{
-//		EqualizerValue [] value = new EqualizerValue [ Equalizer2.NUM_BANDS ];
-//		for (int i = 0; i < value.length; i ++)
-//		{
-//			value [ i ] = GetEqualizerValue(presetName, i);
-//		}
-//
-//		return value;
-//	}
-
-//	public ArrayList < PresetValue > GetAllPresetValue()
-//	{
-//		String [] str = GetAllPresetName();
-//		if (str == null)
-//		{
-//			return null;
-//		}
-//		ArrayList < PresetValue > value = new ArrayList < PresetValue >();
-//		for (int i = 0; i < str.length; i ++)
-//		{
-//			value.add(new PresetValue(i, str [ i ], GetPresetValue(str [ i ])));
-//		}
-//		return value;
-//	}
-
-    public int GetPrevPresetIndex() {
-        SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
-        return prefs.getInt(key_prev_presets_index, 1);
-    }
-
-    public void SavePrevPresetIndex(int index) {
-        SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
-        Editor editor = prefs.edit();
-        editor.putInt(key_prev_presets_index, index);
-        editor.commit();
-    }
-
-    public void SaveSharedPreferenceUri(String string, Uri treeUri) {
+    public void SaveSharedPreferenceUri(Uri treeUri) {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putString(key_uri_for_access, treeUri.toString());
-        editor.commit();
+        editor.apply();
 
     }
 
@@ -297,13 +178,13 @@ public class PlayMeePreferences {
         try {
             treeUri = Uri.parse(prefs.getString(key_uri_for_access, null));
 
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         try {
             context.getContentResolver().releasePersistableUriPermission(treeUri, GetIntFlag());
-            prefs.edit().clear().commit();
-        } catch (Exception e) {
+            prefs.edit().clear().apply();
+        } catch (Exception ignored) {
         }
 
     }
@@ -312,7 +193,7 @@ public class PlayMeePreferences {
         SharedPreferences prefs = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putLong(key_flag, flag);
-        editor.commit();
+        editor.apply();
 
     }
 

@@ -1,124 +1,92 @@
 package champak.champabun.business.dataclasses;
 
-public class AppSetting
-{
-	private SleepTime sleepTimer;
-	private int durationFilterTime;
-	private int appBGResID;
-	private String songSortKey;
-	private String albumSortKey;
-	private String artistSortKey;
-	private String genreSortKey;
-	private boolean autoDownloadAlbumArt;
-	private boolean isAppFullscreen;
-	private ELanguage eLanguage;
+public class AppSetting {
+    private SleepTime sleepTimer;
+    private int durationFilterTime;
+    private String songSortKey;
+    private String albumSortKey;
+    private String artistSortKey;
+    private String genreSortKey;
+    private boolean autoDownloadAlbumArt;
+    private boolean isAppFullscreen;
+    private ELanguage eLanguage;
 
-	public AppSetting( )
-	{
-	}
+    public AppSetting() {
+    }
 
-	public SleepTime getSleepTimer( )
-	{
-		return sleepTimer;
-	}
+    public SleepTime getSleepTimer() {
+        return sleepTimer;
+    }
 
-	public void setSleepTimer( SleepTime sleepTimer )
-	{
-		this.sleepTimer = sleepTimer;
-	}
+    public void setSleepTimer(SleepTime sleepTimer) {
+        this.sleepTimer = sleepTimer;
+    }
 
-	public int getDurationFilterTime( )
-	{
-		return durationFilterTime;
-	}
+    public int getDurationFilterTime() {
+        return durationFilterTime;
+    }
 
-	public void setDurationFilterTime( int durationFilterTime )
-	{
-		this.durationFilterTime = durationFilterTime;
-	}
+    public void setDurationFilterTime(int durationFilterTime) {
+        this.durationFilterTime = durationFilterTime;
+    }
 
-	public int getAppBGResID( )
-	{
-		return appBGResID;
-	}
+    public String getAlbumSortKey() {
+        return albumSortKey;
+    }
 
-	public void setAppBGResID( int appBGResID )
-	{
-		this.appBGResID = appBGResID;
-	}
+    public void setAlbumSortKey(String albumSortKey) {
+        this.albumSortKey = albumSortKey;
+    }
 
-	public String getAlbumSortKey( )
-	{
-		return albumSortKey;
-	}
+    public String getArtistSortKey() {
+        return artistSortKey;
+    }
 
-	public void setAlbumSortKey( String albumSortKey )
-	{
-		this.albumSortKey = albumSortKey;
-	}
+    public void setArtistSortKey(String artistSortKey) {
+        this.artistSortKey = artistSortKey;
+    }
 
-	public String getArtistSortKey( )
-	{
-		return artistSortKey;
-	}
+    public String getSongSortKey() {
+        return songSortKey;
+    }
 
-	public void setArtistSortKey( String artistSortKey )
-	{
-		this.artistSortKey = artistSortKey;
-	}
+    public void setSongSortKey(String songSortKey) {
+        this.songSortKey = songSortKey;
+    }
 
-	public String getSongSortKey( )
-	{
-		return songSortKey;
-	}
+    public String getGenreSortKey() {
+        return genreSortKey;
+    }
 
-	public void setSongSortKey( String songSortKey )
-	{
-		this.songSortKey = songSortKey;
-	}
+    public void setGenreSortKey(String genreSortKey) {
+        this.genreSortKey = genreSortKey;
+    }
 
-	public String getGenreSortKey( )
-	{
-		return genreSortKey;
-	}
+    public boolean isAutoDownloadAlbumArt() {
+        return autoDownloadAlbumArt;
+    }
 
-	public void setGenreSortKey( String genreSortKey )
-	{
-		this.genreSortKey = genreSortKey;
-	}
+    public void setAutoDownloadAlbumArt(boolean autoDownloadAlbumArt) {
+        this.autoDownloadAlbumArt = autoDownloadAlbumArt;
+    }
 
-	public boolean isAutoDownloadAlbumArt( )
-	{
-		return autoDownloadAlbumArt;
-	}
+    public boolean isAppFullscreen() {
+        return isAppFullscreen;
+    }
 
-	public void setAutoDownloadAlbumArt( boolean autoDownloadAlbumArt )
-	{
-		this.autoDownloadAlbumArt = autoDownloadAlbumArt;
-	}
-	
-	public boolean isAppFullscreen( )
-	{
-		return isAppFullscreen;
-	}
+    public void setAppFullscreen(boolean isAppFullscreen) {
+        this.isAppFullscreen = isAppFullscreen;
+    }
 
-	public void setAppFullscreen( boolean isAppFullscreen )
-	{
-		this.isAppFullscreen = isAppFullscreen;
-	}
+    public ELanguage getLanguage() {
+        return eLanguage;
+    }
 
-	public ELanguage getLanguage( )
-	{
-		return eLanguage;
-	}
+    public void setLanguage(ELanguage language) {
+        this.eLanguage = language;
+    }
 
-	public void setLanguage(int language)
-	{
-		this.eLanguage = ELanguage.GetLanguage(language);
-	}
-
-	public void setLanguage(ELanguage language)
-	{
-		this.eLanguage = language;
-	}
+    public void setLanguage(int language) {
+        this.eLanguage = ELanguage.GetLanguage(language);
+    }
 }

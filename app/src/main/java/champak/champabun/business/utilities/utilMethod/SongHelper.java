@@ -24,14 +24,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.cmc.music.common.ID3WriteException;
 import org.cmc.music.metadata.MusicMetadata;
 import org.cmc.music.metadata.MusicMetadataSet;
 import org.cmc.music.myid3.MyID3;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import champak.champabun.AmuzicgApp;
@@ -46,10 +44,7 @@ import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 public class SongHelper {
     final public static int DEFAULT = -1;
     final public static int F_SONG = 0;
-    final public static int F_ARTIST = 1;
     final public static int F_PLAYLIST = 2;
-    final public static int F_ALBUM = 3;
-    final public static int F_FOLDER = 4;
     final public static int PLAYLIST = 5;
     final public static int ARTIST = 6;
     final public static int ALBUM = 7;
@@ -60,7 +55,6 @@ public class SongHelper {
 
     private Dialog dialog;
     private boolean isBusy;
-    private int fragmentID;
 
     public SongHelper() {
     }
@@ -104,7 +98,7 @@ public class SongHelper {
         File file = new File(songdetails.get(position2).getPath2());
         boolean canwrite = false;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP
-                && !(file.getAbsolutePath().toString().contains("emulated") || file.getAbsolutePath().toString().contains("storage0"))
+                && !(file.getAbsolutePath().contains("emulated") || file.getAbsolutePath().contains("storage0"))
                 ) {
 
             try {
@@ -113,25 +107,21 @@ public class SongHelper {
                 canwrite = false;
             }
 
-            if (canwrite) {
-                try {
-                    StorageAccessAPI.getDocumentFile(file, false).delete();
-                    //	removefromMediastore(songdetails,position2,listener,mActivity);
-                } catch (Exception e) {
-                }
-            } else {
+            if (!canwrite) {
                 int deleteoredit = 0;
                 Permission(deleteoredit, mActivity, fragment);
+            } else {
+                try {
+                    StorageAccessAPI.getDocumentFile(file, false).delete();
+                } catch (Exception ignored) {
+                }
             }
 
         } else {
             if (file.exists()) {
                 file.delete();
-                //removefromMediastore(songdetails,position2,listener,mActivity);
             }
         }
-
-
     }
 
     public static void removefromMediastore(ArrayList<SongDetails> songdetails, int position2, OnDeleteSongListener listener, Activity mActivity) {
@@ -150,7 +140,6 @@ public class SongHelper {
     }
 
     private void SetupQuickAction(int fragmentID) {
-        this.fragmentID = fragmentID;
         mQuickAction = new QuickAction(mActivity);
 
         ActionItem Play = new ActionItem(1, mActivity.getResources().getString(R.string.play), mActivity.getResources().getDrawable(
@@ -256,49 +245,7 @@ public class SongHelper {
         mQuickAction.show(anchor);
     }
 
-//	private void ShowSaveAsDialog( final SongDetails songDetails )
-//	{
-//		designdialog( 210 );
-//
-//		LayoutInflater li = ( LayoutInflater ) mActivity.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-//		View v = li.inflate( R.layout.dialog_edit_playlist, null, false );
-//		dialog.requestWindowFeature( Window.FEATURE_NO_TITLE );
-//		dialog.setContentView( v );
-//
-//		TypefaceTextView title = ( TypefaceTextView ) dialog.findViewById( R.id.title );
-//		title.setText( mActivity.getResources( ).getString( R.string.save_as ) );
-//
-//		EditText editText = ( EditText ) dialog.findViewById( R.id.ti );
-//		editText.requestFocus( );
-//
-//		Button okButton = ( Button ) dialog.findViewById( R.id.dBOK );
-//		okButton.setOnClickListener( new OnClickListener( ) {
-//
-//			@Override
-//			public void onClick( View v )
-//			{
-//				EditText editText = ( EditText ) dialog.findViewById( R.id.ti );
-//				String name = editText.getText( ).toString( );
-//				if ( !Utilities.isEmpty( name ) )
-//				{
-//				}
-//				dialog.dismiss( );
-//			}
-//		} );
-//
-//		Button cButton = ( Button ) dialog.findViewById( R.id.dBCancel );
-//		cButton.setOnClickListener( new OnClickListener( ) {
-//
-//			@Override
-//			public void onClick( View v )
-//			{
-//				dialog.dismiss( );
-//			}
-//		} );
-//
-//		dialog.show( );
-//	}
-
+    //	private void ShowSaveAsDialog( final SongDetails
     public void PlaySong(ArrayList<SongDetails> songdetails, int position) {
         AmuzicgApp.GetInstance().setCheck(0);
         Intent intent = new Intent(mActivity, Player.class);
@@ -307,42 +254,24 @@ public class SongHelper {
         mActivity.startActivity(intent);
     }
 
-//	private void designdialog( int x )
-//	{
-//		dialog = new Dialog( mActivity, R.style.playmee );
-//		final Window window = dialog.getWindow( );
-//		float pixels = TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, x, mActivity.getResources( ).getDisplayMetrics( ) );
-//		dialog.getWindow( ).setLayout( WindowManager.LayoutParams.MATCH_PARENT, ( int ) pixels );
-//		window.setBackgroundDrawableResource( R.drawable.dialogbg );
-//		// window.setBackgroundDrawable(new ColorDrawable(0x99000000));
-//		WindowManager.LayoutParams lp = dialog.getWindow( ).getAttributes( );
-//		lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
-//		dialog.getWindow( ).setAttributes( lp );
-//		window.addFlags( WindowManager.LayoutParams.FLAG_DIM_BEHIND );
-//	}
-
-    public void RemoveSong(ContentResolver cr, String AudioId, int position, int YOUR_PLAYLIST_ID) {
-        // Log.v("made it to add",""+audioId);
+    public void RemoveSong(ContentResolver cr, String AudioId, int YOUR_PLAYLIST_ID) {
         String[] cols = new String[]{"count(*)"};
         Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", YOUR_PLAYLIST_ID);
         Cursor cur = cr.query(uri, cols, null, null, null);
-        cur.moveToFirst();
-        cur.close();
+        if (cur != null) {
+            cur.moveToFirst();
+            cur.close();
+        }
 
-        // cr.delete(uri, MediaStore.Audio.Playlists.Members.DATA +" = "+songdetails.getPath2(), null);
         cr.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + AudioId, null);
-        // initializesongs();
         ActivityUtil.showCrouton(mActivity,
                 String.format(mActivity.getResources().getString(R.string.remove_from_playlist)));
     }
 
     public void Add2Playlist(final SongDetails songdetails) {
-        //final int xx = position;
         Adapter_playlist_Dialog ab;
         dialog = Utilities.designdialog(400, mActivity);
 
-
-        //dialog.requestWindowFeature( Window.FEATURE_NO_TITLE );
         dialog.setContentView(R.layout.dialog_queue);
         dialog.setTitle(mActivity.getResources().getString(R.string.select_playlist));
 
@@ -350,10 +279,6 @@ public class SongHelper {
         SongDetails np = new SongDetails();
         np.setSong(mActivity.getResources().getString(R.string.now_playing));
         pl.add(0, np);
-        // SongDetails saveAs = new SongDetails();
-        // saveAs.setSong("Save As...");
-        // pl.add(saveAs);
-        np = null;
         ab = new Adapter_playlist_Dialog(pl);
         ListView dlgLV = (ListView) dialog.findViewById(R.id.listView1);
         dlgLV.setAdapter(ab);
@@ -363,12 +288,7 @@ public class SongHelper {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     addToNowPlaying(songdetails);
-                }
-                // else if (position == pl.size() - 1)
-                // {
-                // ShowSaveAsDialog(songdetails.get(xx));
-                // }
-                else {
+                } else {
                     String plId = pl.get(position).getArtist();
                     int x = Integer.parseInt(plId);
                     NowPlaying.addToPlaylist(mActivity.getApplicationContext(), songdetails.getPath2(), x);
@@ -388,7 +308,6 @@ public class SongHelper {
             listeneredit = listener;
         dialog.setContentView(R.layout.dialoge_edit_tags);
 
-        // window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.setTitle(songdetails.getSong());
         EditText album = (EditText) dialog.findViewById(R.id.al);
         EditText artist = (EditText) dialog.findViewById(R.id.ar);
@@ -409,17 +328,8 @@ public class SongHelper {
                 EditText title = (EditText) dialog.findViewById(R.id.ti);
 
                 String artist2 = artist.getText().toString();
-                if (artist2 == null) {
-                    artist2 = songdetails.getArtist();
-                }
                 String album2 = album.getText().toString();
-                if (album2 == null) {
-                    album2 = songdetails.getAlbum();
-                }
                 String title2 = title.getText().toString();
-                if (title2 == null) {
-                    title2 = songdetails.getSong();
-                }
                 File src = new File(songdetails.getPath2());
                 MusicMetadataSet src_set = null;
                 try {
@@ -446,15 +356,13 @@ public class SongHelper {
                     values.put(MediaStore.MediaColumns.TITLE, title2);
                     mActivity.getContentResolver().update(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values, MediaStore.MediaColumns.DATA + "=?",
                             new String[]{songdetails.getPath2()});
-
-
-                } catch (SQLiteException e) {
+                } catch (SQLiteException ignored) {
                 }
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
                     boolean canwrite = false;
-                    if (src.getAbsolutePath().toString().contains("emulated") || src.getAbsolutePath().toString().contains("storage0")) {
+                    if (src.getAbsolutePath().contains("emulated") || src.getAbsolutePath().contains("storage0")) {
                         new EditTagsTask(src, src_set, meta, _spinner, _play2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                     } else {
                         try {
@@ -468,9 +376,7 @@ public class SongHelper {
                             int deleteoredit = 1;
                             Permission(deleteoredit, mActivity, fragment);
                         }
-
                     }
-
                 } else {
                     new EditTagsTask(src, src_set, meta, _spinner, _play2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                 }
@@ -511,7 +417,7 @@ public class SongHelper {
             mActivity.getContentResolver().delete(uri, MediaStore.MediaColumns.DATA + "=\"" + ringtoneFile.getAbsolutePath() + "\"", null);
             Uri newUri = mActivity.getContentResolver().insert(uri, content);
             RingtoneManager.setActualDefaultRingtoneUri(mActivity, RingtoneManager.TYPE_RINGTONE, newUri);
-        } catch (SQLiteException e) {
+        } catch (SQLiteException ignored) {
         }
         ActivityUtil.showCrouton(mActivity,
                 String.format(mActivity.getResources().getString(R.string.set_as_ringtone), songdetails.getSong()));
@@ -519,8 +425,6 @@ public class SongHelper {
 
     public void DeleteSong(final ArrayList<SongDetails> songdetails, final int position2, final OnDeleteSongListener listener, final Fragment fragment) {
         dialog = Utilities.designdialog(210, mActivity);
-        //LayoutInflater li = ( LayoutInflater ) mActivity.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        //View v = li.inflate( R.layout.dialoge_delete, null, false );
         dialog.setContentView(R.layout.dialoge_delete);
         dialog.setTitle(mActivity.getResources().getString(R.string.delete));
         TextView title = (TextView) dialog.findViewById(R.id.title);
@@ -541,9 +445,9 @@ public class SongHelper {
             @Override
             public void onClick(View v) {
                 File file = new File(songdetails.get(position2).getPath2());
-                boolean canwrite = false;
+                boolean canwrite;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP
-                        && !(file.getAbsolutePath().toString().contains("emulated") || file.getAbsolutePath().toString().contains("storage0"))
+                        && !(file.getAbsolutePath().contains("emulated") || file.getAbsolutePath().contains("storage0"))
                         ) {
 
                     try {
@@ -556,7 +460,7 @@ public class SongHelper {
                         try {
                             StorageAccessAPI.getDocumentFile(file, false).delete();
                             removefromMediastore(songdetails, position2, listener, mActivity);
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
                     } else {
                         int deleteoredit = 0;
@@ -583,81 +487,6 @@ public class SongHelper {
         AmuzicgApp.GetInstance().Add2NowPlaying(songdetails);
     }
 
-    // protected void delete_song_multiple(final ArrayList < SongDetails > checkedList, final OnDeleteSongMultipleListener listener)
-    // {
-    // dialog = new Dialog(mActivity);
-    // final Window window = dialog.getWindow();
-    // Resources resources = dialog.getContext().getResources();
-    // int titleDividerId = resources.getIdentifier("titleDivider", "id", "android");
-    // try
-    // {
-    // View titleDivider = dialog.getWindow().getDecorView().findViewById(titleDividerId);
-    // titleDivider.setBackgroundColor(Color.parseColor("#ff000000"));
-    // }
-    // catch (NullPointerException e)
-    // {
-    // }
-    // window.setBackgroundDrawable(new ColorDrawable(0xbb000000));
-    // window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-    //
-    // LayoutInflater li = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    // View v = li.inflate(R.layout.dialoge_delete, null, false);
-    // dialog.setContentView(v);
-    // dialog.setTitle(mActivity.getResources( ).getString( R.string.delete ));
-    // TextView title = (TextView) v.findViewById(R.id.title);
-    // title.setText("Are you sure you want to delete " + checkedList.size() + " songs ?");
-    // Button ok = (Button) v.findViewById(R.id.dBOK);
-    // Button cancel = (Button) v.findViewById(R.id.dBCancel);
-    //
-    // cancel.setOnClickListener(new OnClickListener() {
-    //
-    // @Override
-    // public void onClick(View v)
-    // {
-    // dialog.dismiss();
-    // }
-    // });
-    //
-    // ok.setOnClickListener(new OnClickListener() {
-    //
-    // @Override
-    // public void onClick(View v)
-    // {
-    // for (int i = 0; i < checkedList.size(); i ++)
-    // {
-    // File file = new File(checkedList.get(i).getPath2());
-    // file.delete();
-    //
-    // songdetails.remove(checkedList.get(i));
-    // ab.notifyDataSetChanged();
-    // }
-    // highlight_zero = 0;
-    // ActivityUtil.showCrouton(mActivity, " deleted succesfully");
-    // ab.notifyDataSetChanged();
-    // for (int i = 0; i < checkedList.size(); i ++)
-    // {
-    // try
-    // {
-    // MediaScannerConnection.scanFile(mActivity, new String [] { checkedList.get(i).getPath2() }, null,
-    // new MediaScannerConnection.OnScanCompletedListener() {
-    // public void onScanCompleted(String path, Uri uri)
-    // {
-    // Logger.i("ExternalStorage", "Scanned " + path + ":");
-    // Logger.i("ExternalStorage", "-> uri=" + uri);
-    // mActivity.getContentResolver().delete(uri, null, null);
-    // }
-    // });
-    // }
-    // catch (Exception e)
-    // {
-    // e.printStackTrace();
-    // }
-    // }
-    // dialog.dismiss();
-    // }
-    // });
-    // dialog.show();
-    // }
 
     public void ShouldDismiss() {
         if (dialog != null && dialog.isShowing()) {
@@ -732,8 +561,8 @@ public class SongHelper {
         protected Boolean doInBackground(Void... params) {
             boolean ref = false;
             try {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP && !(src.getAbsolutePath().toString().contains("emulated") || src
-                        .getAbsolutePath().toString().contains("storage0"))) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP && !(src.getAbsolutePath().contains("emulated") || src
+                        .getAbsolutePath().contains("storage0"))) {
                     new MyID3().write(src, src, src_set, meta);
                 } else
                     new MyID3().update(src, src_set, meta);
@@ -744,24 +573,7 @@ public class SongHelper {
                             }
                         });
                 ref = true;
-            } catch (NullPointerException e) {
-                // e = null;
-            } catch (UnsupportedEncodingException e) {
-                // e.printStackTrace();
-                // e = null;
-            } catch (ID3WriteException e) {
-                // e.printStackTrace();
-                // e = null;
-            } catch (IOException e) {
-                // e.printStackTrace();
-                // e = null;
-            } // write updated metadata
-            catch (ArrayIndexOutOfBoundsException e) {
-                // e.printStackTrace();
-                // e = null;
-            } catch (Exception e) {
-                // e.printStackTrace();
-                // e = null;
+            } catch (Exception ignored) {
             }
 
             return ref;
@@ -775,7 +587,7 @@ public class SongHelper {
             if (play2 != null) {
                 play2.setVisibility(View.VISIBLE);
             }
-            if (result.booleanValue()) {
+            if (result) {
                 if (listeneredit != null) {
                     listeneredit.OnEditTagsSuccessful();
                 }
@@ -784,9 +596,4 @@ public class SongHelper {
             }
         }
     }
-
-    // public interface OnDeleteSongMultipleListener
-    // {
-    // public void OnMultipleSongDeleted();
-    // }
 }

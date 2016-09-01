@@ -1,9 +1,7 @@
 package champak.champabun.framework.equalizer;
 
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,7 +13,6 @@ import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.graphics.Shader.TileMode;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Virtualizer;
@@ -54,9 +51,8 @@ import champak.champabun.view.activity.BaseActivity;
 public class EqualizerActivity extends BaseActivity {
     public int prevPresetIndex;
     public Equalizer mEqualizer;
-    public MediaPlayer mMediaPlayer;
     public DatabaseHandler db;
-    public RoundKnobButton rv1, rv2, rv3;
+    public RoundKnobButton rv2;
     public Button eq_status;
     public PlayMeePreferences prefs;
     public ArrayAdapter<String> dataAdapter;
@@ -65,31 +61,88 @@ public class EqualizerActivity extends BaseActivity {
     public Paint paint1, paint2, paint3, paint4, paint5, midcolor, circle1, circle2, circle3, circle4, circle5,
             glowcolor1, glowcolor2, glowcolor3, glowcolor4, glowcolor5;
     Singleton m_Inst = Singleton.getInstance();
-    Double percent_to_vol;
-    //float titlesize;
     short band;
     Shader shaderTop, shaderBottom, shaderNormal;
     Boolean eq;
     View eq_wrapping;
     AudioManager maudiomanager;
-    private int Xvalue, Yvalue, Y1, Y2, Y3, Y4, Y5, X1, X2, X3, X4, X5, I1, I2, I3, I4, I5, D1, D2, D3, D4, D5,
-            DeviceHeight, DeviceWidth, End, Mid, W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, gap, Mgap1, Mgap2, Mgap3,
-            Mgap4, strokewidth, count, btn_width, padding_top, per1, per2, per3, buttonvaluecount, textsize, Boder_top,
-            Boder_bottom, C1, C2, C3, C4, C5, stator1, stator2, stator3, volume, bitmapheight, presetcount, l1, l2, l3,
-            l4, l5, h1, h2, h3, h4, h5, mid, spinnerposition, curPresetIndex, C, Y, I, D, setfocus,
-            systemvol;
+    private int Xvalue;
+    private int Yvalue;
+    private int Y1;
+    private int Y2;
+    private int Y3;
+    private int Y4;
+    private int Y5;
+    private int X1;
+    private int X2;
+    private int X3;
+    private int X4;
+    private int X5;
+    private int I1;
+    private int I2;
+    private int I3;
+    private int I4;
+    private int I5;
+    private int D1;
+    private int D2;
+    private int D3;
+    private int D4;
+    private int D5;
+    private int DeviceHeight;
+    private int DeviceWidth;
+    private int Mid;
+    private int W1;
+    private int W2;
+    private int W3;
+    private int W4;
+    private int W5;
+    private int W6;
+    private int W7;
+    private int W8;
+    private int W9;
+    private int W10;
+    private int gap;
+    private int Mgap1;
+    private int Mgap2;
+    private int Mgap3;
+    private int Mgap4;
+    private int strokewidth;
+    private int count;
+    private int btn_width;
+    private int per1;
+    private int per2;
+    private int per3;
+    private int buttonvaluecount;
+    private int textsize;
+    private int Boder_top;
+    private int Boder_bottom;
+    private int C1;
+    private int C2;
+    private int C3;
+    private int C4;
+    private int C5;
+    private int stator1;
+    private int stator2;
+    private int stator3;
+    private int volume;
+    private int presetcount;
+    private int l1;
+    private int l2;
+    private int l3;
+    private int l4;
+    private int l5;
+    private int h1;
+    private int h2;
+    private int h3;
+    private int h4;
+    private int h5;
+    private int mid;
+    private int spinnerposition;
+    private int curPresetIndex;
+    private int Y;
+    private int setfocus;
     private Virtualizer virtualizer;
     private BassBoost bassBoost;
-    BroadcastReceiver eq_init = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int x = maudiomanager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            // TODO
-            //getEffect( Music_service.mp.getAudioSessionId( ) );
-            checkEq();
-            maudiomanager.setStreamVolume(AudioManager.STREAM_MUSIC, x, 0);
-        }
-    };
     private Dialog dialog;
     private Bitmap bitmap;
     private ImageView drawingImageView, ivBack1, ivBack2, ivBack3;
@@ -99,8 +152,6 @@ public class EqualizerActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.equalizer_vertical);
-        //registerReceiver( eq_init, new IntentFilter( IConstant.BROADCAST_EQ ) );
         db = new DatabaseHandler(this);
 
         eq_status = (Button) findViewById(R.id.equalizerOnOff);
@@ -141,49 +192,39 @@ public class EqualizerActivity extends BaseActivity {
 
         DeviceHeight = size.y;
         DeviceWidth = size.x;
-        End = DeviceHeight * 70 / 100;
         Boder_top = DeviceHeight * 20 / 100;
         Boder_bottom = DeviceHeight * 70 / 100;
         Mid = (Boder_top + ((Boder_bottom - Boder_top) / 2));
         btn_width = DeviceWidth / 3;
         Log.d(" dh" + Boder_bottom, " mid" + Boder_top);
-        bitmapheight = Boder_bottom - Boder_top;
-        padding_top = ((DeviceHeight - End) - btn_width) / 2;
         if (DeviceWidth <= 480) {
             gap = 10;
             strokewidth = 7;
             textsize = 15;
-            //titlesize = 27;
         } else if (DeviceWidth > 480 && DeviceWidth <= 640) {
             gap = 15;
             strokewidth = 8;
             textsize = 17;
-            //	titlesize = 28;
         } else if (DeviceWidth > 640 && DeviceWidth <= 800) {
             gap = 20;
             strokewidth = 9;
             textsize = 20;
-            //titlesize = 30;
         } else if (DeviceWidth > 800 && DeviceWidth <= 960) {
             gap = 30;
             strokewidth = 10;
             textsize = 22;
-            //titlesize = 32;
         } else if (DeviceWidth > 960 && DeviceWidth <= 1120) {
             gap = 35;
             strokewidth = 12;
             textsize = 24;
-            //titlesize = 34;
         } else if (DeviceWidth > 1120 && DeviceWidth <= 1280) {
             gap = 40;
             strokewidth = 15;
             textsize = 25;
-            //titlesize = 35;
         } else if (DeviceWidth > 1280 && DeviceWidth <= 1440) {
             gap = 45;
             strokewidth = 15;
             textsize = 26;
-            //titlesize = 36;
         }
         W1 = gap;
         W2 = (DeviceWidth * 2 / 10) - gap;
@@ -205,8 +246,6 @@ public class EqualizerActivity extends BaseActivity {
         X4 = W7 + ((W8 - W7) / 2);
         X5 = W9 + (W10 - W9) / 2;
 
-        // db.deleteContact(new Pathvalues(1,1,1,1,1,1));
-        // db.deleteButtonValue(new Buttonvalues(1,1,1,1));
         Log.d("Insert: ", "Inserting ..");
         buttonvaluecount = db.getrowCount();
         Log.d("buttonvalue" + buttonvaluecount, "ok");
@@ -231,10 +270,8 @@ public class EqualizerActivity extends BaseActivity {
                     + cn1.getB1() + "two" + cn1.getB2() + "three" + cn1.getB3();
             Log.d("buttonValue: ", logvalue);
             per1 = cn1.getBass();
-            // per2 = cn1.getVol();
             per3 = cn1.getVirtualizer();
             stator1 = cn1.getB1();
-            // stator2 = cn1.getB2();
             stator3 = cn1.getB3();
         }
         count = db.getContactsCount();
@@ -256,7 +293,6 @@ public class EqualizerActivity extends BaseActivity {
                 D1 = ((Y1 - Mid) * 30) / 100;
                 I1 = Mid + D1;
                 C1 = Y1 - (((Y1 - Mid) * 20) / 100);
-                //paint1.setColor(getResources().getColor(R.color.graphbottomcolor));
                 paint1.setShader(shaderBottom);
                 circle1.setColor(getResources().getColor(R.color.graphbottomcolor));
                 glowcolor1.setColor(getResources().getColor(R.color.glowcolorbottom));
@@ -264,17 +300,13 @@ public class EqualizerActivity extends BaseActivity {
                 D1 = ((Mid - Y1) * 30) / 100;
                 I1 = Mid - D1;
                 C1 = Y1 + (((Mid - Y1) * 20) / 100);
-                //paint1.setColor(getResources().getColor(R.color.graphtopcolor));
                 paint1.setShader(shaderTop);
-
                 circle1.setColor(getResources().getColor(R.color.graphtopcolor));
                 glowcolor1.setColor(getResources().getColor(R.color.glowcolortop));
             } else if (Y1 == Mid) {
                 I1 = Mid;
                 C1 = Y1;
-                //paint1.setColor(getResources().getColor(R.color.graphnormalcolor));
                 paint1.setShader(shaderNormal);
-
                 circle1.setColor(getResources().getColor(R.color.graphnormalcolor));
                 glowcolor1.setColor(getResources().getColor(R.color.glowcolornormal));
             }
@@ -282,27 +314,20 @@ public class EqualizerActivity extends BaseActivity {
                 D2 = ((Y2 - Mid) * 30) / 100;
                 I2 = Mid + D2;
                 C2 = Y2 - (((Y2 - Mid) * 20) / 100);
-                //paint2.setColor(getResources().getColor(R.color.graphbottomcolor));
                 paint2.setShader(shaderBottom);
                 circle2.setColor(getResources().getColor(R.color.graphbottomcolor));
                 glowcolor2.setColor(getResources().getColor(R.color.glowcolorbottom));
-
             } else if (Y2 < Mid) {
                 D2 = ((Mid - Y2) * 30) / 100;
                 I2 = Mid - D2;
                 C2 = Y2 + (((Mid - Y2) * 20) / 100);
-                //paint2.setColor(getResources().getColor(R.color.graphtopcolor));
                 paint2.setShader(shaderTop);
-
-
                 circle2.setColor(getResources().getColor(R.color.graphtopcolor));
                 glowcolor2.setColor(getResources().getColor(R.color.glowcolortop));
             } else if (Y2 == Mid) {
                 I2 = Mid;
                 C2 = Y2;
-                //paint2.setColor(getResources().getColor(R.color.graphnormalcolor));
                 paint2.setShader(shaderNormal);
-
                 circle2.setColor(getResources().getColor(R.color.graphnormalcolor));
                 glowcolor2.setColor(getResources().getColor(R.color.glowcolornormal));
             }
@@ -310,26 +335,20 @@ public class EqualizerActivity extends BaseActivity {
                 D3 = ((Y3 - Mid) * 30) / 100;
                 I3 = Mid + D3;
                 C3 = Y3 - (((Y3 - Mid) * 20) / 100);
-                //paint3.setColor(getResources().getColor(R.color.graphbottomcolor));
                 paint3.setShader(shaderBottom);
-
                 circle3.setColor(getResources().getColor(R.color.graphbottomcolor));
                 glowcolor3.setColor(getResources().getColor(R.color.glowcolorbottom));
             } else if (Y3 < Mid) {
                 D3 = ((Mid - Y3) * 30) / 100;
                 I3 = Mid - D3;
                 C3 = Y3 + (((Mid - Y3) * 20) / 100);
-                //spaint3.setColor(getResources().getColor(R.color.graphtopcolor));
                 paint3.setShader(shaderTop);
-
                 circle3.setColor(getResources().getColor(R.color.graphtopcolor));
                 glowcolor3.setColor(getResources().getColor(R.color.glowcolortop));
             } else if (Y3 == Mid) {
                 I3 = Mid;
                 C3 = Y3;
-                //paint3.setColor(getResources().getColor(R.color.graphnormalcolor));
                 paint3.setShader(shaderNormal);
-
                 circle3.setColor(getResources().getColor(R.color.graphnormalcolor));
                 glowcolor3.setColor(getResources().getColor(R.color.glowcolornormal));
             }
@@ -337,27 +356,20 @@ public class EqualizerActivity extends BaseActivity {
                 D4 = ((Y4 - Mid) * 30) / 100;
                 I4 = Mid + D4;
                 C4 = Y4 - (((Y4 - Mid) * 20) / 100);
-                //paint4.setColor(getResources().getColor(R.color.graphbottomcolor));
                 paint4.setShader(shaderBottom);
-
                 circle4.setColor(getResources().getColor(R.color.graphbottomcolor));
                 glowcolor4.setColor(getResources().getColor(R.color.glowcolorbottom));
             } else if (Y4 < Mid) {
                 D4 = ((Mid - Y4) * 30) / 100;
                 I4 = Mid - D4;
                 C4 = Y4 + (((Mid - Y4) * 20) / 100);
-                //paint4.setColor(getResources().getColor(R.color.graphtopcolor));
                 paint4.setShader(shaderTop);
-
                 circle4.setColor(getResources().getColor(R.color.graphtopcolor));
                 glowcolor4.setColor(getResources().getColor(R.color.glowcolortop));
-
             } else if (Y4 == Mid) {
                 I4 = Mid;
                 C4 = Y4;
-                //paint4.setColor(getResources().getColor(R.color.graphnormalcolor));
                 paint4.setShader(shaderNormal);
-
                 circle4.setColor(getResources().getColor(R.color.graphnormalcolor));
                 glowcolor4.setColor(getResources().getColor(R.color.glowcolornormal));
             }
@@ -365,26 +377,20 @@ public class EqualizerActivity extends BaseActivity {
                 D5 = ((Y5 - Mid) * 30) / 100;
                 I5 = Mid + D5;
                 C5 = Y5 - (((Y5 - Mid) * 20) / 100);
-                //paint5.setColor(getResources().getColor(R.color.graphbottomcolor));
                 paint5.setShader(shaderBottom);
-
                 circle5.setColor(getResources().getColor(R.color.graphbottomcolor));
                 glowcolor5.setColor(getResources().getColor(R.color.glowcolorbottom));
             } else if (Y5 < Mid) {
                 D5 = ((Mid - Y5) * 30) / 100;
                 I5 = Mid - D5;
                 C5 = Y5 + (((Mid - Y5) * 20) / 100);
-                //paint5.setColor(getResources().getColor(R.color.graphtopcolor));
                 paint5.setShader(shaderTop);
-
                 circle5.setColor(getResources().getColor(R.color.graphtopcolor));
                 glowcolor5.setColor(getResources().getColor(R.color.glowcolortop));
             } else if (Y5 == Mid) {
                 I5 = Mid;
                 C5 = Y5;
-                //paint5.setColor(getResources().getColor(R.color.graphnormalcolor));
                 paint5.setShader(shaderNormal);
-
                 circle5.setColor(getResources().getColor(R.color.graphnormalcolor));
                 glowcolor5.setColor(getResources().getColor(R.color.glowcolornormal));
             }
@@ -393,9 +399,6 @@ public class EqualizerActivity extends BaseActivity {
             drawpath();
         }
         m_Inst.InitGUIFrame(this);
-        RelativeLayout ButtonView = (RelativeLayout) findViewById(R.id.button_layout);
-        // ButtonView.getLayoutParams().width = DeviceWidth;
-        // ButtonView.getLayoutParams().height = btn_width;
         RelativeLayout panel1 = (RelativeLayout) findViewById(R.id.button1);
         panel1.getLayoutParams().width = btn_width;
         panel1.getLayoutParams().height = btn_width;
@@ -436,9 +439,6 @@ public class EqualizerActivity extends BaseActivity {
         statorselectorVirtualizer();
         ivBack2.setImageResource(stator2);
         rv2.setRotorPercentage(per2);
-        //TextView Titletext = (TextView) findViewById(R.id.titletext);
-        //Titletext.getLayoutParams().height = Boder_top;
-        //itletext.setTextSize(titlesize);
         TextView voltext = (TextView) findViewById(R.id.voltext);
         voltext.getLayoutParams().width = btn_width;
         voltext.setPadding(0, 5, 0, 20);
@@ -455,7 +455,6 @@ public class EqualizerActivity extends BaseActivity {
         panel1.setPadding(0, 5, 0, 0);
         panel2.setPadding(0, 5, 0, 0);
         panel3.setPadding(0, 5, 0, 0);
-
 
         rv1.setRotorPercentage(per1);
         rv1.SetListener(new RoundKnobButton.RoundKnobButtonListener() {
@@ -474,9 +473,6 @@ public class EqualizerActivity extends BaseActivity {
         rv2.SetListener(new RoundKnobButton.RoundKnobButtonListener() {
             @Override
             public void onRotate(int percentage, int statorvalue) {
-                // Toast.makeText(getApplicationContext(), "percentage" +
-                // DeviceWidth, Toast.LENGTH_LONG).show();
-                // Log.d("deg"+deg,"%"+percentage);
                 per2 = percentage;
                 stator2 = statorvalue;
                 db.updateButtonValue(new Buttonvalues(1, per1, per2, per3, stator1, stator2, stator3));
@@ -492,9 +488,7 @@ public class EqualizerActivity extends BaseActivity {
         rv3.SetListener(new RoundKnobButton.RoundKnobButtonListener() {
             @Override
             public void onRotate(int percentage, int statorvalue) {
-                // Log.d("deg"+deg,"%"+per3);
                 per3 = percentage;
-
                 stator3 = statorvalue;
                 db.updateButtonValue(new Buttonvalues(1, per1, per2, per3, stator1, stator2, stator3));
                 setVirtualizer(virtualizer, percentage);
@@ -506,12 +500,9 @@ public class EqualizerActivity extends BaseActivity {
     private void percentcalcBass() {
         int i = bassBoost.getRoundedStrength();
         per1 = i / 10;
-
     }
 
     private void checkEq() {
-        //maudiomanager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
-
         if (eq) {
             Singleton.theEqualizer.setEnabled(true);
             short x = band;
@@ -537,21 +528,17 @@ public class EqualizerActivity extends BaseActivity {
             setBassBoost(bassBoost, per1);
             setVirtualizer(virtualizer, per3);
             eq_status.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
-            return;
         } else {
             Singleton.theEqualizer.setEnabled(false);
             setBassBoostOff(bassBoost);
             setVirtualizerOff(virtualizer);
             eq_status.getBackground().setColorFilter(Color.parseColor("#666666"), PorterDuff.Mode.SRC_ATOP);
-            return;
         }
-
     }
 
     private void percentcalcVirtualizer() {
         int i = virtualizer.getRoundedStrength();
         per3 = i / 10;
-
     }
 
     private void percentcalcVolume() {
@@ -562,67 +549,46 @@ public class EqualizerActivity extends BaseActivity {
             per2 = 0;
         } else if (i == 1) {
             per2 = 7;
-            return;
         } else if (i == 2) {
             per2 = 15;
-            return;
         } else if (i == 3) {
             per2 = 21;
-            return;
         } else if (i == 4) {
             per2 = 28;
-            return;
         } else if (i == 5) {
             per2 = 34;
-            return;
         } else if (i == 6) {
             per2 = 41;
-            return;
         } else if (i == 7) {
             per2 = 48;
-            return;
         } else if (i == 8) {
             per2 = 54;
-            return;
         } else if (i == 9) {
             per2 = 61;
-            return;
         } else if (i == 10) {
             per2 = 68;
-            return;
         } else if (i == 11) {
             per2 = 74;
-            return;
         } else if (i == 12) {
             per2 = 81;
-            return;
         } else if (i == 13) {
             per2 = 87;
-            return;
         } else if (i == 14) {
             per2 = 94;
-            return;
         } else if (i == 15) {
             per2 = 99;
-            return;
         }
     }
 
     private void pathcolor() {
-        // TODO Auto-generated method stub
-
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int height = displaymetrics.heightPixels;
         int width = displaymetrics.widthPixels;
 
-
         shaderTop = new RadialGradient(width / 2, height / 2, 2 * height / 5, getResources().getColor(R.color.graphnormalcolor), getResources().getColor(R.color.graphtopcolor), TileMode.CLAMP);
         shaderBottom = new RadialGradient(width / 2, height / 2, 2 * height / 5, getResources().getColor(R.color.graphnormalcolor), getResources().getColor(R.color.graphbottomcolor), TileMode.CLAMP);
         shaderNormal = new RadialGradient(width / 2, height / 2, 2 * height / 5, getResources().getColor(R.color.graphnormalcolor), getResources().getColor(R.color.graphbottomcolor), TileMode.CLAMP);
-//		shaderTop =    new LinearGradient(0, height/2, 0, 3*height/6,getResources().getColor(R.color.graphnormalcolor), getResources().getColor(R.color.graphtopcolor), TileMode.CLAMP);
-//		shaderBottom = new LinearGradient(0, 2*height/5, 0, height/2,getResources().getColor(R.color.graphbottomcolor), getResources().getColor(R.color.graphnormalcolor), TileMode.CLAMP);
-//		shaderNormal = new LinearGradient(0, 0, 0, 40,getResources().getColor(R.color.graphnormalcolor), getResources().getColor(R.color.graphnormalcolor), TileMode.CLAMP);
 
         paint1 = new Paint();
         paint1.setStrokeWidth(strokewidth);
@@ -691,16 +657,9 @@ public class EqualizerActivity extends BaseActivity {
 
     }
 
-    private void OnRefreshSpinner() {
-        if (spinnerList.size() > 2) {
-            spinnerList.remove(0);
-        }
-        dataAdapter.notifyDataSetChanged();
-    }
-
     private void SetupSpinner() {
         adapterlist();
-        dataAdapter = new ArrayAdapter(this, R.layout.simplerow, spinnerList);
+        dataAdapter = new ArrayAdapter<>(this, R.layout.simplerow, spinnerList);
         dataAdapter.setDropDownViewResource(R.layout.simplerow);
         spinner.setAdapter(dataAdapter);
         spinnerposition = m_Inst.getCurPresetIndex(EqualizerActivity.this);
@@ -854,13 +813,11 @@ public class EqualizerActivity extends BaseActivity {
     }
 
     private void ShowNewPresetDialog() {
-        // TODO Auto-generated method stub
         dialog = new Dialog(this, R.style.playmee);
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, (int) pixels);
         window.setBackgroundDrawableResource(R.drawable.dialogbg);
-        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
         LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog.getWindow().setAttributes(lp);
@@ -903,8 +860,6 @@ public class EqualizerActivity extends BaseActivity {
                 EditText editText = (EditText) dialog.findViewById(R.id.ti);
                 Utilities.HideSoftKeyboard(EqualizerActivity.this, editText);
                 dialog.dismiss();
-
-                // spinner.setSelection( prevPresetIndex );
             }
         });
 
@@ -913,11 +868,9 @@ public class EqualizerActivity extends BaseActivity {
     }
 
     private void adapterlist() {
-        // TODO Auto-generated method stub
-
         presetcount = db.getpresetCount();
         Log.d("music player preset", "count is  " + presetcount);
-        spinnerList = new ArrayList();
+        spinnerList = new ArrayList<>();
         spinnerList.add(getResources().getString(R.string.preset_current));
         spinnerList.add(getResources().getString(R.string.new_preset));
         spinnerList.add(getResources().getString(R.string.preset_normal));
@@ -932,20 +885,16 @@ public class EqualizerActivity extends BaseActivity {
         spinnerList.add(getResources().getString(R.string.preset_rock));
         if (presetcount != 0) {
             for (int i = 0; i <= presetcount; i++) {
-
-                int presetnumber = i + 12;
                 List<Presetvalues> presetvalues = db.getpresetbyid(i);
                 for (Presetvalues pv : presetvalues) {
                     String pname = pv.getPRESETNAME();
                     spinnerList.add(pname);
                 }
             }
-
         }
     }
 
     private void createbitmap() {
-        // TODO Auto-generated method stub
         Point size = new Point();
         Display display = getWindowManager().getDefaultDisplay();
 
@@ -974,16 +923,12 @@ public class EqualizerActivity extends BaseActivity {
         l5 = DeviceHeight * 70 / 100;
 
         if (Y > mid && Y <= h1) {
-            //Log.i("Equalizertest",mid+ "  "+ Y + "   "+ h1);
-
             Singleton.theEqualizer.setBandLevel(band, (short) 300);
             return;
         } else if (Y < h1 && Y >= h2) {
-            //Log.i("Equalizertest",h2+ "  "+ Y + "   "+ h1);
             Singleton.theEqualizer.setBandLevel(band, (short) 600);
             return;
         } else if (Y < h2 && Y >= h3) {
-            // Log.i("Equalizertest",h2+ "  "+ Y + "   "+ h3);
             Singleton.theEqualizer.setBandLevel(band, (short) 900);
             return;
         } else if (Y < h3 && Y >= h4) {
@@ -1012,13 +957,7 @@ public class EqualizerActivity extends BaseActivity {
             return;
         }
 
-        // mEqualizer.usePreset((short) 2);
-        // String a = mEqualizer.getPresetName(band);
-
-        // short b = mEqualizer.getCurrentPreset();
-
         short bandlevel1 = Singleton.theEqualizer.getBandLevel(band);
-        // short bandlevel2=m_Inst.theEqualizer.getBandLevel((short)1);
         Log.d("name ++value+++++" + Y, "current preset name is" + band);
         Log.d("name ++value+++++" + Y, "current preset name is" + bandlevel1);
     }
@@ -1341,23 +1280,15 @@ public class EqualizerActivity extends BaseActivity {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if (setfocus == 1) {
-
                         Y1 = Yvalue;
-
                     } else if (setfocus == 2) {
-
                         Y2 = Yvalue;
-
                     } else if (setfocus == 3) {
-
                         Y3 = Yvalue;
-
                     } else if (setfocus == 4) {
                         Y4 = Yvalue;
-
                     } else if (setfocus == 5) {
                         Y5 = Yvalue;
-
                     }
                     break;
                 case MotionEvent.ACTION_UP:
@@ -1387,26 +1318,20 @@ public class EqualizerActivity extends BaseActivity {
             D1 = ((Y1 - Mid) * 30) / 100;
             I1 = Mid + D1;
             C1 = Y1 - (((Y1 - Mid) * 20) / 100);
-            //paint1.setColor(getResources().getColor(R.color.graphbottomcolor));
             paint1.setShader(shaderBottom);
-
             circle1.setColor(getResources().getColor(R.color.graphbottomcolor));
             glowcolor1.setColor(getResources().getColor(R.color.glowcolorbottom));
         } else if (Y1 < Mid) {
             D1 = ((Mid - Y1) * 30) / 100;
             I1 = Mid - D1;
             C1 = Y1 + (((Mid - Y1) * 20) / 100);
-            //paint1.setColor(getResources().getColor(R.color.graphtopcolor));
             paint1.setShader(shaderTop);
-
             circle1.setColor(getResources().getColor(R.color.graphtopcolor));
             glowcolor1.setColor(getResources().getColor(R.color.glowcolortop));
         } else if (Y1 == Mid) {
             I1 = Mid;
             C1 = Y1;
-            //paint1.setColor(getResources().getColor(R.color.graphnormalcolor));
             paint1.setShader(shaderNormal);
-
             circle1.setColor(getResources().getColor(R.color.graphnormalcolor));
             glowcolor1.setColor(getResources().getColor(R.color.glowcolornormal));
         }
@@ -1415,27 +1340,21 @@ public class EqualizerActivity extends BaseActivity {
             D2 = ((Y2 - Mid) * 30) / 100;
             I2 = Mid + D2;
             C2 = Y2 - (((Y2 - Mid) * 20) / 100);
-            //paint2.setColor(getResources().getColor(R.color.graphbottomcolor));
             paint2.setShader(shaderBottom);
-
             circle2.setColor(getResources().getColor(R.color.graphbottomcolor));
             glowcolor2.setColor(getResources().getColor(R.color.glowcolorbottom));
         } else if (Y2 < Mid) {
             D2 = ((Mid - Y2) * 30) / 100;
             I2 = Mid - D2;
             C2 = Y2 + (((Mid - Y2) * 20) / 100);
-            //paint2.setColor(getResources().getColor(R.color.graphtopcolor));
             paint2.setShader(shaderTop);
-
             circle2.setColor(getResources().getColor(R.color.graphtopcolor));
             glowcolor2.setColor(getResources().getColor(R.color.glowcolortop));
         } else if (Y2 == Mid) {
             I2 = Mid;
             C2 = Y2;
             Singleton.theEqualizer.setEnabled(true);
-            //paint2.setColor(getResources().getColor(R.color.graphnormalcolor));
             paint2.setShader(shaderNormal);
-
             circle2.setColor(getResources().getColor(R.color.graphnormalcolor));
             glowcolor2.setColor(getResources().getColor(R.color.glowcolornormal));
         }
@@ -1444,26 +1363,20 @@ public class EqualizerActivity extends BaseActivity {
             D3 = ((Y3 - Mid) * 30) / 100;
             I3 = Mid + D3;
             C3 = Y3 - (((Y3 - Mid) * 20) / 100);
-            //paint3.setColor(getResources().getColor(R.color.graphbottomcolor));
             paint3.setShader(shaderBottom);
-
             circle3.setColor(getResources().getColor(R.color.graphbottomcolor));
             glowcolor3.setColor(getResources().getColor(R.color.glowcolorbottom));
         } else if (Y3 < Mid) {
             D3 = ((Mid - Y3) * 30) / 100;
             I3 = Mid - D3;
             C3 = Y3 + (((Mid - Y3) * 20) / 100);
-            //paint3.setColor(getResources().getColor(R.color.graphtopcolor));
             paint3.setShader(shaderTop);
-
             circle3.setColor(getResources().getColor(R.color.graphtopcolor));
             glowcolor3.setColor(getResources().getColor(R.color.glowcolortop));
         } else if (Y3 == Mid) {
             I3 = Mid;
             C3 = Y3;
-            //paint3.setColor(getResources().getColor(R.color.graphnormalcolor));
             paint3.setShader(shaderNormal);
-
             circle3.setColor(getResources().getColor(R.color.graphnormalcolor));
             glowcolor3.setColor(getResources().getColor(R.color.glowcolornormal));
         }
@@ -1472,24 +1385,19 @@ public class EqualizerActivity extends BaseActivity {
             D4 = ((Y4 - Mid) * 30) / 100;
             I4 = Mid + D4;
             C4 = Y4 - (((Y4 - Mid) * 20) / 100);
-            //paint4.setColor(getResources().getColor(R.color.graphbottomcolor));
             paint4.setShader(shaderBottom);
-
             circle4.setColor(getResources().getColor(R.color.graphbottomcolor));
             glowcolor4.setColor(getResources().getColor(R.color.glowcolorbottom));
         } else if (Y4 < Mid) {
             D4 = ((Mid - Y4) * 30) / 100;
             I4 = Mid - D4;
             C4 = Y4 + (((Mid - Y4) * 20) / 100);
-            //paint4.setColor(getResources().getColor(R.color.graphtopcolor));
             paint4.setShader(shaderTop);
-
             circle4.setColor(getResources().getColor(R.color.graphtopcolor));
             glowcolor4.setColor(getResources().getColor(R.color.glowcolortop));
         } else if (Y4 == Mid) {
             I4 = Mid;
             C4 = Y4;
-            //paint4.setColor(getResources().getColor(R.color.graphnormalcolor));
             paint4.setShader(shaderNormal);
             circle4.setColor(getResources().getColor(R.color.graphnormalcolor));
             glowcolor4.setColor(getResources().getColor(R.color.glowcolornormal));
@@ -1499,7 +1407,6 @@ public class EqualizerActivity extends BaseActivity {
             D5 = ((Y5 - Mid) * 30) / 100;
             I5 = Mid + D5;
             C5 = Y5 - (((Y5 - Mid) * 20) / 100);
-            //paint5.setColor(getResources().getColor(R.color.graphbottomcolor));
             paint5.setShader(shaderBottom);
             circle5.setColor(getResources().getColor(R.color.graphbottomcolor));
             glowcolor5.setColor(getResources().getColor(R.color.glowcolorbottom));
@@ -1507,7 +1414,6 @@ public class EqualizerActivity extends BaseActivity {
             D5 = ((Mid - Y5) * 30) / 100;
             I5 = Mid - D5;
             C5 = Y5 + (((Mid - Y5) * 20) / 100);
-            //paint5.setColor(getResources().getColor(R.color.graphtopcolor));
             paint5.setShader(shaderTop);
             circle5.setColor(getResources().getColor(R.color.graphtopcolor));
             glowcolor5.setColor(getResources().getColor(R.color.glowcolortop));
@@ -1515,7 +1421,6 @@ public class EqualizerActivity extends BaseActivity {
         } else if (Y5 == Mid) {
             I5 = Mid;
             C5 = Y5;
-            //paint5.setColor(getResources().getColor(R.color.graphnormalcolor));
             paint5.setShader(shaderNormal);
             circle5.setColor(getResources().getColor(R.color.graphnormalcolor));
             glowcolor5.setColor(getResources().getColor(R.color.glowcolornormal));
@@ -1568,8 +1473,7 @@ public class EqualizerActivity extends BaseActivity {
         try {
             bassBoost.setStrength((short) ((short) 1000 / 100 * percent));
             bassBoost.setEnabled(true);
-        } catch (Exception e) {
-            // new com.example.mark.acoustic.Dialog(this, mainLayout).showDialog();
+        } catch (Exception ignored) {
         }
     }
 
@@ -1581,8 +1485,7 @@ public class EqualizerActivity extends BaseActivity {
         try {
             virtualizer.setStrength((short) ((short) 1000 / 100 * percent));
             virtualizer.setEnabled(true);
-        } catch (Exception e) {
-            //new com.example.mark.acoustic.Dialog(this, mainLayout).showDialog();
+        } catch (Exception ignored) {
         }
     }
 
@@ -1591,8 +1494,6 @@ public class EqualizerActivity extends BaseActivity {
     }
 
     private void initializeEqualizers() {
-        //m_Inst.theEqualizer = new Equalizer(0, Music_service.mp.getAudioSessionId());
-
         if (Singleton.theEqualizer == null) {
             try {
                 Singleton.theEqualizer = new Equalizer(0, Music_service.mp.getAudioSessionId());
@@ -1611,21 +1512,15 @@ public class EqualizerActivity extends BaseActivity {
         }
         if (virtualizer == null) {
             try {
-
                 virtualizer = new Virtualizer(0, Music_service.mp.getAudioSessionId());
-
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }
 
-
         bassBoost = Singleton.theBooster;
         virtualizer = Singleton.theVirtualizer;
         mEqualizer = Singleton.theEqualizer;
 
-
     }
-
-
 }

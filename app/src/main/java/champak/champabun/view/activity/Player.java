@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -39,7 +38,6 @@ import com.enrique.stackblur.StackBlurManager;
 import com.heyzap.sdk.ads.HeyzapAds.OnStatusListener;
 import com.heyzap.sdk.ads.InterstitialAd;
 
-import org.cmc.music.common.ID3WriteException;
 import org.cmc.music.metadata.MusicMetadata;
 import org.cmc.music.metadata.MusicMetadataSet;
 import org.cmc.music.myid3.MyID3;
@@ -48,7 +46,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -69,20 +66,11 @@ import champak.champabun.framework.equalizer.EqualizerActivity;
 import champak.champabun.framework.service.Music_service;
 import champak.champabun.view.adapters.Activity_Fragments;
 
-// import android.widget.ProgressBar;
-
-public class Player extends BaseActivity implements OnSeekBarChangeListener// , ImageLoadedInURLImageViewListener
-{
+public class Player extends BaseActivity implements OnSeekBarChangeListener {
     private static final int SELECT_PHOTO = 99;
-    boolean fpanel = false;// Visualizervis = false;
     Animation fadeOut, fadeIn, fadeInImage, fadeOutImage, fadeInImageBg;
     View shuffle, repeat, ringtone, NowPlaying, Equalizer, bShufflebg;
     Button brepeat;
-    View v;
-    String KEY_AdNo;
-    String bitmap, adnumber;
-    String text, apk;
-    // InterstitialAd mInterstitialAd;
     Bitmap album;
     Button bShuffle;
     MusicMetadata meta;
@@ -91,7 +79,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
     View PrevBgImage, NextBgImage;
     private ImageView buttonPlayStop;
     private ImageView i1, previous, next;
-    // private ProgressBar spinner;
     private String progress2;
     private int headsetSwitch, head;
     BroadcastReceiver headsetReceiver = new BroadcastReceiver() {
@@ -171,83 +158,66 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
     }
 
     @Override
-    public boolean isAdsOffer() {
-        return false;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!IConstant.IS_PRO_VERSION) {
-            InterstitialAd.setOnStatusListener(new OnStatusListener() {
+        InterstitialAd.setOnStatusListener(new OnStatusListener() {
 
-                @Override
-                public void onAudioFinished() {
-                    // TODO Auto-generated method stub
+            @Override
+            public void onAudioFinished() {
+                // TODO Auto-generated method stub
 
-                }
+            }
 
-                @Override
-                public void onAudioStarted() {
-                    // TODO Auto-generated method stub
+            @Override
+            public void onAudioStarted() {
+                // TODO Auto-generated method stub
 
-                }
+            }
 
-                @Override
-                public void onAvailable(String arg0) {
-                    // TODO Auto-generated method stub
+            @Override
+            public void onAvailable(String arg0) {
+                // TODO Auto-generated method stub
 
-                }
+            }
 
-                @Override
-                public void onClick(String arg0) {
-                    // TODO Auto-generated method stub
+            @Override
+            public void onClick(String arg0) {
+                // TODO Auto-generated method stub
 
-                }
+            }
 
-                @Override
-                public void onFailedToFetch(String arg0) {
-                    // TODO Auto-generated method stub
+            @Override
+            public void onFailedToFetch(String arg0) {
+                // TODO Auto-generated method stub
 
-                }
+            }
 
-                @Override
-                public void onFailedToShow(String arg0) {
-                    // TODO Auto-generated method stub
+            @Override
+            public void onFailedToShow(String arg0) {
+                // TODO Auto-generated method stub
 
-                }
+            }
 
-                @Override
-                public void onHide(String arg0) {
-                    // TODO Auto-generated method stub
+            @Override
+            public void onHide(String arg0) {
+                // TODO Auto-generated method stub
 
-                }
+            }
 
-                @Override
-                public void onShow(String arg0) {
-                    if (AmuzicgApp.secondtimeplayershown == 0)
-                        AmuzicgApp.secondtimeplayershown = 1;
+            @Override
+            public void onShow(String arg0) {
+                if (AmuzicgApp.secondtimeplayershown == 0)
+                    AmuzicgApp.secondtimeplayershown = 1;
+                else if (AmuzicgApp.secondtimeplayershown == 1)
+                    AmuzicgApp.secondtimeplayershown = 2;
+                else if (AmuzicgApp.secondtimeplayershown == 2)
+                    AmuzicgApp.secondtimeplayershown = 3;
+                else if (AmuzicgApp.secondtimeplayershown == 3)
+                    AmuzicgApp.secondtimeplayershown = 0;
+            }
+        });
 
-                    else if (AmuzicgApp.secondtimeplayershown == 1)
-                        AmuzicgApp.secondtimeplayershown = 2;
-                    else if (AmuzicgApp.secondtimeplayershown == 2)
-                        AmuzicgApp.secondtimeplayershown = 3;
-                    else if (AmuzicgApp.secondtimeplayershown == 3)
-                        AmuzicgApp.secondtimeplayershown = 0;
-
-                }
-            });
-
-
-        }
-
-        // mInterstitialAd = new InterstitialAd( this );
-        // mInterstitialAd.setAdUnitId( getResources( ).getString( R.string.amazonbannerUnitId ) );
-        // if ( IConstant.IS_AMAZONVERSION )
-        // {
-        // requestNewInterstitial( );
-        // }
         imgLoader = new ImageLoader(Player.this);
 
         initViews();
@@ -267,9 +237,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             registerReceiver(checkagain, new IntentFilter(IConstant.BROADCAST_CHECK_AGAIN));
             otherReceiverRegistered = true;
         }
-        // PackageManager pm = getPackageManager();
-        // pm.setComponentEnabledSetting(MyWidget.broadcastCoverReceiver, head,
-        // head) ;
         String CMDNAME = null;
         Bundle bundle = getIntent().getExtras();
         AmuzicgApp.alreadyshuffled = false;
@@ -278,7 +245,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             ClassLoader oldClassloader = bundle.getClassLoader();
             bundle.setClassLoader(SongDetails.class.getClassLoader());
 
-            // bundle.setClassLoader (getClass().getClassLoader());
             if (AmuzicgApp.GetInstance().getCheck() == 0) {
                 try {
                     AmuzicgApp.GetInstance().setPosition(bundle.getInt("Data2", 0));
@@ -298,8 +264,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             try {
                 if (comefrom.equals("Playlist"))
                     AmuzicgApp.alreadyshuffled = false;
-                // comefrom="";
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         if (IConstant.CMDNEXT.equals(CMDNAME)) {
@@ -308,14 +273,14 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             prev();
         } else {
             if (AmuzicgApp.GetInstance().getCheck() == 0) {
-                playAudio(AmuzicgApp.GetInstance().getPosition());
+                playAudio();
             }
         }
         AmuzicgApp.GetInstance().setCheck(1);
         checkbuttonplaypause();
         SharedPreferences preferences = this.getSharedPreferences("shuffle_setting", MODE_PRIVATE);
         AmuzicgApp.GetInstance().boolshuffled = preferences.getBoolean("shuffle_setting", false);
-        if (AmuzicgApp.GetInstance().boolshuffled && AmuzicgApp.alreadyshuffled == false) {
+        if (AmuzicgApp.GetInstance().boolshuffled && !AmuzicgApp.alreadyshuffled) {
             setShuffleState();
             AmuzicgApp.alreadyshuffled = true;
         }
@@ -340,17 +305,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         songartist.setSelected(true);
         songalbum.setSelected(true);
         buttonPlayStop = (ImageView) findViewById(R.id.bPlayPause);
-        // spinner = ( ProgressBar ) findViewById( R.id.progressBar1 );
-        // spinner.setVisibility( View.GONE );
-        // if ( IConstant.SHOW_TONESHUB )
-        // {
-        // ringtone.setVisibility( View.VISIBLE );
-
-        // }
 
         PrevBgImage = findViewById(R.id.extralayerForProperAnimation);
         NextBgImage = findViewById(R.id.nextImage);
-        // imageBG = (ImageView) findViewById(R.id.imageBG);
         Equalizer = findViewById(R.id.bEq);
         bShufflebg = findViewById(R.id.bShufflebg);
         bShuffle = (Button) findViewById(R.id.bShuffleb);
@@ -362,7 +319,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         checkbuttonplaypause();
         checkButtonRandom();
 
-        // setShuffleState();
     }
 
     @Override
@@ -404,20 +360,19 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                     return;
                 } else return;
             case StorageAccessAPI.Code:
-                // PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
                 if (resultCode == RESULT_OK) {
 
                     StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Player.this);
 
 
                     File file = new File(AmuzicgApp.GetInstance().GetCurSongDetails().getPath2());
-                    boolean canwrite = false;
+                    boolean canWrite;
                     try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                        canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
                     } catch (Exception e) {
-                        canwrite = false;
+                        canWrite = false;
                     }
-                    if (canwrite) {
+                    if (canWrite) {
                         new EditTags().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                     } else
                         ActivityUtil.showCrouton(Player.this, getString(R.string.tag_not_edited));
@@ -428,138 +383,11 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
     }
 
     private void checkbuttonplaypause() {
-        if (AmuzicgApp.GetInstance().boolMusicPlaying1 == true) {
+        if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
             buttonPlayStop.setBackgroundResource(R.drawable.pause2);
         } else {
             buttonPlayStop.setBackgroundResource(R.drawable.play);
         }
-    }
-
-    // private class FetchDetailsOfAds extends AsyncTask < URL, Void, String >
-    // {
-    //
-    // @Override
-    // protected String doInBackground( URL ... params )
-    // {
-    // try
-    // {
-    // URL url2 = new URL( IConstant.urlContainingImageAndApk );
-    // URLConnection connection = url2.openConnection( );
-    // connection.setConnectTimeout( 10000 );
-    // connection.setReadTimeout( 30000 );
-    //
-    // DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance( );
-    // DocumentBuilder db = dbf.newDocumentBuilder( );
-    //
-    // final Document document = db.parse( connection.getInputStream( ) );
-    // document.getDocumentElement( ).normalize( );
-    // XPathFactory xPathfactory = XPathFactory.newInstance( );
-    // XPath xPathEvaluator = xPathfactory.newXPath( );
-    // XPathExpression nameExpr = xPathEvaluator.compile( "//ankit/image" );
-    // NodeList nl = ( NodeList ) nameExpr.evaluate( document, XPathConstants.NODESET );
-    // Node currentItem;
-    // for ( int zzz = 0; zzz < nl.getLength( ); zzz ++ )
-    // {
-    // currentItem = nl.item( zzz );
-    // bitmap = currentItem.getTextContent( );
-    // }
-    // nameExpr = xPathEvaluator.compile( "//ankit/text" );
-    // nl = ( NodeList ) nameExpr.evaluate( document, XPathConstants.NODESET );
-    // for ( int zzz = 0; zzz < nl.getLength( ); zzz ++ )
-    // {
-    // currentItem = nl.item( zzz );
-    // text = currentItem.getTextContent( );
-    // }
-    // nameExpr = xPathEvaluator.compile( "//ankit/apk" );
-    // nl = ( NodeList ) nameExpr.evaluate( document, XPathConstants.NODESET );
-    // for ( int zzz = 0; zzz < nl.getLength( ); zzz ++ )
-    // {
-    // currentItem = nl.item( zzz );
-    // apk = currentItem.getTextContent( );
-    // }
-    // nameExpr = xPathEvaluator.compile( "//ankit/adnumber" );
-    // nl = ( NodeList ) nameExpr.evaluate( document, XPathConstants.NODESET );
-    // for ( int zzz = 0; zzz < nl.getLength( ); zzz ++ )
-    // {
-    // currentItem = nl.item( zzz );
-    // adnumber = currentItem.getTextContent( );
-    //
-    // }
-    // int x = 0;
-    // try
-    // {
-    // x = Integer.parseInt( adnumber );
-    // }
-    // catch ( Exception e )
-    // {
-    // // break;
-    // }
-    // SharedPreferences pref = Player.this.getSharedPreferences( HowManyTimesAdAppeared.PREF_NAME, Context.MODE_PRIVATE );
-    // Editor editor = pref.edit( );
-    // int adNo = pref.getInt( KEY_AdNo, 0 );
-    // if ( x > adNo )
-    // {
-    // editor.putInt( KEY_AdNo, x );
-    // editor.commit( );
-    // HowManyTimesAdAppeared.clearSharedPreferences( Player.this );
-    // }
-    // }
-    // catch ( Exception e )
-    // {
-    // }
-    // return null;
-    // }
-    //
-    // @Override
-    // protected void onPostExecute( String result )
-    // {
-    // LayoutInflater li = ( LayoutInflater ) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-    // v = li.inflate( R.layout.crouton, null );
-    // URL url = null;
-    // try
-    // {
-    // url = new URL( bitmap );
-    // }
-    // catch ( MalformedURLException e )
-    // {
-    // e.printStackTrace( );
-    // }
-    // catch ( Exception e )
-    // {
-    // }
-    // UrlImageView x;
-    // TextView tv;
-    // x = ( ( UrlImageView ) v.findViewById( R.id.thumbnail ) );
-    // x.setOnImageLoadedInURLImageViewListener( Player.this );
-    // tv = ( ( TextView ) v.findViewById( R.id.adText ) );
-    // x.setImageURL( url );
-    // tv.setText( text );
-    // x.setOnClickListener( new OnClickListener( ) {
-    //
-    // @Override
-    // public void onClick( View v )
-    // {
-    // if ( apk != null )
-    // {
-    // try
-    // {
-    // startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse( apk ) ) );
-    // }
-    // catch ( android.content.ActivityNotFoundException anfe )
-    // {
-    // startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse( apk ) ) );
-    // }
-    // catch ( Exception e )
-    // {
-    // }
-    // }
-    // }
-    // } );
-    // }
-    // }
-    //
-    private void showCroutonForAd() {
-        // new FetchDetailsOfAds( ).execute( );
     }
 
     private void setListeners() {
@@ -603,25 +431,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                 checkButtonRandom();
             }
         });
-        /*
-         * layout.setPanelSlideListener(new PanelSlideListener() {
-		 * @Override public void onPanelSlide(View panel, float slideOffset) { Equalizer.setVisibility(View.VISIBLE);
-		 * seekbar.setVisibility(View.VISIBLE); buttonPlayStop.setVisibility(View.VISIBLE); // if (slideOffset < 0.2) { //if (Visualizervis == true) {
-		 * //mVisualizerView.setVisibility(View.GONE); //Visualizervis = false; //} else { // } //} }
-		 */
-        /*
-		 * @Override public void onPanelExpanded(View panel) { layout.setEnableDragViewTouchEvents(true); fpanel = true; //addLineRenderer();
-		 * Equalizer.setVisibility(View.GONE); seekbar.setVisibility(View.GONE); buttonPlayStop.setVisibility(View.GONE);
-		 * //mVisualizerView.setVisibility(View.VISIBLE); //Visualizervis = true; }
-		 * @Override public void onPanelCollapsed(View panel) { layout.setEnableDragViewTouchEvents(false); fpanel = false;
-		 * Equalizer.setVisibility(View.VISIBLE); seekbar.setVisibility(View.VISIBLE); buttonPlayStop.setVisibility(View.VISIBLE); //
-		 * mVisualizerView.clearRenderers(); //mVisualizerView.setVisibility(View.GONE); //Visualizervis = false; }
-		 * @Override public void onPanelAnchored(View panel) { fpanel = true; } });
-		 */
         Equalizer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent SecondScreen = new Intent( Player.this, Equalizer2.class );
                 Intent SecondScreen = new Intent(Player.this, EqualizerActivity.class);
                 startActivity(SecondScreen);
             }
@@ -641,7 +453,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                 showshuffleCrouton();
             }
         });
-
         next.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -691,8 +502,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                 Button bDCancle = (Button) dialog.findViewById(R.id.dBCancel);
 
                 dialog.show();
-                // metadata.getTrackNumber();
-                // album,artist,title;Button bDOK//,bDCancle
                 bDOK.setOnClickListener(new OnClickListener() {
 
                     @Override
@@ -702,16 +511,8 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                         EditText title = (EditText) dialog.findViewById(R.id.ti);
 
                         String artist2 = artist.getText().toString();
-                        if (artist2 == null)
-                            artist2 = AmuzicgApp.GetInstance().GetCurSongDetails().getArtist();
-
                         String album2 = album.getText().toString();
-                        if (album2 == null)
-                            album2 = AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum();
-
                         String title2 = title.getText().toString();
-                        if (title2 == null)
-                            title2 = AmuzicgApp.GetInstance().GetCurSongDetails().getSong();
 
                         meta = new MusicMetadata("name");
                         meta.setAlbum(album2);
@@ -723,16 +524,16 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                         AmuzicgApp.GetInstance().GetCurSongDetails().setAlbum(album2);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             File file = new File(AmuzicgApp.GetInstance().GetCurSongDetails().getPath2());
-                            boolean canwrite = false;
+                            boolean canWrite;
                             if (file.getAbsolutePath().toString().contains("emulated") || file.getAbsolutePath().toString().contains("storage0")) {
                                 new EditTags().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                             } else {
                                 try {
-                                    canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                                    canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
                                 } catch (Exception e) {
-                                    canwrite = false;
+                                    canWrite = false;
                                 }
-                                if (canwrite) {
+                                if (canWrite) {
                                     new EditTags().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                                 } else {
                                     PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
@@ -810,30 +611,27 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             SharedPreferences.Editor editor = this.getSharedPreferences("shuffle_setting", MODE_PRIVATE).edit();
             if (AmuzicgApp.GetInstance().boolshuffled) {
                 editor.putBoolean("shuffle_setting", true);
-                editor.commit();
+                editor.apply();
                 if (AmuzicgApp.GetInstance().GetNowPlayingList().size() > 800) // to avoid crashes due to memory
                 {
                     AmuzicgApp.GetInstance().backup = AmuzicgApp.GetInstance().GetNowPlayingList();
                 } else
-                    AmuzicgApp.GetInstance().backup = new ArrayList<SongDetails>(AmuzicgApp.GetInstance().GetNowPlayingList());
-                SongDetails temp = new SongDetails();
+                    AmuzicgApp.GetInstance().backup = new ArrayList<>(AmuzicgApp.GetInstance().GetNowPlayingList());
+                SongDetails temp;
                 temp = AmuzicgApp.GetInstance().GetCurSongDetails();
                 AmuzicgApp.GetInstance().RemoveCurSongDetails();
                 Collections.shuffle(AmuzicgApp.GetInstance().GetNowPlayingList());
                 AmuzicgApp.GetInstance().Add2CurSongDetails(temp);
                 bShufflebg.setBackgroundColor(Color.parseColor("#30000000"));
-                //bShuffle.getBackground().setColorFilter(Color.parseColor("#ff00bb"), PorterDuff.Mode.SRC_ATOP);
-                temp = null;
             } else {
                 editor.putBoolean("shuffle_setting", false);
-                editor.commit();
+                editor.apply();
                 int x = 0;
                 try {
                     x = AmuzicgApp.GetInstance().backup.indexOf(AmuzicgApp.GetInstance().GetCurSongDetails());
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
                 bShufflebg.setBackgroundColor(Color.parseColor("#00ffffff"));
-                //bShuffle.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
 
                 AmuzicgApp.GetInstance().NP_List = AmuzicgApp.GetInstance().backup;
                 AmuzicgApp.GetInstance().setPosition(x);
@@ -881,10 +679,8 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                 && AmuzicgApp.GetInstance().GetNowPlayingSize() > 0) {
             if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_NONE) {
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = false;
-                return;
             } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ONCE) {
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = false;
-                return;
             } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ALL) {
                 AmuzicgApp.GetInstance().setPosition(0);
                 Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
@@ -910,13 +706,10 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         }
     }
 
-    private void playAudio(int position2) {
-        // Logger.d("Music_service", "playAudio..................");
+    private void playAudio() {
         buttonPlayStop.setBackgroundResource(R.drawable.pause2);
         AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
         Intent serviceIntent = new Intent(this, Music_service.class);
-        // serviceIntent.putParcelableArrayListExtra("sentAudioLink", AmuzicgApp.GetInstance().GetNowPlayingList());
-        // serviceIntent.putExtra("postion_service", AmuzicgApp.GetInstance().getPosition());
         startService(serviceIntent);
     }
 
@@ -972,7 +765,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                 songartist.setText(AmuzicgApp.GetInstance().GetCurSongDetails().getArtist());
                 try {
                     songTotalDurationLabel.setText(AmuzicgApp.GetInstance().GetCurSongDetails().getTime());
-                } catch (IndexOutOfBoundsException e) {
+                } catch (IndexOutOfBoundsException ignored) {
                 }
 
                 if (!oldsong.equals(AmuzicgApp.GetInstance().GetCurSongDetails().getSong())) {
@@ -1025,21 +818,12 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             }
         });
 
-        // Logger.d("Player", "startCoverOperation...................................");
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-        // {
-
-        // }
-        // else
-        // {
-        // new StartCoverOperationTask().execute((Void) null);
-        // }
         isStartCoverOperation = true;
     }
 
     private void settextetc() {
-        fadein(00, 200);
-        fadeout(00, 500);
+        fadein(0, 200);
+        fadeout(0, 500);
         if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)) {
             songname.startAnimation(fadeOut);
         }
@@ -1059,12 +843,12 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
     protected void onPause() {
         try {
             unregisterReceiver(broadcastReceiver);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         ActionIsRegistered = false;
         try {
             unregisterReceiver(headsetReceiver);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         HeadsetIsRegistered = false;
         super.onPause();
@@ -1078,10 +862,8 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
     @Override
     protected void onResume() {
         super.onResume();
-        if (!IConstant.IS_PRO_VERSION) {
-            if (AmuzicgApp.secondtimeplayershown == 0)
-                InterstitialAd.display(this);
-        }
+        if (AmuzicgApp.secondtimeplayershown == 0)
+            InterstitialAd.display(this);
 
         if (!ActionIsRegistered) {
             registerReceiver(broadcastReceiver, new IntentFilter(IConstant.BROADCAST_ACTION));
@@ -1098,9 +880,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             songalbum.setText("");
             songartist.setText("");
             PrevBgImage.setBackgroundResource(R.drawable.grad);
-            // imageBG.setImageResource(R.drawable.grad);
         } else {
-            // Logger.d("Player", "startCoverOperation......................onResume");
             startCoverOperation();
         }
         checkbuttonplaypause();
@@ -1127,8 +907,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         }
 
         songCurrentDurationLabel.setText(progress2);
-        progress2 = null;
-
     }
 
     @Override
@@ -1147,42 +925,16 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
 
         try {
             unregisterReceiver(broadcastCoverReceiver);
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException | IllegalStateException ignored) {
         }
         try {
             unregisterReceiver(checkagain);
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException | IllegalStateException ignored) {
         }
         otherReceiverRegistered = false;
         imgLoader = null;
         super.onDestroy();
     }
-
-	/*
-	 * private Bitmap adjustedContrast(Bitmap src, double value) { int width = src.getWidth(); int height = src.getHeight(); // create output bitmap
-	 * // create a mutable empty bitmap Bitmap bmOut = Bitmap.createBitmap(width, height, src.getConfig()); // create a canvas so that we can draw the
-	 * bmOut Bitmap from source // bitmap Canvas c = new Canvas(); c.setBitmap(bmOut); // draw bitmap to bmOut from src bitmap so we can modify it
-	 * c.drawBitmap(src, 0, 0, new Paint(Color.BLACK)); // color information int A, R, G, B; int pixel; // get contrast value double contrast =
-	 * Math.pow((100 + value) / 100, 2); // scan through all pixels for (int x = 0; x < width; ++x) { for (int y = 0; y < height; ++y) { // get pixel
-	 * color pixel = src.getPixel(x, y); A = Color.alpha(pixel); // apply filter contrast for every channel R, G, B R = Color.red(pixel); R = (int)
-	 * (((((R / 255.0) - 0.5) * contrast) + 0.5) * 255.0); if (R < 0) { R = 0; } else if (R > 255) { R = 255; } G = Color.green(pixel); G = (int)
-	 * (((((G / 255.0) - 0.5) * contrast) + 0.5) * 255.0); if (G < 0) { G = 0; } else if (G > 255) { G = 255; } B = Color.blue(pixel); B = (int)
-	 * (((((B / 255.0) - 0.5) * contrast) + 0.5) * 255.0); if (B < 0) { B = 0; } else if (B > 255) { B = 255; } bmOut.setPixel(x, y, Color.argb(A, R,
-	 * G, B)); } } src.recycle(); c = null; return bmOut; }
-	 */
-
-	/*
-	 * public Bitmap highlightImage(Bitmap src) { // create new bitmap, which will be painted and becomes result image // TODO Bitmap bmOut =
-	 * Bitmap.createBitmap(src.getWidth(), src.getWidth(), Bitmap.Config.ARGB_8888); // setup canvas for painting Canvas canvas = new Canvas(bmOut);
-	 * // setup default color canvas.drawColor(0, PorterDuff.Mode.CLEAR); // create a blur paint for capturing alpha Paint ptBlur = new Paint();
-	 * ptBlur.setMaskFilter(new BlurMaskFilter(15, Blur.NORMAL)); int[] offsetXY = new int[2]; offsetXY[0] = src.getWidth(); offsetXY[1] =
-	 * src.getWidth(); // capture alpha into a bitmap Bitmap bmAlpha = src.extractAlpha(ptBlur, offsetXY); // create a color paint Paint ptAlphaColor
-	 * = new Paint(); ptAlphaColor.setColor(0x33000000); // paint color for captured alpha region (bitmap) canvas.drawBitmap(bmAlpha, offsetXY[0],
-	 * offsetXY[1], ptAlphaColor); // free memory bmAlpha.recycle(); src.recycle(); ptBlur = null; canvas = null; // paint the image source //
-	 * canvas.drawBitmap(src, 0, 0, null); // return out final image return bmOut; }
-	 */
 
     protected void fadeout(int offset, int duration) {
         fadeOut = null;
@@ -1191,7 +943,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         fadeOut.setStartOffset(offset);
         fadeOut.setDuration(duration);
         fadeOut.setFillAfter(true);
-
     }
 
     protected void fadein(int offset, int duration) {
@@ -1204,7 +955,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
     }
 
     protected void fadeinimageBg(int offset, int duration) {
-
         fadeInImageBg = null;
         fadeInImageBg = new AlphaAnimation(0, 1);
         fadeInImageBg.setInterpolator(new AccelerateInterpolator()); // and this
@@ -1213,9 +963,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         fadeInImageBg.setDuration(duration);
     }
 
-    protected void fadeinimage(int offset, int duration)
-
-    {
+    protected void fadeinimage(int offset, int duration) {
         fadeInImage = null;
         fadeInImage = new AlphaAnimation(0, 1);
         fadeInImage.setInterpolator(new AccelerateInterpolator()); // and this
@@ -1233,10 +981,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         fadeOutImage.setFillAfter(true);
     }
 
-    /*
-	 * @Override public void onBackPressed() { if (fpanel == true) { layout.collapsePane(); fpanel = false; } else if (fpanel == false) {
-	 * super.onBackPressed(); } }
-	 */
     public void checkButtonRandom() {
         if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_NONE) {
             brepeat.setBackgroundResource(R.drawable.repeat_off_tran);
@@ -1245,7 +989,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ALL) {
             brepeat.setBackgroundResource(R.drawable.repeat_all_tran);
         }
-
     }
 
     @Override
@@ -1281,33 +1024,11 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                     startActivity(intent);
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         setResult(RESULT_OK);
 
-        if (IConstant.IS_AMAZONVERSION) {
-
-            // if ( mInterstitialAd.isLoaded( ) )
-            // {
-            // mInterstitialAd.show( );
-            // }
-            // mInterstitialAd.setAdListener( new AdListener( ) {
-            // @Override
-            // public void onAdClosed( )
-            // {
-            // requestNewInterstitial( );
-            //
-            // }
-            // } );
-
-        }
         finish();
-    }
-
-    private void requestNewInterstitial() {
-        // AdRequest adRequest = new AdRequest.Builder( ).build( );
-        //
-        // mInterstitialAd.loadAd( adRequest );
     }
 
     @Override
@@ -1322,7 +1043,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                 ActivityUtil.showCrouton(Player.this, getString(R.string.denied_permission));
                 return;
             }
-            // spinner.setVisibility( View.GONE );
             if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)) {
                 songname.setText(AmuzicgApp.GetInstance().GetCurSongDetails().getSong());
                 oldsong = songname.getText().toString();
@@ -1344,8 +1064,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
 
         @Override
         protected void onPreExecute() {
-            // spinner.setVisibility( View.VISIBLE );
-
             super.onPreExecute();
         }
 
@@ -1353,45 +1071,27 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         protected String doInBackground(Void... params) {
             try {
                 File src = new File(AmuzicgApp.GetInstance().GetCurSongDetails().getPath2());
-                MusicMetadataSet src_set = null;
+                MusicMetadataSet src_set = new MyID3().read(src);
 
-
-                src_set = new MyID3().read(src);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !(src.getAbsolutePath().toString().contains("emulated") || src
-                        .getAbsolutePath().toString().contains("storage0"))) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !(src.getAbsolutePath().contains("emulated") || src
+                        .getAbsolutePath().contains("storage0"))) {
                     new MyID3().write(src, src, src_set, meta);
                 } else
                     new MyID3().update(src, src_set, meta);
-            } catch (NullPointerException e) {
-                // e = null;
-            } catch (UnsupportedEncodingException e) {
-                // e.printStackTrace();
-                // e = null;
-            } catch (ID3WriteException e) {
-                // e.printStackTrace();
-                // e = null;
-            } catch (IOException e) {
-                // e.printStackTrace();
-                // e = null;
-            } // write updated metadata
+            }     // write updated metadata
             catch (OutOfMemoryError e1) {
                 e1.printStackTrace();
-            } catch (Exception e) {
-                // e.printStackTrace();
-                // e = null;
+            } catch (Exception ignored) {
             }
             try {
                 MediaScannerConnection.scanFile(Player.this, new String[]{AmuzicgApp.GetInstance().GetCurSongDetails().getPath2()}, null,
                         new MediaScannerConnection.OnScanCompletedListener() {
                             public void onScanCompleted(String path, Uri uri) {
 
-                                // ab.notifyDataSetChanged();
                             }
                         });
             } catch (Exception e) {
-                // e.printStackTrace();
-                // e = null;
+                e.printStackTrace();
             }
 
             return "x";
@@ -1405,12 +1105,10 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         protected void onPreExecute() {
             super.onPreExecute();
 
-            if (AmuzicgApp.GetInstance().boolshuffled == true) {
+            if (AmuzicgApp.GetInstance().boolshuffled) {
                 bShufflebg.setBackgroundColor(Color.parseColor("#30000000"));
-                //bShuffle.getBackground().setColorFilter(Color.parseColor("#ff00bb"), PorterDuff.Mode.SRC_ATOP);
-            } else if (AmuzicgApp.GetInstance().boolshuffled == false) {
+            } else if (!AmuzicgApp.GetInstance().boolshuffled) {
                 bShufflebg.setBackgroundColor(Color.parseColor("#00ffffff"));
-                //bShuffle.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
             }
 
             wt_px = (int) Player.this.getResources().getDimension(R.dimen.player_image_size);
@@ -1424,18 +1122,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             }
             int albumID = AmuzicgApp.GetInstance().GetCurSongDetails().getAlbumID();
             Logger.d("Player", "doInBackground............. albumID = " + albumID);
-            // if (playingBGResID == 0)
-            // {
-            // playingBGResID = IConstant.arr [ new Random().nextInt(IConstant.arr.length) ];
-            // AmuzicgApp.GetInstance().GetCurSongDetails().setPlayingBGResID(playingBGResID);
-            // }
-            // else
-            // {
-            // if (playingBGResID < R.drawable.album_art_1 || playingBGResID > R.drawable.album_art_9)
-            // {
-            // playingBGResID = IConstant.arr [ new Random().nextInt(IConstant.arr.length) ];
-            // }
-            // }
             Cursor cursor = null;
             try {
                 cursor = Player.this.getContentResolver().query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
@@ -1446,20 +1132,18 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                     AmuzicgApp.GetInstance().path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
                     // do whatever you need to do
                 }
-            } catch (SQLiteException e) {
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             } finally {
                 if (cursor != null) {
                     if (!cursor.isClosed()) {
                         cursor.close();
-                        cursor = null;
                     }
                 }
             }
             album = imgLoader.fetchfilefromcahce(AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum(),
                     AmuzicgApp.GetInstance().GetCurSongDetails().getArtist());
             if (album == null) {
-                album = BitmapUtil.GetBitmapFromSongPath(Player.this.getResources(), albumID, wt_px, ht_px,
+                album = BitmapUtil.GetBitmapFromSongPath(wt_px, ht_px,
                         AmuzicgApp.GetInstance().GetCurSongDetails().getPath2());
 
             }
@@ -1471,14 +1155,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
         protected void onPostExecute(final Bitmap result) {
             super.onPostExecute(result);
 
-            // Logger.d("Player", "onPostExecute............. result = " + result);
             if (result != null) {
                 album = result;
             } else {
-                // album = imgLoader.fetchfilefromcahce(AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum(), AmuzicgApp.GetInstance()
-                // .GetCurSongDetails().getArtist());
-
-                // Logger.d("Player", "fetchfilefromcahce............. album = " + album);
                 album = BitmapUtil.GetRandomBitmap(Player.this.getResources(), AmuzicgApp.GetInstance().GetCurSongDetails().getAlbumID(),
                         wt_px, ht_px);
                 new FetchFromInternet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -1495,10 +1174,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
 
         @Override
         protected Bitmap doInBackground(Void... params) {
-            // Logger.d("Player", "FetchFromInternet............. doInBackground");
-            Bitmap bitmap = imgLoader.getBitmap2(AmuzicgApp.GetInstance().GetCurSongDetails().getArtist(),
-                    AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum());
-            return bitmap;
+            return imgLoader.getBitmap2(AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum(), AmuzicgApp.GetInstance().GetCurSongDetails().getArtist());
         }
 
         @Override
@@ -1523,7 +1199,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                 StackBlurManager _stackBlurManager = new StackBlurManager(params[0]);
                 _stackBlurManager.process(65);
                 Bitmap dstBmp = _stackBlurManager.returnBlurredImage();
-                // dstBmp = adjustedContrast(dstBmp, 9);
                 d = new BitmapDrawable(getResources(), dstBmp);
                 ColorMatrix matrix = new ColorMatrix();
                 matrix.setSaturation((float) 1.24);
@@ -1536,10 +1211,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                 }
             } catch (OutOfMemoryError e) {
                 outofmemoryerror = true;
-            } catch (ArrayIndexOutOfBoundsException e) {
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
-            if (d == null && outofmemoryerror == false) {
+            if (d == null && !outofmemoryerror) {
                 try {
                     StackBlurManager _stackBlurManager = new StackBlurManager(Bitmap.createScaledBitmap(params[0], 120, 120, false));
                     _stackBlurManager.process(65);
@@ -1555,9 +1229,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
                         dstBmp.recycle();
                         dstBmp = null;
                     }
-                } catch (OutOfMemoryError e) {
-                } catch (ArrayIndexOutOfBoundsException e) {
-                } catch (Exception e) {
+                } catch (OutOfMemoryError | Exception ignored) {
                 }
 
             }
@@ -1576,11 +1248,8 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             fadeoutimage(0, 400);
             fadeinimageBg(0, 3000);
 
-            // if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-            // || !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum))
             if (imagecheck == 0) {
                 i1.startAnimation(fadeOutImage);
-                // PrevBgImage.startAnimation( fadeOutImage );
 
                 fadeOutImage.setAnimationListener(new AnimationListener() {
                     @Override
@@ -1608,28 +1277,23 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             }
 
             fadeInImageBg.setAnimationListener(new AnimationListener() {
-
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    // TODO Auto-generated method stub
 
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    // TODO Auto-generated method stub
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                         try {
                             PrevBgImage.setBackgroundDrawable(result);
-                        } catch (NullPointerException e) {
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
                         NextBgImage.setAlpha(0f);
                     } else {
                         try {
                             PrevBgImage.setBackground(result);
-                        } catch (NullPointerException e) {
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
                         NextBgImage.setAlpha(0f);
                     }
@@ -1637,18 +1301,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
-                    // TODO Auto-generated method stub
 
                 }
             });
-
-            // imageBG.setImageDrawable(result);
-            // fadein(0, 1000);
-            // if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-            // || !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum))
-            // {
-            // imageBG.startAnimation(fadeIn);
-            // }
 
             i1.setOnClickListener(new OnClickListener() {
 
@@ -1661,18 +1316,4 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener// , 
             });
         }
     }
-
-    // @Override
-    // public void onImageLoaded( )
-    // {
-    // if ( text != null || apk != null )
-    // {
-    // Crouton c = Crouton.make( this, v );
-    // HowManyTimesAdAppeared.onStart( this );
-    // if ( HowManyTimesAdAppeared.toShowCroutonIfNeeded( ) )
-    // c.show( );
-    // }
-
-    // }
-
 }

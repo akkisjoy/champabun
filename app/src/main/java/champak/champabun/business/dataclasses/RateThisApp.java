@@ -78,7 +78,7 @@ public class RateThisApp {
         editor.putInt(KEY_LAUNCH_TIMES, launchTimes);
         log("Launch times; " + launchTimes);
 
-        editor.commit();
+        editor.apply();
 
         mInstallDate = new Date(pref.getLong(KEY_INSTALL_DATE, 0));
         mLaunchTimes = pref.getInt(KEY_LAUNCH_TIMES, 0);

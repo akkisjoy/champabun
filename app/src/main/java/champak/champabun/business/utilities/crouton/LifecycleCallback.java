@@ -16,13 +16,19 @@
 
 package champak.champabun.business.utilities.crouton;
 
-/** Provides callback methods on major lifecycle events of a {@link Crouton}. */
+/**
+ * Provides callback methods on major lifecycle events of a {@link Crouton}.
+ */
 public interface LifecycleCallback {
-  /** Will be called when your Crouton has been displayed. */
-  void onDisplayed();
+    /**
+     * Will be called when your Crouton has been displayed.
+     */
+    void onDisplayed();
 
-  /** Will be called when your {@link Crouton} has been removed. */
-  void onRemoved();
+    /**
+     * Will be called when your {@link Crouton} has been removed.
+     */
+    void onRemoved();
 
-  //public void onCeasarDressing();
+    //public void onCeasarDressing();
 }

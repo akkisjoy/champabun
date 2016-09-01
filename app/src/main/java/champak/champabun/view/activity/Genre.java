@@ -30,7 +30,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -61,11 +60,9 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
     public ListView mListView;
     public ProgressBar spinner;
     String sexy;
-    ArrayList<SongDetails> img = new ArrayList<SongDetails>();
+    ArrayList<SongDetails> img = new ArrayList<>();
     Adapter_SongView ab;
-    // ArrayList < String > img2;// = new ArrayList<String>();
     String genre_id, genre_title;
-    LinearLayout ll;
     ArrayList<SongDetails> play;
     TypefaceTextView tV1;// album2;
     int pos;
@@ -77,7 +74,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
     Button bRBack, bRAdd, bRPlay, bRDel;
     RayMenu rayMenu;
     Animation fadeOut, fadeIn;
-    // Context c;
     private SongHelper songHelper;
     private ImageView backPager;
 
@@ -125,8 +121,7 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         SetupButton();
         SetupRayMenu();
 
-        // img2 = new ArrayList < String >();
-        play = new ArrayList<SongDetails>();
+        play = new ArrayList<>();
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
 
@@ -164,20 +159,8 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
 
         int s = Integer.parseInt(genre_id);
 
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-        // {
         new FetchListItems().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, s);
-        // }
-        // else
-        // {
-        // new FetchListItems().execute(s);
-        // }
-
-        // PaintDrawable p = Utilities.returnbg();
-        // ll = (LinearLayout) findViewById(R.id.ll);
-        // ll.setBackground(p);
         tV1 = (TypefaceTextView) findViewById(R.id.tV1);
-        // album2 = (TypefaceTextView) findViewById(R.id.album);
         tV1.setSelected(true);
     }
 
@@ -228,20 +211,17 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         super.onActivityResult(requestCode, resultCode, intent);
         switch (requestCode) {
             case StorageAccessAPI.Code:
-                // PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
                 if (resultCode == Activity.RESULT_OK) {
-
                     StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Genre.this);
 
-
                     File file = new File(play.get(position2).getPath2());
-                    boolean canwrite = false;
+                    boolean canWrite;
                     try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                        canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
                     } catch (Exception e) {
-                        canwrite = false;
+                        canWrite = false;
                     }
-                    if (canwrite) {
+                    if (canWrite) {
                         songHelper.EditTags(play.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
 
                             @Override
@@ -282,9 +262,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
         mListView.setLayoutAnimation(controller);
 
-        // controller = null;
-        // animation = null;
-        // set = null;
     }
 
     /**
@@ -299,8 +276,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
             public void onItemSelected(EcoGalleryAdapterView<?> parent, View view, int position, long id) {
                 pos = position;
                 Logger.d("Artist", "onItemSelected................." + position);
-                // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                // {
 
                 highlight_zero = 0;
                 SparseBooleanArray checked = mListView.getCheckedItemPositions();
@@ -313,8 +288,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                 if (mListView.getChoiceMode() == ListView.CHOICE_MODE_NONE)
                     mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
                 OnRefreshListView();
-                // ab.OnUpdate(play);
-                checked = null;
 
                 new LazyLoad().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, img.get(position).getArtist());
 
@@ -334,8 +307,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
             public void onItemSelected(EcoGalleryAdapterView<?> parent, View view, int position, long id) {
                 pos = position;
                 Logger.d("Artist", "onItemSelected................." + position);
-                // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                // {
 
                 highlight_zero = 0;
                 SparseBooleanArray checked = mListView.getCheckedItemPositions();
@@ -348,8 +319,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                 if (mListView.getChoiceMode() == ListView.CHOICE_MODE_NONE)
                     mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
                 OnRefreshListView();
-                // ab.OnUpdate(play);
-                checked = null;
 
                 new LazyLoad().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, img.get(position).getArtist());
 
@@ -371,7 +340,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         String where = MediaStore.Audio.Media.ALBUM + "=?" + "AND " + MediaStore.Audio.Media.ARTIST + "=?";// +cursor2.getString(0);
         String whereVal[] = {img.get(position).getAlbum(), img.get(position).getArtist()};
 
-        // String orderBy = android.provider.MediaStore.Audio.Media.TRACK;//MediaStore.Audio.Media.TITLE;
         String sortOrder = appSettings.getGenreSortKey();
         if (Utilities.IsEmpty(sortOrder)) {
             sortOrder = MediaStore.Audio.Media.TRACK;// android.provider.MediaStore.Audio.Media.TITLE;
@@ -402,7 +370,7 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                             max2 = newTimeMinutes + ":" + newTimeSeconds;
                         }
                         pl.setTime(max2);
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
                     list.add(pl);
                 }
@@ -412,7 +380,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         } finally {
             if (cursor != null) {
                 cursor.close();
-                cursor = null;
             }
         }
         return list;
@@ -442,7 +409,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                     np = new SongDetails();
                     np.setSong(getString(R.string.create_new));
                     pl.add(1, np);
-                    np = null;
                     ab = new Adapter_playlist_Dialog(pl);
                     ListView dlgLV = (ListView) dialog2.findViewById(R.id.listView1);
                     dlgLV.setAdapter(ab);
@@ -460,16 +426,7 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                                 // id of the playlist
                                 String plId = pl.get(position).getArtist();
                                 playlistid = Integer.parseInt(plId);
-                                // if (android.os.Build.VERSION.SDK_INT >=
-                                // android.os.Build.VERSION_CODES.HONEYCOMB)
-                                // {
                                 new AddToPlayListMultiple().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-                                // }
-                                // else
-                                // {
-                                // new AddToPlayListMultiple().execute((Void
-                                // ) null);
-                                // }
                             }
                             dialog2.dismiss();
                         }
@@ -504,9 +461,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
 
                     Intent intent = new Intent(Genre.this, Player.class);
                     AmuzicgApp.GetInstance().setPosition(0);
-                    // intent.putParcelableArrayListExtra("Data1", adapter.GetData(
-                    // ));
-                    // intent.putExtra("Data2", position);
                     if (checkedList.size() > 800) {
                         AmuzicgApp.GetInstance().SetNowPlayingList(checkedList);
                     } else {
@@ -526,7 +480,7 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
             // TODO
             @Override
             public void onClick(View v) {
-                fadeout(00, 700);
+                fadeout(0, 700);
 
                 bRBack.startAnimation(fadeOut);
                 bRAdd.startAnimation(fadeOut);
@@ -552,23 +506,12 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                             }
                         mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
                         ab.OnUpdate(play);
-                        checked = null;
 
                         mListView.setOnItemClickListener(new OnItemClickListener() {
                             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                                 Intent intent = new Intent(Genre.this, Player.class);
                                 AmuzicgApp.GetInstance().setPosition(position);
-                                // intent.putParcelableArrayListExtra("Data1", adapter.GetData(
-                                // ));
-                                // intent.putExtra("Data2", position);
-                                // if (adapter.GetData().size() > 800)
-                                // {
                                 AmuzicgApp.GetInstance().SetNowPlayingList(ab.GetData());
-                                // }
-                                // else
-                                // {
-                                // AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList < SongDetails >(adapter.GetData()));
-                                // }
                                 AmuzicgApp.GetInstance().setCheck(0);
                                 startActivity(intent);
                             }
@@ -594,7 +537,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
         window.setBackgroundDrawableResource(R.drawable.dialogbg);
-        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog.getWindow().setAttributes(lp);
@@ -612,15 +554,7 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                     int YOUR_PLAYLIST_ID = NowPlaying.createPlaylist(save.getText().toString(), Genre.this);
                     if (YOUR_PLAYLIST_ID == -1)
                         return;
-                    // TODO
-                    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                    // {
                     new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
-                    // }
-                    // else
-                    // {
-                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
-                    // }
                 }
                 dialog.dismiss();
             }
@@ -637,10 +571,10 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
 
     private void SetupRayMenu() {
         int[] ITEM_DRAWABLES = {R.drawable.composer_button_multiselect, R.drawable.composer_button_sort, R.drawable.composer_button_shuffle};
-        for (int i = 0; i < ITEM_DRAWABLES.length; i++) {
+        for (int ITEM_DRAWABLE : ITEM_DRAWABLES) {
             ImageView item = new ImageView(this);
-            item.setTag(ITEM_DRAWABLES[i]);
-            item.setImageResource(ITEM_DRAWABLES[i]);
+            item.setTag(ITEM_DRAWABLE);
+            item.setImageResource(ITEM_DRAWABLE);
             rayMenu.addItem(item, new OnClickListener() {
 
                 @Override
@@ -727,10 +661,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                                     // smooth
                                     Intent intent = new Intent(Genre.this, Player.class);
                                     AmuzicgApp.GetInstance().setPosition(0);
-                                    // intent.putParcelableArrayListExtra("Data1",
-                                    // adapter.GetData(
-                                    // ));
-                                    // intent.putExtra("Data2", position);
                                     if (play.size() > 800) {
                                         AmuzicgApp.GetInstance().SetNowPlayingList(play);
                                     } else {
@@ -743,50 +673,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                             }, 540);
                             break;
                         }
-                        // case 3:
-                        // {
-                        // fadein( 0, 700 );
-                        // fadeIn.setAnimationListener( new AnimationListener( ) {
-                        //
-                        // @Override
-                        // public void onAnimationStart( Animation animation )
-                        // {
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationEnd( Animation animation )
-                        // {
-                        //
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationRepeat( Animation animation )
-                        // {
-                        // }
-                        // } );
-                        //
-                        // fadeOut.setAnimationListener( new AnimationListener( ) {
-                        // @Override
-                        // public void onAnimationEnd( Animation animation )
-                        // {
-                        //
-                        // rayMenu.setVisibility( View.INVISIBLE );
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationStart( Animation animation )
-                        // {
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationRepeat( Animation animation )
-                        // {
-                        // }
-                        // } );
-                        // rayMenu.startAnimation( fadeOut );
-                        //
-                        // break;
-                        // }
                         default:
                             break;
                     }
@@ -831,24 +717,8 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                     try {
                         getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
                                 new String[]{checkedList.get(i).getPath2()});
-                    } catch (SQLiteException e) {
+                    } catch (SQLiteException ignored) {
                     }
-                    // try
-                    // {
-                    // MediaScannerConnection.scanFile( Genre.this, new String [ ] { checkedList.get( i ).getPath2( ) }, null,
-                    // new MediaScannerConnection.OnScanCompletedListener( ) {
-                    // public void onScanCompleted( String path, Uri uri )
-                    // {
-                    // Logger.i( "ExternalStorage", "Scanned " + path + ":" );
-                    // Logger.i( "ExternalStorage", "-> uri=" + uri );
-                    // Genre.this.getContentResolver( ).delete( uri, null, null );
-                    // }
-                    // } );
-                    // }
-                    // catch ( Exception e )
-                    // {
-                    // e.printStackTrace( );
-                    // }
                 }
                 dialog2.dismiss();
             }
@@ -895,7 +765,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
     class LazyLoad extends AsyncTask<String, String, ArrayList<SongDetails>> {
         @Override
         protected void onPreExecute() {
-            // album2.setText(img.get(pos).getAlbum());
             play.clear();
             OnRefreshListView();
             super.onPreExecute();
@@ -910,7 +779,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
         protected void onPostExecute(ArrayList<SongDetails> x) {
             if (x != null) {
                 play.addAll(x);
-                // album2.setText(img.get(pos).getAlbum());
                 OnRefreshListView();
             }
         }
@@ -918,8 +786,8 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
 
     class FetchListItems extends AsyncTask<Integer, Void, Void> {
         int duration;
-        ArrayList<SongDetails> img__ = new ArrayList<SongDetails>();
-        ArrayList<String> albumIdArray = new ArrayList<String>();
+        ArrayList<SongDetails> img__ = new ArrayList<>();
+        ArrayList<String> albumIdArray = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {
@@ -948,7 +816,7 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
                             String[] columns1 = {MediaStore.Audio.Albums.ALBUM_ART};
                             Cursor cursor1 = getContentResolver().query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, columns1,
                                     MediaStore.Audio.Albums._ID + "=?", new String[]{String.valueOf(albumId)}, null);
-                            if (cursor1.moveToFirst()) {
+                            if (cursor1 != null && cursor1.moveToFirst()) {
                                 alb.setPath2(cursor1.getString(0));
                                 cursor1.close();
                             }
@@ -960,7 +828,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
             } finally {
                 if (cursor != null) {
                     cursor.close();
-                    cursor = null;
                 }
             }
 
@@ -974,7 +841,7 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
             if (img != null) {
                 img.clear();
             } else {
-                img = new ArrayList<SongDetails>();
+                img = new ArrayList<>();
             }
             img.addAll(img__);
             img__.clear();
@@ -989,69 +856,7 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
             try {
                 ecoGallery.setAdapter(new Adapter_gallery(img));
                 setupListeners(ecoGallery);
-            } catch (NullPointerException e) {
-            }
-
-            // if (img2 != null)
-            {
-                // img2.clear();
-            }
-            // else
-            {
-                // img2 = new ArrayList < String >();
-            }
-            // img2.addAll(img2__);
-            // img2__.clear();
-
-            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            // {
-            // new tV1Task().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-            // }
-            // else
-            // {
-            // new tV1Task().execute((Void) null);
-            // }
-        }
-    }
-
-    class tV1Task extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... arg0) {
-            String sexy = null;
-            Uri uri2 = MediaStore.Audio.Genres.Members.getContentUri("external", Long.parseLong(genre_id));
-            String[] columns2 = {MediaStore.Audio.Genres.Members.ARTIST, MediaStore.Audio.Genres.Members.ARTIST_ID};
-            Cursor cursor2 = null;
-            try {
-                cursor2 = getContentResolver().query(uri2, columns2, null, null, null);
-                if (cursor2 != null && cursor2.moveToFirst()) {
-                    sexy = cursor2.getString(0);
-                }
-            } finally {
-                if (cursor2 != null) {
-                    cursor2.close();
-                    cursor2 = null;
-                }
-            }
-            return sexy;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            if (Utilities.isEmpty(result)) {
-                tV1.setText(getString(R.string.no_songs));
-            } else {
-                // tV1.setText(result);
-                tV1.setText(genre_title);
-
-                EcoGallery ecoGallery = (EcoGallery) findViewById(R.id.gallery);
-                ecoGallery.setAdapter(new Adapter_gallery(img));
-                // setAlbum(cursor.getString(0));//name of album
-                // setPath2(cursor.getString(1));//path of image
-                // setClick_no(cursor.getString(2));// number of songs.
-
-                setupListeners(ecoGallery, result);
+            } catch (NullPointerException ignored) {
             }
         }
     }
@@ -1105,7 +910,6 @@ public class Genre extends BaseActivity implements SongHelper.OnQuickActionItemS
             mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
             mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             ab.OnUpdate(play);
-            checked = null;
         }
 
         @Override

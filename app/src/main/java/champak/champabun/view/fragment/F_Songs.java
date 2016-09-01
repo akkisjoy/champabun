@@ -1003,7 +1003,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         super.onActivityResult(requestCode, resultCode, intent);
 
         switch (requestCode) {
-            case StorageAccessAPI.CodetoDelte: {
+            case StorageAccessAPI.codeToDelete: {
                 StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, F_Songs.this.getActivity());
                 File file = new File(adapter.getItem(curItemSelect).getPath2());
                 boolean canwrite = false;

@@ -66,7 +66,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
     TypefaceTextView tV1, artistname, totaltracks, totaltime;
     ProgressBar spinner;
     Handler handler = new Handler();
-    String sexy, artist, image_path, name;
+    String artist, image_path, name;
     ArrayList<SongDetails> multiplecheckedListforaddtoplaylist, pl;
     Button bRBack, bRAdd, bRPlay, bRDel;
     RayMenu rayMenu;
@@ -114,15 +114,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
         bg = (LinearLayout) findViewById(R.id.ll);
         albumart = (ImageView) findViewById(R.id.albumart);
 
-        // if (android.os.Build.VERSION.SDK_INT >=
-        // android.os.Build.VERSION_CODES.HONEYCOMB)
-        // {
         new FetchAlbum().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-        // }
-        // else
-        // {
-        // new FetchAlbum().execute((Void) null);
-        // }
 
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
@@ -154,16 +146,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
         tV1.setSelected(true);
         tV1.setText(name);
         artistname.setText(String.format(getString(R.string.f_by_artist), artist));
-        // if (android.os.Build.VERSION.SDK_INT >=
-        // android.os.Build.VERSION_CODES.HONEYCOMB)
-        // {
-        // new SetAlbumArtBG().executeOnExecutor(
-        // AsyncTask.THREAD_POOL_EXECUTOR, image_path);
-        // }
-        // else
-        // {
-        // new SetAlbumArtBG().execute(image_path);
-        // }
         Bitmap b = BitmapUtil.SetAlbumArtBG(this, image_path, name, artist);
         BitmapDrawable d = BitmapUtil.SetBG(b, this);
         albumart.setImageBitmap(b);
@@ -209,24 +191,8 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                     try {
                         getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
                                 new String[]{checkedList.get(i).getPath2()});
-                    } catch (SQLiteException e) {
+                    } catch (SQLiteException ignored) {
                     }
-                    // try
-                    // {
-                    // MediaScannerConnection.scanFile( Album.this, new String [ ] { checkedList.get( i ).getPath2( ) }, null,
-                    // new MediaScannerConnection.OnScanCompletedListener( ) {
-                    // public void onScanCompleted( String path, Uri uri )
-                    // {
-                    // // Logger.i( "ExternCreate NewalStorage", "Scanned " + path + ":" );
-                    // Logger.i( "ExternalStorage", "-> uri=" + uri );
-                    // Album.this.getContentResolver( ).delete( uri, null, null );
-                    // }
-                    // } );
-                    // }
-                    // catch ( Exception e )
-                    // {
-                    // e.printStackTrace( );
-                    // }
                 }
                 dialog2.dismiss();
             }
@@ -277,16 +243,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                                 // id of the playlist
                                 String plId = pl.get(position).getArtist();
                                 playlistid = Integer.parseInt(plId);
-                                // if (android.os.Build.VERSION.SDK_INT >=
-                                // android.os.Build.VERSION_CODES.HONEYCOMB)
-                                // {
                                 new AddToPlayListMultiple().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-                                // }
-                                // else
-                                // {
-                                // new AddToPlayListMultiple().execute((Void
-                                // ) null);
-                                // }
                             }
                             dialog2.dismiss();
                         }
@@ -321,9 +278,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
 
                     Intent intent = new Intent(Album.this, Player.class);
                     AmuzicgApp.GetInstance().setPosition(0);
-                    // intent.putParcelableArrayListExtra("Data1", adapter.GetData(
-                    // ));
-                    // intent.putExtra("Data2", position);
                     if (checkedList.size() > 800) {
                         AmuzicgApp.GetInstance().SetNowPlayingList(checkedList);
                     } else {
@@ -369,23 +323,12 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                             }
                         mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
                         ab.OnUpdate(songs);
-                        checked = null;
 
                         mListView.setOnItemClickListener(new OnItemClickListener() {
                             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                                 Intent intent = new Intent(Album.this, Player.class);
                                 AmuzicgApp.GetInstance().setPosition(position);
-                                // intent.putParcelableArrayListExtra("Data1", adapter.GetData(
-                                // ));
-                                // intent.putExtra("Data2", position);
-                                // if (adapter.GetData().size() > 800)
-                                // {
                                 AmuzicgApp.GetInstance().SetNowPlayingList(ab.GetData());
-                                // }
-                                // else
-                                // {
-                                // AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList < SongDetails >(adapter.GetData()));
-                                // }
                                 AmuzicgApp.GetInstance().setCheck(0);
                                 startActivity(intent);
                             }
@@ -407,10 +350,10 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
 
     private void SetupRayMenu() {
         int[] ITEM_DRAWABLES = {R.drawable.composer_button_multiselect, R.drawable.composer_button_sort, R.drawable.composer_button_shuffle};
-        for (int i = 0; i < ITEM_DRAWABLES.length; i++) {
+        for (int ITEM_DRAWABLE : ITEM_DRAWABLES) {
             ImageView item = new ImageView(this);
-            item.setTag(ITEM_DRAWABLES[i]);
-            item.setImageResource(ITEM_DRAWABLES[i]);
+            item.setTag(ITEM_DRAWABLE);
+            item.setImageResource(ITEM_DRAWABLE);
             rayMenu.addItem(item, new OnClickListener() {
 
                 @Override
@@ -418,7 +361,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                     final int resID = (Integer) v.getTag();
                     switch (resID) {
                         case R.drawable.composer_button_multiselect: {
-                            fadeout(00, 700);
+                            fadeout(0, 700);
                             ActivityUtil.showCrouton(Album.this, getString(R.string.multi_select_initiated));
                             rayMenu.startAnimation(fadeOut);
                             fadeOut.setAnimationListener(new AnimationListener() {
@@ -442,14 +385,14 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
 
                                                 AdapterView<?> parent, View view, int position, long id) {
                                             if (position == 0) {
-                                                highlight2(position);
+                                                highlight2();
                                             }
                                             if (position > 0) {
                                                 highlight(position);
                                             }
                                         }
 
-                                        private void highlight2(int position) {
+                                        private void highlight2() {
                                             highlight_zero = highlight_zero + 1;
                                             ab.OnUpdate(songs);
                                         }
@@ -457,7 +400,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                                         private void highlight(int position) {
                                             mListView.setItemChecked(position, true);
                                             ab.OnUpdate(songs);
-                                            return;
                                         }
                                     });
                                 }
@@ -495,14 +437,10 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                                     // smooth
                                     Intent intent = new Intent(Album.this, Player.class);
                                     AmuzicgApp.GetInstance().setPosition(0);
-                                    // intent.putParcelableArrayListExtra("Data1",
-                                    // adapter.GetData(
-                                    // ));
-                                    // intent.putExtra("Data2", position);
                                     if (songs.size() > 800) {
                                         AmuzicgApp.GetInstance().SetNowPlayingList(songs);
                                     } else {
-                                        AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<SongDetails>(songs));
+                                        AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<>(songs));
                                     }
 
                                     AmuzicgApp.GetInstance().setCheck(0);
@@ -511,50 +449,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                             }, 540);
                             break;
                         }
-                        // case 3:
-                        // {
-                        // fadein( 0, 700 );
-                        // fadeIn.setAnimationListener( new AnimationListener( ) {
-                        //
-                        // @Override
-                        // public void onAnimationStart( Animation animation )
-                        // {
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationEnd( Animation animation )
-                        // {
-                        //
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationRepeat( Animation animation )
-                        // {
-                        // }
-                        // } );
-                        //
-                        // fadeOut.setAnimationListener( new AnimationListener( ) {
-                        // @Override
-                        // public void onAnimationEnd( Animation animation )
-                        // {
-                        //
-                        // rayMenu.setVisibility( View.INVISIBLE );
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationStart( Animation animation )
-                        // {
-                        // }
-                        //
-                        // @Override
-                        // public void onAnimationRepeat( Animation animation )
-                        // {
-                        // }
-                        // } );
-                        // rayMenu.startAnimation( fadeOut );
-                        //
-                        // break;
-                        // }
                         default:
                             break;
                     }
@@ -585,20 +479,10 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
             @Override
             public void onClick(View arg0) {
                 EditText save = (EditText) dialog.findViewById(R.id.save_as);
-                if (save.getText().toString() != null) {
-                    int YOUR_PLAYLIST_ID = NowPlaying.createPlaylist(save.getText().toString(), Album.this);
-                    if (YOUR_PLAYLIST_ID == -1)
-                        return;
-                    // TODO
-                    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                    // {
-                    new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
-                    // }
-                    // else
-                    // {
-                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
-                    // }
-                }
+                int YOUR_PLAYLIST_ID = NowPlaying.createPlaylist(save.getText().toString(), Album.this);
+                if (YOUR_PLAYLIST_ID == -1)
+                    return;
+                new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
                 dialog.dismiss();
             }
         });
@@ -749,13 +633,13 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
 
 
                     File file = new File(songs.get(position2).getPath2());
-                    boolean canwrite = false;
+                    boolean canWrite;
                     try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                        canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
                     } catch (Exception e) {
-                        canwrite = false;
+                        canWrite = false;
                     }
-                    if (canwrite) {
+                    if (canWrite) {
                         songHelper.EditTags(songs.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
 
                             @Override
@@ -790,7 +674,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
             for (int index = 0; index < multiplecheckedListforaddtoplaylist.size(); index++) {
                 try {
                     NowPlaying.addToPlaylist(getApplicationContext(), multiplecheckedListforaddtoplaylist.get(index).getPath2(),
-                            params[0].intValue());
+                            params[0]);
                 } catch (IllegalStateException e) {
                     ActivityUtil.showCrouton(Album.this, getString(R.string.playlist_name_already_exists));
                     return null;
@@ -822,7 +706,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
 
             String where = MediaStore.Audio.Media.ALBUM_ID + "=? AND " + MediaStore.Audio.Media.DURATION + ">=?";
             String whereVal[] = {click_no, String.valueOf(duration)};
-            // String orderBy = android.provider.MediaStore.Audio.Media.TRACK;
             String sortOrder = appSettings.getAlbumSortKey();
             if (TextUtils.isEmpty(appSettings.getAlbumSortKey())) {
                 sortOrder = MediaStore.Audio.Media.TRACK;// android.provider.MediaStore.Audio.Media.TITLE;
@@ -837,10 +720,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                         songs__.add(new SongDetails(cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID)), click_no, cursor
                                 .getString(4), cursor.getString(5), cursor.getString(0), Utilities.getTime(cursor.getString(6)), cursor
                                 .getString(2), cursor.getString(5), x));
-                        // Logger.d("Album", "cursor.getString(6) = " +
-                        // cursor.getString(6) + " alb.Time = " + alb.Time);
-                        // Bug fixed: java.lang.NumberFormatException: Invalid
-                        // int: cursor.getString(6) = "5:17"
                         int time = 0;
                         try {
                             time = Integer.parseInt(cursor.getString(6));
@@ -854,7 +733,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
             } finally {
                 if (cursor != null) {
                     cursor.close();
-                    cursor = null;
                 }
             }
             return songs__;
@@ -866,7 +744,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
             if (songs != null) {
                 songs.clear();
             } else {
-                songs = new ArrayList<SongDetails>();
+                songs = new ArrayList<>();
             }
             songs.addAll(result);
             result.clear();
@@ -895,7 +773,6 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
             mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
             mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             ab.OnUpdate(songs);
-            checked = null;
         }
 
         @Override
@@ -912,78 +789,4 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
             return null;
         }
     }
-
-    // class SetAlbumArtBG extends AsyncTask < String, Void, Bitmap >
-    // {
-    // @Override
-    // protected Bitmap doInBackground(String ... arg0)
-    // {
-    // String image_path = arg0 [ 0 ];
-    // Bitmap b = BitmapFactory.decodeFile(image_path);
-    // if (b != null)
-    // {
-    // b = Bitmap.createScaledBitmap(b, (int) hx, (int) hx, true);
-    // }
-    // else
-    // {
-    // b = BitmapFactory.decodeResource(getResources(), arr [ new Random(
-    // ).nextInt(arr.length - 1) ]);
-    // b = Bitmap.createScaledBitmap(b, (int) wt_px, (int) wt_px, true);
-    // }
-    //
-    // return b;
-    // }
-    //
-    // @Override
-    // protected void onPostExecute(Bitmap result)
-    // {
-    // super.onPostExecute(result);
-    // albumart.setImageBitmap(result);
-    //
-    // if (android.os.Build.VERSION.SDK_INT >=
-    // android.os.Build.VERSION_CODES.HONEYCOMB)
-    // {
-    // new SetBG().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, result);
-    // }
-    // else
-    // {
-    // new SetBG().execute(result);
-    // }
-    // }
-    // }
-    //
-    // class SetBG extends AsyncTask < Bitmap, Void, Drawable >
-    // {
-    // @Override
-    // protected Drawable doInBackground(Bitmap ... arg0)
-    // {
-    // Bitmap b = arg0 [ 0 ];
-    // StackBlurManager _stackBlurManager = new StackBlurManager(b);
-    // _stackBlurManager.process(68);
-    // b = _stackBlurManager.returnBlurredImage();
-    // // dstBmp = adjustedContrast(dstBmp, 9);
-    // BitmapDrawable d = new BitmapDrawable(getResources(), b);
-    // ColorMatrix matrix = new ColorMatrix();
-    // matrix.setSaturation((float) 0.84);
-    // ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-    // d.setColorFilter(filter);
-    //
-    // return d;
-    // }
-    //
-    // @SuppressWarnings("deprecation")
-    // @Override
-    // protected void onPostExecute(Drawable result)
-    // {
-    // super.onPostExecute(result);
-    // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-    // {
-    // bg.setBackgroundDrawable(result);
-    // }
-    // else
-    // {
-    // bg.setBackground(result);
-    // }
-    // }
-    // }
 }

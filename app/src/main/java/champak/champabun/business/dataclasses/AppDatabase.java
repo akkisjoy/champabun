@@ -14,7 +14,6 @@ public class AppDatabase {
     private static final String KEY_SLEEP_TIMER_HOUR = "sleep_timer_hour";
     private static final String KEY_SLEEP_TIMER_MINUTE = "sleep_timer_min";
     private static final String KEY_DURATION_FILTER = "duration_filter";
-    private static final String KEY_APP_BG_RES_ID = "bg_res_id";
     private static final String KEY_ALBUM_SORT = "Album_Sort";
     private static final String KEY_ARTIST_SORT = "Artist_Sort";
     private static final String KEY_SONG_SORT = "Song_Sort";
@@ -71,7 +70,7 @@ public class AppDatabase {
 
             SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
             editor.putString(KEY_SLEEP_TIMER, jobj.toString());
-            editor.commit();
+            editor.apply();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -80,79 +79,43 @@ public class AppDatabase {
     public static void CancelSleepTimer(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.remove(KEY_SLEEP_TIMER);
-        editor.commit();
+        editor.apply();
     }
 
     public static void SaveDurationFilterTime(Context context, int duration) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putInt(KEY_DURATION_FILTER, duration);
-        editor.commit();
-    }
-
-    public static int GetDurationFilterTime(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE);
-        return pref.getInt(KEY_DURATION_FILTER, IConstant.DURATION_FILTER_DEFAULT);
-    }
-
-    public static void SaveAppBGResID(Context context, int resID) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
-        editor.putInt(KEY_APP_BG_RES_ID, resID);
-        editor.commit();
-    }
-
-    public static String GetAlbumSortKey(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE);
-        return pref.getString(KEY_ALBUM_SORT, null);
+        editor.apply();
     }
 
     public static void SaveAlbumSortKey(Context context, String key) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putString(KEY_ALBUM_SORT, key);
-        editor.commit();
-    }
-
-    public static String GetArtistSortKey(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE);
-        return pref.getString(KEY_ARTIST_SORT, null);
+        editor.apply();
     }
 
     public static void SaveArtistSortKey(Context context, String key) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putString(KEY_ARTIST_SORT, key);
-        editor.commit();
-    }
-
-    public static String GetSongSortKey(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE);
-        return pref.getString(KEY_SONG_SORT, null);
+        editor.apply();
     }
 
     public static void SaveSongSortKey(Context context, String key) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putString(KEY_SONG_SORT, key);
-        editor.commit();
-    }
-
-    public static String GetGenreSortKey(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE);
-        return pref.getString(KEY_GENRE_SORT, null);
+        editor.apply();
     }
 
     public static void SaveGenreSortKey(Context context, String key) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putString(KEY_GENRE_SORT, key);
-        editor.commit();
-    }
-
-    public static boolean IsAutoDownloadAlbumArt(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE);
-        return pref.getBoolean(KEY_AUTO_DOWNLOAD_ALBUM_ART, true);
+        editor.apply();
     }
 
     public static void SetAutoDownloadAlbumArt(Context context, boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putBoolean(KEY_AUTO_DOWNLOAD_ALBUM_ART, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static boolean IsAppFullscreen(Context context) {
@@ -163,23 +126,12 @@ public class AppDatabase {
     public static void SetAppFullscreen(Context context, boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putBoolean(KEY_APP_FULLSCREEN, value);
-        editor.commit();
-    }
-
-    public static ELanguage GetLanguage(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE);
-        return ELanguage.GetLanguage(pref.getInt(KEY_LANGUAGE, ELanguage.EN.getLanguageCode()));
-    }
-
-    public static void SetLanguage(Context context, ELanguage language) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
-        editor.putInt(KEY_LANGUAGE, language.getLanguageCode());
-        editor.commit();
+        editor.apply();
     }
 
     public static void SetLanguage(Context context, int language) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putInt(KEY_LANGUAGE, language);
-        editor.commit();
+        editor.apply();
     }
 }

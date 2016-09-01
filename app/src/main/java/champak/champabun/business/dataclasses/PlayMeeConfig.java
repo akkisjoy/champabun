@@ -3,79 +3,55 @@ package champak.champabun.business.dataclasses;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class PlayMeeConfig implements Parcelable
-{
-	public static final Creator < PlayMeeConfig > CREATOR = new Creator < PlayMeeConfig >( ) {
-		public PlayMeeConfig createFromParcel( Parcel in )
-		{
-			return new PlayMeeConfig( in );
-		}
+public class PlayMeeConfig implements Parcelable {
+    public static final Creator<PlayMeeConfig> CREATOR = new Creator<PlayMeeConfig>() {
+        public PlayMeeConfig createFromParcel(Parcel in) {
+            return new PlayMeeConfig(in);
+        }
 
-		public PlayMeeConfig [ ] newArray( int size )
-		{
-			return new PlayMeeConfig [ size ];
-		}
-	};
-	
-	private long version;
-	private AppConfig appConfig;
-	private AdsConfig adsConfig;
-	
-	public PlayMeeConfig( long version, AppConfig appConfig, AdsConfig adsConfig )
-	{
-		this.version = version;
-		this.appConfig = appConfig;
-		this.adsConfig = adsConfig;
-	}
+        public PlayMeeConfig[] newArray(int size) {
+            return new PlayMeeConfig[size];
+        }
+    };
 
-	public PlayMeeConfig( Parcel in )
-	{
-		this.version = in.readLong( );
-		this.appConfig = in.readParcelable( AppConfig.class.getClassLoader( ) );
-		this.adsConfig = in.readParcelable( AdsConfig.class.getClassLoader( ) );
-	}
-	
-	@Override
-	public int describeContents( )
-	{
-		return 0;
-	}
+    private long version;
+    private AppConfig appConfig;
+    private AdsConfig adsConfig;
 
-	@Override
-	public void writeToParcel( Parcel dest, int flag )
-	{
-		dest.writeLong( version );
-		dest.writeParcelable( appConfig, flag );
-		dest.writeParcelable( adsConfig, flag );
-	}
+    public PlayMeeConfig(long version, AppConfig appConfig, AdsConfig adsConfig) {
+        this.version = version;
+        this.appConfig = appConfig;
+        this.adsConfig = adsConfig;
+    }
 
-	public long getVersion( )
-	{
-		return version;
-	}
+    public PlayMeeConfig(Parcel in) {
+        this.version = in.readLong();
+        this.appConfig = in.readParcelable(AppConfig.class.getClassLoader());
+        this.adsConfig = in.readParcelable(AdsConfig.class.getClassLoader());
+    }
 
-	public void setVersion( long version )
-	{
-		this.version = version;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	public AppConfig getAppConfig( )
-	{
-		return appConfig;
-	}
+    @Override
+    public void writeToParcel(Parcel dest, int flag) {
+        dest.writeLong(version);
+        dest.writeParcelable(appConfig, flag);
+        dest.writeParcelable(adsConfig, flag);
+    }
 
-	public void setAppConfig( AppConfig appConfig )
-	{
-		this.appConfig = appConfig;
-	}
+    public long getVersion() {
+        return version;
+    }
 
-	public AdsConfig getAdsConfig( )
-	{
-		return adsConfig;
-	}
+    public void setVersion(long version) {
+        this.version = version;
+    }
 
-	public void setAdsConfig( AdsConfig adsConfig )
-	{
-		this.adsConfig = adsConfig;
-	}
+    public AdsConfig getAdsConfig() {
+        return adsConfig;
+    }
+
 }

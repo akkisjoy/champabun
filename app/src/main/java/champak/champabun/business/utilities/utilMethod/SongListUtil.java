@@ -10,256 +10,204 @@ import java.util.ArrayList;
 import champak.champabun.AmuzicgApp;
 import champak.champabun.business.dataclasses.SongDetails;
 
-public class SongListUtil
-{
-	private Context context;
+public class SongListUtil {
+    private Context context;
 
-	public SongListUtil( Context context )
-	{
-		this.context = context;
-	}
+    public SongListUtil(Context context) {
+        this.context = context;
+    }
 
-	public ArrayList < SongDetails > GetRecentAdded( )
-	{
-		ArrayList < SongDetails > play = null;
-		Cursor songCursor = null;
-		int duration = AmuzicgApp.GetInstance().getAppSettings().getDurationFilterTime();
-		try
-		{
-			String sortOrder = MediaStore.Audio.Media.DATE_ADDED + " COLLATE NOCASE " + " DESC";
-			String [ ] TRACK_COLUMNS = new String [ ] { MediaStore.Audio.AudioColumns.ALBUM, MediaStore.Audio.AudioColumns.ARTIST,
-					MediaStore.MediaColumns.DATA, MediaStore.Audio.AudioColumns.DURATION, MediaStore.MediaColumns.TITLE, MediaStore.Audio.Media._ID,
-					MediaStore.Audio.Media.DATE_ADDED, MediaStore.MediaColumns._ID };
-			songCursor = context.getContentResolver( ).query( MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, TRACK_COLUMNS,
-					MediaStore.Audio.AudioColumns.DURATION + ">=" + duration, null, sortOrder );
-			if ( songCursor != null && songCursor.moveToFirst( ) )
-			{
-				play = new ArrayList < SongDetails >( );
+    public ArrayList<SongDetails> GetRecentAdded() {
+        ArrayList<SongDetails> play = null;
+        Cursor songCursor = null;
+        int duration = AmuzicgApp.GetInstance().getAppSettings().getDurationFilterTime();
+        try {
+            String sortOrder = MediaStore.Audio.Media.DATE_ADDED + " COLLATE NOCASE " + " DESC";
+            String[] TRACK_COLUMNS = new String[]{MediaStore.Audio.AudioColumns.ALBUM, MediaStore.Audio.AudioColumns.ARTIST,
+                    MediaStore.MediaColumns.DATA, MediaStore.Audio.AudioColumns.DURATION, MediaStore.MediaColumns.TITLE, MediaStore.Audio.Media._ID,
+                    MediaStore.Audio.Media.DATE_ADDED, MediaStore.MediaColumns._ID};
+            songCursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, TRACK_COLUMNS,
+                    MediaStore.Audio.AudioColumns.DURATION + ">=" + duration, null, sortOrder);
+            if (songCursor != null && songCursor.moveToFirst()) {
+                play = new ArrayList<>();
 
-				int i = 0;
-				int _ID_index = songCursor.getColumnIndex( MediaStore.MediaColumns._ID );
-				int ALBUM_index = songCursor.getColumnIndex( MediaStore.Audio.AudioColumns.ALBUM );
-				int ARTIST_index = songCursor.getColumnIndex( MediaStore.Audio.AudioColumns.ARTIST );
-				int DATA_index = songCursor.getColumnIndex( MediaStore.MediaColumns.DATA );
-				int DURATION_index = songCursor.getColumnIndex( MediaStore.Audio.AudioColumns.DURATION );
-				int TITLE_index = songCursor.getColumnIndex( MediaStore.MediaColumns.TITLE );
-				do
-				{
-					play.add( new SongDetails( songCursor.getInt( _ID_index ), null, songCursor.getString( ALBUM_index ), songCursor
-							.getString( ARTIST_index ), songCursor.getString( DATA_index ),
-							Utilities.getTime( songCursor.getString( DURATION_index ) ), songCursor.getString( TITLE_index ), songCursor
-									.getString( ARTIST_index ), 0 ) );
-					i = i + 1;
-					if ( i == 301 )
-					{
-						break;
-					}
-				}
-				while ( songCursor.moveToNext( ) );
+                int i = 0;
+                int _ID_index = songCursor.getColumnIndex(MediaStore.MediaColumns._ID);
+                int ALBUM_index = songCursor.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM);
+                int ARTIST_index = songCursor.getColumnIndex(MediaStore.Audio.AudioColumns.ARTIST);
+                int DATA_index = songCursor.getColumnIndex(MediaStore.MediaColumns.DATA);
+                int DURATION_index = songCursor.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION);
+                int TITLE_index = songCursor.getColumnIndex(MediaStore.MediaColumns.TITLE);
+                do {
+                    play.add(new SongDetails(songCursor.getInt(_ID_index), null, songCursor.getString(ALBUM_index), songCursor
+                            .getString(ARTIST_index), songCursor.getString(DATA_index),
+                            Utilities.getTime(songCursor.getString(DURATION_index)), songCursor.getString(TITLE_index), songCursor
+                            .getString(ARTIST_index), 0));
+                    i = i + 1;
+                    if (i == 301) {
+                        break;
+                    }
+                }
+                while (songCursor.moveToNext());
 
-			}
-			TRACK_COLUMNS = null;
-		}
-		catch ( IllegalStateException e )
-		{
-		}
-		finally
-		{
-			if ( songCursor != null )
-			{
-				songCursor.close( );
-				songCursor = null;
-			}
-		}
+            }
+        } catch (IllegalStateException e) {
+        } finally {
+            if (songCursor != null) {
+                songCursor.close();
+            }
+        }
 
-		return play;
-	}
+        return play;
+    }
 
-	public ArrayList < SongDetails > FetchLastPlayed( )
-	{
-		ArrayList < SongDetails > play = null;
-		Cursor songCursor = null;
-		PlayMeePreferences prefs = new PlayMeePreferences( context );
-		String [ ] in = prefs.GetLastPlaylist( );
-		prefs = null;
-		if ( in == null )
-		{
-			return null;
-		}
+    public ArrayList<SongDetails> FetchLastPlayed() {
+        ArrayList<SongDetails> play = null;
+        Cursor songCursor = null;
+        PlayMeePreferences prefs = new PlayMeePreferences(context);
+        String[] in = prefs.GetLastPlaylist();
+        if (in == null) {
+            return null;
+        }
 
-		StringBuilder sb = new StringBuilder( in.length * 2 - 1 );
-		sb.append( "?" );
-		for ( int i = 1; i < in.length; i ++ )
-		{
-			sb.append( ",?" );
-		}
-		String strIn = sb.toString( );
-		
-		StringBuilder inStr = new StringBuilder(MediaStore.MediaColumns._ID)
-	    .append(" IN (?");
+        StringBuilder sb = new StringBuilder(in.length * 2 - 1);
+        sb.append("?");
+        for (int i = 1; i < in.length; i++) {
+            sb.append(",?");
+        }
+        String strIn = sb.toString();
 
-	StringBuilder orderStr = new StringBuilder("CASE ")
-	    .append(MediaStore.MediaColumns._ID)
-	    .append(" WHEN ")
-	    .append(in[0])
-	    .append(" THEN 0 ");
+        StringBuilder inStr = new StringBuilder(MediaStore.MediaColumns._ID)
+                .append(" IN (?");
 
-	for (int i = 1; i < in.length; i++) {
-	    inStr.append(",?");
+        StringBuilder orderStr = new StringBuilder("CASE ")
+                .append(MediaStore.MediaColumns._ID)
+                .append(" WHEN ")
+                .append(in[0])
+                .append(" THEN 0 ");
 
-	    orderStr.append("WHEN ")
-	        .append(in[i])
-	        .append(" THEN ")
-	        .append(i)
-	        .append(" ");
-	}
+        for (int i = 1; i < in.length; i++) {
+            inStr.append(",?");
 
-	inStr.append(")");
+            orderStr.append("WHEN ")
+                    .append(in[i])
+                    .append(" THEN ")
+                    .append(i)
+                    .append(" ");
+        }
 
-	orderStr.append("END; ")
-	    .append(MediaStore.MediaColumns._ID)
-	    .append(" ASC");
+        inStr.append(")");
 
-		int duration = AmuzicgApp.GetInstance().getAppSettings().getDurationFilterTime();
-	
-		try
-		{
-			String [ ] TRACK_COLUMNS = new String [ ] { MediaStore.Audio.AudioColumns.ALBUM, MediaStore.Audio.AudioColumns.ARTIST,
-					MediaStore.MediaColumns.DATA, MediaStore.Audio.AudioColumns.DURATION, MediaStore.MediaColumns.TITLE, MediaStore.MediaColumns._ID };
-			
-			//songCursor = context.getContentResolver( ).query( MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, TRACK_COLUMNS,
-				//	MediaStore.MediaColumns._ID + " IN (" + strIn + ")", in, null );
-			
-			 songCursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+        orderStr.append("END; ")
+                .append(MediaStore.MediaColumns._ID)
+                .append(" ASC");
+
+        int duration = AmuzicgApp.GetInstance().getAppSettings().getDurationFilterTime();
+
+        try {
+            String[] TRACK_COLUMNS = new String[]{MediaStore.Audio.AudioColumns.ALBUM, MediaStore.Audio.AudioColumns.ARTIST,
+                    MediaStore.MediaColumns.DATA, MediaStore.Audio.AudioColumns.DURATION, MediaStore.MediaColumns.TITLE, MediaStore.MediaColumns._ID};
+
+            songCursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                     TRACK_COLUMNS,
                     inStr.toString() + " AND ( " + MediaStore.Audio.AudioColumns.DURATION + ">=" + duration + ")",
                     in,
                     orderStr.toString());
-			
-			
-			if ( songCursor != null && songCursor.moveToFirst( ) )
-			{
-				play = new ArrayList < SongDetails >( );
 
-				int _ID_index = songCursor.getColumnIndex( MediaStore.MediaColumns._ID );
-				int ALBUM_index = songCursor.getColumnIndex( MediaStore.Audio.AudioColumns.ALBUM );
-				int ARTIST_index = songCursor.getColumnIndex( MediaStore.Audio.AudioColumns.ARTIST );
-				int DATA_index = songCursor.getColumnIndex( MediaStore.MediaColumns.DATA );
-				int DURATION_index = songCursor.getColumnIndex( MediaStore.Audio.AudioColumns.DURATION );
-				int TITLE_index = songCursor.getColumnIndex( MediaStore.MediaColumns.TITLE );
-				do
-				{
-					play.add( new SongDetails( songCursor.getInt( _ID_index ), null, songCursor.getString( ALBUM_index ), songCursor
-							.getString( ARTIST_index ), songCursor.getString( DATA_index ),
-							Utilities.getTime( songCursor.getString( DURATION_index ) ), songCursor.getString( TITLE_index ), songCursor
-									.getString( ALBUM_index ), 0 ) );
-				}
-				while ( songCursor.moveToNext( ) );
 
-			}
-			TRACK_COLUMNS = null;
-		}
-		catch ( IllegalStateException e )
-		{
-		}
-		finally
-		{
-			if ( songCursor != null )
-			{
-				songCursor.close( );
-				songCursor = null;
-			}
-		}
-		return play;
-	}
+            if (songCursor != null && songCursor.moveToFirst()) {
+                play = new ArrayList<>();
 
-	public ArrayList < SongDetails > GetSonglistByClickNo( String click_no )
-	{
-		int s = -1;
-		try
-		{
-			s = Integer.parseInt( click_no );
-		}
-		catch ( NumberFormatException e )
-		{
-			return null;
-		}
-		ArrayList < SongDetails > _play = null;
-		int duration = AmuzicgApp.GetInstance().getAppSettings().getDurationFilterTime();
-		Uri uri2 = MediaStore.Audio.Playlists.Members.getContentUri( "external", s );
+                int _ID_index = songCursor.getColumnIndex(MediaStore.MediaColumns._ID);
+                int ALBUM_index = songCursor.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM);
+                int ARTIST_index = songCursor.getColumnIndex(MediaStore.Audio.AudioColumns.ARTIST);
+                int DATA_index = songCursor.getColumnIndex(MediaStore.MediaColumns.DATA);
+                int DURATION_index = songCursor.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION);
+                int TITLE_index = songCursor.getColumnIndex(MediaStore.MediaColumns.TITLE);
+                do {
+                    play.add(new SongDetails(songCursor.getInt(_ID_index), null, songCursor.getString(ALBUM_index), songCursor
+                            .getString(ARTIST_index), songCursor.getString(DATA_index),
+                            Utilities.getTime(songCursor.getString(DURATION_index)), songCursor.getString(TITLE_index), songCursor
+                            .getString(ALBUM_index), 0));
+                }
+                while (songCursor.moveToNext());
 
-		String [ ] projection1 = { MediaStore.Audio.Playlists.Members.AUDIO_ID, MediaStore.Audio.Playlists.Members.ARTIST,
-				MediaStore.Audio.Playlists.Members.TITLE, MediaStore.Audio.Playlists.Members.DATA, MediaStore.Audio.Playlists.Members.ALBUM,
-				MediaStore.Audio.Playlists.Members.DURATION, MediaStore.MediaColumns._ID };
-		Cursor cursor = null;
+            }
+        } catch (IllegalStateException e) {
+        } finally {
+            if (songCursor != null) {
+                songCursor.close();
+            }
+        }
+        return play;
+    }
 
-		try
-		{
-			cursor = context.getContentResolver( ).query( uri2, projection1, MediaStore.Audio.Playlists.Members.DURATION + ">=" + duration, null, null );
+    public ArrayList<SongDetails> GetSonglistByClickNo(String click_no) {
+        int s;
+        try {
+            s = Integer.parseInt(click_no);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+        ArrayList<SongDetails> _play = null;
+        int duration = AmuzicgApp.GetInstance().getAppSettings().getDurationFilterTime();
+        Uri uri2 = MediaStore.Audio.Playlists.Members.getContentUri("external", s);
 
-			if ( cursor != null && cursor.moveToFirst( ) )
-			{
-				_play = new ArrayList < SongDetails >( );
+        String[] projection1 = {MediaStore.Audio.Playlists.Members.AUDIO_ID, MediaStore.Audio.Playlists.Members.ARTIST,
+                MediaStore.Audio.Playlists.Members.TITLE, MediaStore.Audio.Playlists.Members.DATA, MediaStore.Audio.Playlists.Members.ALBUM,
+                MediaStore.Audio.Playlists.Members.DURATION, MediaStore.MediaColumns._ID};
+        Cursor cursor = null;
 
-				int _ID_index = cursor.getColumnIndex( MediaStore.MediaColumns._ID );
-				int ALBUM_index = cursor.getColumnIndex( MediaStore.Audio.Playlists.Members.ALBUM );
-				int ARTIST_index = cursor.getColumnIndex( MediaStore.Audio.Playlists.Members.ARTIST );
-				int DATA_index = cursor.getColumnIndex( MediaStore.Audio.Playlists.Members.DATA );
-				int DURATION_index = cursor.getColumnIndex( MediaStore.Audio.Playlists.Members.DURATION );
-				int TITLE_index = cursor.getColumnIndex( MediaStore.Audio.Playlists.Members.TITLE );
-				int AUDIO_ID_index = cursor.getColumnIndex( MediaStore.Audio.Playlists.Members.AUDIO_ID );
+        try {
+            cursor = context.getContentResolver().query(uri2, projection1, MediaStore.Audio.Playlists.Members.DURATION + ">=" + duration, null, null);
 
-				do
-				{
-					SongDetails pl = new SongDetails( );
+            if (cursor != null && cursor.moveToFirst()) {
+                _play = new ArrayList<>();
 
-					pl.setID( cursor.getInt( _ID_index ) );
-					pl.setSong( cursor.getString( TITLE_index ) );
-					pl.setPath2( cursor.getString( DATA_index ) );
-					pl.setArtist( cursor.getString( ARTIST_index ) );
-					pl.setAlbum( cursor.getString( ALBUM_index ) );
-					pl.setTime( cursor.getString( DURATION_index ) );
-					pl.setAudioID( cursor.getString( AUDIO_ID_index ) );
-					try
-					{
-						int intTime = Integer.parseInt( cursor.getString( DURATION_index ) );
-						int newTime = intTime / 1000;
-						int newTimeMinutes = newTime / 60;
-						int newTimeSeconds = newTime % 60;
-						String max2;
-						if ( newTimeSeconds < 10 )
-						{
-							max2 = newTimeMinutes + ":0" + newTimeSeconds;
-						}
-						else
-						{
-							max2 = newTimeMinutes + ":" + newTimeSeconds;
-						}
-						pl.setTime( max2 );
-					}
-					catch ( Exception e )
-					{
-					}
+                int _ID_index = cursor.getColumnIndex(MediaStore.MediaColumns._ID);
+                int ALBUM_index = cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.ALBUM);
+                int ARTIST_index = cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.ARTIST);
+                int DATA_index = cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.DATA);
+                int DURATION_index = cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.DURATION);
+                int TITLE_index = cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.TITLE);
+                int AUDIO_ID_index = cursor.getColumnIndex(MediaStore.Audio.Playlists.Members.AUDIO_ID);
 
-					// pl.Path=cursor.getString(1);
-					// pl.Album=cursor.getString(0);
-					_play.add( pl );
-				}
-				while ( cursor.moveToNext( ) );
-			}
-		}
-		catch ( IllegalStateException e )
-		{
-		}
-		finally
-		{
-			if ( cursor != null )
-			{
-				cursor.close( );
-				cursor = null;
-			}
-		}
+                do {
+                    SongDetails pl = new SongDetails();
 
-		return _play;
-	}
+                    pl.setID(cursor.getInt(_ID_index));
+                    pl.setSong(cursor.getString(TITLE_index));
+                    pl.setPath2(cursor.getString(DATA_index));
+                    pl.setArtist(cursor.getString(ARTIST_index));
+                    pl.setAlbum(cursor.getString(ALBUM_index));
+                    pl.setTime(cursor.getString(DURATION_index));
+                    pl.setAudioID(cursor.getString(AUDIO_ID_index));
+                    try {
+                        int intTime = Integer.parseInt(cursor.getString(DURATION_index));
+                        int newTime = intTime / 1000;
+                        int newTimeMinutes = newTime / 60;
+                        int newTimeSeconds = newTime % 60;
+                        String max2;
+                        if (newTimeSeconds < 10) {
+                            max2 = newTimeMinutes + ":0" + newTimeSeconds;
+                        } else {
+                            max2 = newTimeMinutes + ":" + newTimeSeconds;
+                        }
+                        pl.setTime(max2);
+                    } catch (Exception ignored) {
+                    }
+
+                    _play.add(pl);
+                }
+                while (cursor.moveToNext());
+            }
+        } catch (IllegalStateException ignored) {
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return _play;
+    }
 }

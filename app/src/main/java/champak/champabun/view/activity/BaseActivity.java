@@ -51,9 +51,6 @@ import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.framework.service.Music_service;
 import champak.champabun.framework.service.UpdateWidgetService;
 
-// import com.google.android.gms.analytics.HitBuilders;
-// import com.google.android.gms.analytics.Tracker;
-
 public abstract class BaseActivity extends AppCompatActivity {
     public AppSetting appSettings;
     BroadcastReceiver stop = new BroadcastReceiver() {
@@ -70,12 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             ActivityUtil.CloseAllOpenActivities();
         }
     };
-    // private com.google.android.gms.ads.AdView adView;
-    // private ViewGroup fbAdsViewGrp;
-    // private View adsLayout, closeAdsButton;
-    // private View appodealBannerView;
     private boolean isRegisterReceiver;
-    private boolean isAdsShown, isCloseAdsButtonShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,22 +98,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             // Send a screen view.
             t.send(new HitBuilders.AppViewBuilder().build());
         }
-
-        if (isAdsOffer() && isAdsConfigOffer()) {
-            // Appodeal
-            android.util.Log.d("BaseActivity", "isAdsConfigOffer..............");
-            // Appodeal.disableLocationPermissionCheck( );
-            String appKey = getString(R.string.appodeal_ApiKey);
-            if (isBannerAdsOffer()) {
-                // Appodeal.initialize( BaseActivity.this, appKey, Appodeal.BANNER );
-            }
-            if (isInterstitialAdsOffer()) {
-                // Appodeal.setAutoCache( Appodeal.INTERSTITIAL, false );
-                // Appodeal.initialize( BaseActivity.this, appKey, Appodeal.INTERSTITIAL );
-                // Appodeal.cache( this, Appodeal.INTERSTITIAL );
-            }
-            // closeAdsButton = findViewById( R.id.closeAdsView );
-        }
     }
 
     @Override
@@ -131,18 +107,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        if (isAdsOffer()) {
-            // Appodeal.hide( this, Appodeal.BANNER );
-            isAdsShown = false;
-        }
-        super.onPause();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        ActivityUtil.SetCurrentActivity(this);
+        ActivityUtil.SetCurrentActivity();
     }
 
     @Override
@@ -160,13 +127,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         try {
             unregisterReceiver(stop);
             isRegisterReceiver = false;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
-        if (isAdsOffer())
-            // Appodeal.hide( this, Appodeal.BANNER );
-
-            MyGarbageCollection();
+        MyGarbageCollection();
         ActivityUtil.RemoveOpenActivities(this);
 
         super.onDestroy();
@@ -222,27 +186,27 @@ public abstract class BaseActivity extends AppCompatActivity {
         // set all listeners to null (not every view and not every API level supports the methods)
         try {
             view.setOnClickListener(null);
-        } catch (Throwable mayHappen) {
+        } catch (Throwable ignored) {
         }
         try {
             view.setOnCreateContextMenuListener(null);
-        } catch (Throwable mayHappen) {
+        } catch (Throwable ignored) {
         }
         try {
             view.setOnFocusChangeListener(null);
-        } catch (Throwable mayHappen) {
+        } catch (Throwable ignored) {
         }
         try {
             view.setOnKeyListener(null);
-        } catch (Throwable mayHappen) {
+        } catch (Throwable ignored) {
         }
         try {
             view.setOnLongClickListener(null);
-        } catch (Throwable mayHappen) {
+        } catch (Throwable ignored) {
         }
         try {
             view.setOnClickListener(null);
-        } catch (Throwable mayHappen) {
+        } catch (Throwable ignored) {
         }
 
         // set background to null
@@ -261,13 +225,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 imageView.setBackground(null);
             }
         }
-        //
-        // // destroy webview
-        // if (view instanceof WebView)
-        // {
-        // ((WebView) view).destroyDrawingCache();
-        // ((WebView) view).destroy();
-        // }
     }
 
     public abstract String GetActivityID();
@@ -277,134 +234,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public int GetRootViewID() {
         return R.id.rootview;
-    }
-
-    // private void ShowGoogleAdmob( )
-    // {
-    // if ( fbAdsViewGrp != null )
-    // fbAdsViewGrp.setVisibility( View.GONE );
-    //
-    // if ( adView != null )
-    // {
-    // adView.loadAd( new com.google.android.gms.ads.AdRequest.Builder( ).build( ) );
-    // adView.setAdListener( new AdListener( ) {
-    //
-    // @Override
-    // public void onAdFailedToLoad( int errorCode )
-    // {
-    // super.onAdFailedToLoad( errorCode );
-    // }
-    //
-    // @Override
-    // public void onAdLoaded( )
-    // {
-    // super.onAdLoaded( );
-    // if ( adLayout != null )
-    // adLayout.setVisibility( View.VISIBLE );
-    // adView.setVisibility( View.VISIBLE );
-    // if ( fbAdsViewGrp != null )
-    // fbAdsViewGrp.setVisibility( View.GONE );
-    // ShowCloseAdsButton( );
-    // }
-    // } );
-    // }
-    // }
-
-    public void OnShowAds() {
-        // Appodeal.show( BaseActivity.this, Appodeal.BANNER );
-        isAdsShown = true;
-    }
-
-    public void OnCloseAds(View view) {
-        // View rootView = findViewById( GetMainRootLayoutID( ) );
-        // if ( rootView instanceof RelativeLayout )
-        // {
-        // View mainView = findViewById( GetMainLayoutID( ) );
-        // View adsView = findViewById( GetAdsLayoutID( ) );
-        // if ( adsView != null )
-        // {
-        // adsView.setVisibility( View.GONE );
-        // }
-        // if ( mainView != null )
-        // {
-        // RelativeLayout.LayoutParams mainParams = ( RelativeLayout.LayoutParams ) mainView.getLayoutParams( );
-        // mainParams.addRule( RelativeLayout.ALIGN_PARENT_TOP );
-        // }
-        // }
-        // View closeButton = findViewById( R.id.closeAdsButton );
-        // if ( closeButton != null )
-        // closeButton.setVisibility( View.GONE );
-        //
-        isAdsShown = false;
-        // isCloseAdsButtonShown = false;
-    }
-
-    private void ShowCloseAdsButton() {
-        // adsLayout = findViewById( GetAdsLayoutID( ) );
-        // if ( adsLayout != null )
-        // {
-        // // appodealBannerView = adsLayout.findViewById(R.id.appodealBannerView);
-        // closeAdsButton = adsLayout.findViewById( R.id.closeAdsButton );
-        // }
-
-        // if ( closeAdsButton != null )
-        // {
-        // android.util.Log.d("BaseActivity","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        // closeAdsButton.setVisibility( View.VISIBLE );
-        // RelativeLayout.LayoutParams closeButtonParams = ( RelativeLayout.LayoutParams ) closeAdsButton.getLayoutParams( );
-        // closeButtonParams.bottomMargin = getResources( ).getInteger( R.integer.appodeal_height );
-        // closeAdsButton.bringToFront( );
-        //
-        // final android.view.ViewTreeObserver vto = appodealBannerView.getViewTreeObserver( );
-        // vto.addOnGlobalLayoutListener( new android.view.ViewTreeObserver.OnGlobalLayoutListener( ) {
-        // @SuppressWarnings( "deprecation" )
-        // @Override
-        // public void onGlobalLayout( )
-        // {
-        // if ( Build.VERSION.SDK_INT < 16 )
-        // {
-        // vto.removeGlobalOnLayoutListener( this );
-        // }
-        // else
-        // {
-        // vto.removeOnGlobalLayoutListener( this );
-        // }
-        // int width = appodealBannerView.getWidth( );
-        // int height = appodealBannerView.getHeight( );
-        // android.util.Log.d("BaseActivity","onGlobalLayout..............width = " + width + " height = " + height );
-        // closeAdsButton.setVisibility( View.VISIBLE );
-        // RelativeLayout.LayoutParams closeButtonParams = ( RelativeLayout.LayoutParams ) closeAdsButton.getLayoutParams( );
-        // closeButtonParams.bottomMargin = height;
-        // // closeButtonParams.addRule(RelativeLayout.ALIGN_TOP, R.id.appodealBannerView);
-        // // closeButtonParams.addRule(RelativeLayout.ALIGN_RIGHT, R.id.appodealBannerView);
-        // }
-        // } );
-        //// new Handler( ).postDelayed( new Runnable( ) {
-        ////
-        //// @Override
-        //// public void run( )
-        //// {
-        //// }
-        //// }, 150 );
-        // }
-        isCloseAdsButtonShown = true;
-    }
-
-
-    public boolean isAdsOffer() {
-        return true;
-    }
-
-    protected boolean isBannerAdsOffer() {
-        return ((AmuzicgApp) getApplication()).getPlayMeeConfig().getAdsConfig().isShowBanner();
-    }
-
-    protected boolean isInterstitialAdsOffer() {
-        return ((AmuzicgApp) getApplication()).getPlayMeeConfig().getAdsConfig().isShowFullScreenAds();
-    }
-
-    protected boolean isAdsConfigOffer() {
-        return isBannerAdsOffer() && isInterstitialAdsOffer();
     }
 
     public abstract int GetLayoutResID();

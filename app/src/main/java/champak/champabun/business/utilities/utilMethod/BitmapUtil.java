@@ -50,8 +50,7 @@ public class BitmapUtil {
         return b;
     }
 
-    // albumname and artistname are not required,you can remove it.
-    public static Bitmap GetBitmapFromSongPath(Resources res, int albumID, int desireWidth, int desireHeight, String image_path) {
+    public static Bitmap GetBitmapFromSongPath(int desireWidth, int desireHeight, String image_path) {
         Bitmap bitmap = null;
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         try {
@@ -59,7 +58,7 @@ public class BitmapUtil {
             byte[] rawArt = mmr.getEmbeddedPicture();
             if (rawArt != null) {
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_4444;
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 options.inSampleSize = 2;
                 bitmap = BitmapFactory.decodeByteArray(rawArt, 0, rawArt.length, options);
                 bitmap = Bitmap.createScaledBitmap(bitmap, desireWidth, desireHeight, true);
@@ -69,10 +68,7 @@ public class BitmapUtil {
                     bitmap = Bitmap.createScaledBitmap(bitmap, desireWidth, desireHeight, true);
                 }
             }
-            // dstBmp = Bitmap.createBitmap(bitmap2, 0, 0,
-            // 4 * bitmap2.getHeight() / 5,
-            // 4 * bitmap2.getHeight() / 5);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         mmr.release();
         return bitmap;
@@ -82,7 +78,6 @@ public class BitmapUtil {
         StackBlurManager _stackBlurManager = new StackBlurManager(b);
         _stackBlurManager.process(68);
         b = _stackBlurManager.returnBlurredImage();
-        // dstBmp = adjustedContrast(dstBmp, 9);
         BitmapDrawable d = new BitmapDrawable(context.getResources(), b);
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation((float) 0.84);
@@ -96,16 +91,9 @@ public class BitmapUtil {
     }
 
     public static Bitmap GetRandomBitmap(Resources res, int albumID, int desireWidth, int desireHeight) {
-        Bitmap bitmap;
+        int x = R.drawable.album_art_1 + albumID % IConstant.arr.length;
+        Bitmap bitmap = BitmapFactory.decodeResource(res, x);
 
-        {
-            int x = R.drawable.album_art_1 + albumID % IConstant.arr.length;
-
-            bitmap = BitmapFactory.decodeResource(res, x);
-            bitmap = Bitmap.createScaledBitmap(bitmap, desireWidth, desireHeight, true);
-        }
-
-        return bitmap;
-
+        return Bitmap.createScaledBitmap(bitmap, desireWidth, desireHeight, true);
     }
 }

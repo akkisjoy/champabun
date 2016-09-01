@@ -34,7 +34,7 @@ public class AppConfigHelper {
     public void SavePlayMeeConfigJson(Context context, String adsConfig) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APP_DB_KEY, Context.MODE_PRIVATE).edit();
         editor.putString(KEY_CFG_JSON, adsConfig);
-        editor.commit();
+        editor.apply();
     }
 
     private PlayMeeConfig GetLocalPlayMeeConfig(Context context) {
@@ -50,7 +50,6 @@ public class AppConfigHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        parser = null;
         return playMeeConfig;
     }
 
@@ -98,7 +97,6 @@ public class AppConfigHelper {
                     config = parser.GetPlayMeeConfigConfig(cfgJson);
                     SavePlayMeeConfigJson(context, cfgJson);
                 }
-                parser = null;
             } catch (IOException | ParserConfigurationException | SAXException | JSONException e) {
                 e.printStackTrace();
             }

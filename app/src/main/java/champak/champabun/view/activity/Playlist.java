@@ -1,17 +1,11 @@
 package champak.champabun.view.activity;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteException;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,41 +32,16 @@ import champak.champabun.view.adapters.Adapter_SongView;
 public class Playlist extends BaseActivity implements SongHelper.OnQuickActionItemSelectListener {
     static public int highlight_zero = 0;
     String click_no;
-    ArrayList<SongDetails> play = new ArrayList<SongDetails>();
+    ArrayList<SongDetails> play = new ArrayList<>();
     Adapter_SongView ab;
     ListView SngList;
     String plName;
     TypefaceTextView playlistname;
     ProgressBar spinner;
     int position2;
-    Intent intent;
-    //private LinearLayout ll;
     private SongHelper songHelper;
     private PlayMeePreferences prefs;
     private ImageView backPager;
-
-    public static void addToPlaylist(ContentResolver resolver, int audioId, int YOUR_PLAYLIST_ID) {
-        String[] cols = new String[]{"count(*)"};
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", YOUR_PLAYLIST_ID);
-        Cursor cur = null;
-        try {
-            cur = resolver.query(uri, cols, null, null, null);
-            if (cur != null) {
-                cur.moveToFirst();
-                final int base = cur.getInt(0);
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, Integer.valueOf(base + audioId));
-                values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
-                resolver.insert(uri, values);
-            }
-        } catch (SQLiteException e) {
-        } finally {
-            if (cur != null) {
-                cur.close();
-                cur = null;
-            }
-        }
-    }
 
     @Override
     public int GetLayoutResID() {
@@ -111,7 +80,6 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
                 } else {
                     SngList.setAdapter(ab);
                 }
-                util = null;
             } else if (getResources().getString(R.string.last_played).equals(plName)) {
                 FetchLastPlayed();
             }
@@ -176,33 +144,10 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
         } else {
             SngList.setAdapter(ab);
         }
-        util = null;
     }
 
     private void initializesongs() {
         new InitializeSongsTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, click_no);
-    }
-
-    public void removeFromPlaylist(int YOUR_PLAYLIST_ID) {
-        // Logger.v("made it to add",""+audioId);
-        String[] cols = new String[]{"count(*)"};
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", YOUR_PLAYLIST_ID);
-        Cursor cur = null;
-        try {
-            cur = getContentResolver().query(uri, cols, null, null, null);
-            if (cur != null && cur.moveToFirst()) {
-                // ContentValues values = new ContentValues();
-                // resolver.delete(uri, MediaStore.Audio.Playlists.Members.DATA +" = "+play.get(position2).Path, null);
-                getContentResolver().delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + play.get(position2).getAudioID(), null);
-            }
-        } catch (SQLiteException e) {
-        } finally {
-            if (cur != null) {
-                cur.close();
-                cur = null;
-            }
-        }
-        initializesongs();
     }
 
     @Override
@@ -290,7 +235,6 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
         super.onActivityResult(requestCode, resultCode, intent);
         switch (requestCode) {
             case StorageAccessAPI.Code:
-                // PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
                 if (resultCode == Activity.RESULT_OK) {
 
                     StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Playlist.this);
@@ -321,7 +265,7 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
 
     @Override
     public void QuickAction_OnRemoveSong() {
-        songHelper.RemoveSong(Playlist.this.getContentResolver(), play.get(position2).getAudioID(), position2, Integer.parseInt(click_no));
+        songHelper.RemoveSong(Playlist.this.getContentResolver(), play.get(position2).getAudioID(), Integer.parseInt(click_no));
         initializesongs();
     }
 
@@ -357,12 +301,11 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
             if (play != null) {
                 play.clear();
             } else {
-                play = new ArrayList<SongDetails>();
+                play = new ArrayList<>();
             }
             if (p != null && p.size() > 0) {
                 play.addAll(p);
                 p.clear();
-                p = null;
             }
             OnRefreshSongList();
             util = null;

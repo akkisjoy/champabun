@@ -166,7 +166,7 @@ public class DownloadProVersion {
         Editor editor = pref.edit();
         editor.remove(KEY_INSTALL_DATE);
         editor.remove(KEY_LAUNCH_TIMES);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -179,7 +179,7 @@ public class DownloadProVersion {
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         Editor editor = pref.edit();
         editor.putBoolean(KEY_OPT_OUT, optOut);
-        editor.commit();
+        editor.apply();
     }
 
     /**

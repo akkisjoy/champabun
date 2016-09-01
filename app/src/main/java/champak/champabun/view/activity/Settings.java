@@ -139,7 +139,7 @@ public class Settings extends BaseActivity implements OnClickListener {
 
             @Override
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-                OnAutoDownloadAlbumArt(arg1);
+                OnAutoDownloadAlbumArt();
             }
         });
 
@@ -158,7 +158,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         outState.putBoolean("needRefresh", needRefresh);
         outState.putBoolean("needRefreshLanguage", needRefreshLanguage);
         outState.putBoolean("needRefreshFullscreen", needRefreshFullscreen);
-        //outState.putBoolean( "isOverridePendingTransition", isOverridePendingTransition );
         super.onSaveInstanceState(outState);
     }
 
@@ -175,14 +174,14 @@ public class Settings extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.my_apps: {
-                if (ActivityUtil.IsAPKInstalled(Settings.this, IConstant.CALCULATOR_APP_PACKAGE)) {
+                if (ActivityUtil.isAPKInstalled(Settings.this, IConstant.CALCULATOR_APP_PACKAGE)) {
                     try {
-                        ActivityUtil.StartActivity(this, IConstant.CALCULATOR_APP_PACKAGE);
+                        ActivityUtil.startActivity(this, IConstant.CALCULATOR_APP_PACKAGE);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    ActivityUtil.OpenPlaystore(this, IConstant.CALCULATOR_APP_PACKAGE);
+                    ActivityUtil.openPlaystore(this, IConstant.CALCULATOR_APP_PACKAGE);
                 }
                 break;
             }
@@ -207,22 +206,6 @@ public class Settings extends BaseActivity implements OnClickListener {
                 fullscreen_cb.setChecked(!fullscreen_cb.isChecked());
                 break;
             }
-            // case R.id.theme:
-            // {
-            // break;
-            // }
-            // case R.id.choose_album:
-            // {
-            // break;
-            // }
-            // case R.id.choose_color:
-            // {
-            // break;
-            // }
-            // case R.id.choose_font:
-            // {
-            // break;
-            // }
             case R.id.request_feature: {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(IConstant.REQUEST_FEATURE_URL));
@@ -288,7 +271,7 @@ public class Settings extends BaseActivity implements OnClickListener {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        String hour = null;
+        String hour;
         if (hourOfDay < 10) {
             hour = "0" + hourOfDay;
         } else {
@@ -326,12 +309,10 @@ public class Settings extends BaseActivity implements OnClickListener {
                     ((AmuzicgApp) getApplication()).ChangeLanguage();
                     needRefresh = true;
                     needRefreshLanguage = true;
-                    //isOverridePendingTransition = false;
                     // restart this activity
                     Intent intent = getIntent();
                     intent.putExtra("needRefresh", needRefresh);
                     intent.putExtra("needRefreshLanguage", needRefreshLanguage);
-                    //intent.putExtra( "isOverridePendingTransition", isOverridePendingTransition );
                     overridePendingTransition(0, 0);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     Settings.this.finish();
@@ -370,7 +351,7 @@ public class Settings extends BaseActivity implements OnClickListener {
                 int duration = IConstant.DURATION_FILTER_DEFAULT;
                 try {
                     duration = Integer.parseInt(str);
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ignored) {
                 }
                 int oldDuration = appSettings.getDurationFilterTime();
                 if (oldDuration != duration) {
@@ -403,7 +384,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, x, getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
         window.setBackgroundDrawableResource(R.drawable.dialogbg);
-        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog.getWindow().setAttributes(lp);
@@ -411,7 +391,7 @@ public class Settings extends BaseActivity implements OnClickListener {
     }
 
 
-    private void OnAutoDownloadAlbumArt(boolean value) {
+    private void OnAutoDownloadAlbumArt() {
         appSettings.setAutoDownloadAlbumArt(auto_download_album_art_cb.isChecked());
         AppDatabase.SetAutoDownloadAlbumArt(Settings.this, auto_download_album_art_cb.isChecked());
     }

@@ -26,7 +26,7 @@ public class TypefaceTextView extends TextView {
         super(context, attrs, defStyle);
 
         if (mTypefaces == null) {
-            mTypefaces = new HashMap<String, Typeface>();
+            mTypefaces = new HashMap<>();
         }
 
         final TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.TypefaceTextView);

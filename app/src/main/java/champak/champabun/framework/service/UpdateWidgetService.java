@@ -55,13 +55,12 @@ public class UpdateWidgetService extends Service {
                     open_activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             controlButtons.setOnClickPendingIntent(R.id.parent, openactivityPendingIntent);
 
-            if (AmuzicgApp.GetInstance().boolMusicPlaying1 == true) {
+            if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
                 controlButtons.setImageViewResource(R.id.bPlay, R.drawable.pause2);
             } else {
                 controlButtons.setImageViewResource(R.id.bPlay, R.drawable.play);
             }
         } else {
-            //controlButtons.setTextViewText(R.id.song, "");
             controlButtons.setTextViewText(R.id.artist, "");
             controlButtons.setImageViewResource(R.id.bPlay, R.drawable.play);
         }

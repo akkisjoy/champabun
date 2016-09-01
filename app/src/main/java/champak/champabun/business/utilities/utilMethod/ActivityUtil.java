@@ -5,16 +5,11 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.util.DisplayMetrics;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 
@@ -23,8 +18,7 @@ import champak.champabun.business.utilities.crouton.Style;
 import champak.champabun.view.activity.BaseActivity;
 
 public class ActivityUtil {
-    private static ArrayList<BaseActivity> openActivities = new ArrayList<BaseActivity>();
-    private static BaseActivity currentActivity;
+    private static ArrayList<BaseActivity> openActivities = new ArrayList<>();
 
     public static void SaveOpenActivities(BaseActivity activity) {
         openActivities.add(activity);
@@ -34,12 +28,7 @@ public class ActivityUtil {
         openActivities.remove(activity);
     }
 
-    public static void SetCurrentActivity(BaseActivity activity) {
-        currentActivity = activity;
-    }
-
-    public static BaseActivity GetCurrentActivity() {
-        return currentActivity;
+    public static void SetCurrentActivity() {
     }
 
     public static boolean IsActivityCreated(String activity_id) {
@@ -73,27 +62,6 @@ public class ActivityUtil {
         });
     }
 
-    /**
-     * Get app version code
-     */
-    public static String GetPackageName(Context applicationContext) {
-        try {
-            PackageInfo packageInfo = applicationContext.getPackageManager().getPackageInfo(applicationContext.getPackageName(), 0);
-            return packageInfo.packageName;
-        } catch (NameNotFoundException e) {
-            // should never happen
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
-
-    /**
-     * Implicit show soft keyboard
-     */
-    public static void ShowKeyboard(EditText editText) {
-        InputMethodManager imm = (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-    }
-
     public static boolean IsMyServiceRunning(Context context, Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -104,9 +72,6 @@ public class ActivityUtil {
         return false;
     }
 
-    /**
-     * Check whether network is available or not
-     */
     public static boolean IsNetworkAvailable(Context mContext) {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null)
@@ -116,46 +81,7 @@ public class ActivityUtil {
         return info != null && info.isConnectedOrConnecting();
     }
 
-    /**
-     * Get app version name
-     */
-    public static String GetVersionName(Context context) {
-        String app_ver = null;
-        try {
-            app_ver = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-        } catch (NameNotFoundException e) {
-        }
-        return app_ver;
-    }
-
-    /**
-     * Get app version code
-     */
-    public static int GetVersionCode(Context applicationContext) {
-        try {
-            PackageInfo packageInfo = applicationContext.getPackageManager().getPackageInfo(applicationContext.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (NameNotFoundException e) {
-            // should never happen
-            throw new RuntimeException("Could not get package name: " + e);
-        }
-    }
-
-    /**
-     * Get devices' screen width
-     */
-    public static int GetScreenWidth(Context context) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(metrics);
-        return metrics.widthPixels;
-    }
-
-    public static void OpenPlaystore(Activity activity) {
-        OpenPlaystore(activity, GetPackageName(activity.getApplicationContext()));
-    }
-
-    public static void OpenPlaystore(Activity activity, String appPackage) {
+    public static void openPlaystore(Activity activity, String appPackage) {
         try {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackage)));
         } catch (android.content.ActivityNotFoundException anfe) {
@@ -163,9 +89,9 @@ public class ActivityUtil {
         }
     }
 
-    public static boolean IsAPKInstalled(Context context, String package_name) {
+    public static boolean isAPKInstalled(Context context, String package_name) {
         PackageManager pm = context.getPackageManager();
-        boolean app_installed = false;
+        boolean app_installed;
         try {
             pm.getPackageInfo(package_name, PackageManager.GET_ACTIVITIES);
             app_installed = true;
@@ -175,7 +101,7 @@ public class ActivityUtil {
         return app_installed;
     }
 
-    public static void StartActivity(Context context, String package_name) throws Exception {
+    public static void startActivity(Context context, String package_name) throws Exception {
         if (Utilities.IsEmpty(package_name)) {
             throw new Exception("Stub!!! Package name cannot be null");
         }

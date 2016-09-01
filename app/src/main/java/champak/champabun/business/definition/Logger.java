@@ -1,22 +1,22 @@
 /**
  * Logger.java
- * <p>
+ * <p/>
  * <br>
  * <b>Purpose</b> : CLog This class is used for print out log base on it's tag. Depend on flag ENABLE_LOG is true/false to print out log. Switch off
  * ENABLE_LOG in release build
- * <p>
+ * <p/>
  * <br>
  * <b>Optional info</b> :
- * <p>
+ * <p/>
  * <br>
  * <b>author</b> : chquay@gmail.com
- * <p>
+ * <p/>
  * <br>
  * <b>date</b> : Jul 10, 2014
- * <p>
+ * <p/>
  * <br>
  * <b>lastChangedRevision</b> :
- * <p>
+ * <p/>
  * <br>
  * <b>lastChangedDate</b> : Jul 10, 2014
  */
@@ -39,7 +39,6 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.d(tag, msg, tr);
         }
-
         return 0;
     }
 
@@ -47,7 +46,6 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.e(tag, msg);
         }
-
         return 0;
     }
 
@@ -55,7 +53,6 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.e(tag, msg, tr);
         }
-
         return 0;
     }
 
@@ -63,15 +60,13 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.getStackTraceString(tr);
         }
-
-        return new String("");
+        return "";
     }
 
     public static int i(String tag, String msg) {
         if (IConstant.ENABLE_LOG) {
             return Log.i(tag, msg);
         }
-
         return 0;
     }
 
@@ -79,23 +74,17 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.i(tag, msg, tr);
         }
-
         return 0;
     }
 
     public static boolean isLoggable(String tag, int level) {
-        if (IConstant.ENABLE_LOG) {
-            return Log.isLoggable(tag, level);
-        }
-
-        return false;
+        return Log.isLoggable(tag, level);
     }
 
     public static int println(int priority, String tag, String msg) {
         if (IConstant.ENABLE_LOG) {
             return Log.println(priority, tag, msg);
         }
-
         return 0;
     }
 
@@ -103,7 +92,6 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.v(tag, msg);
         }
-
         return 0;
     }
 
@@ -111,7 +99,6 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.v(tag, msg, tr);
         }
-
         return 0;
     }
 
@@ -119,7 +106,6 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.w(tag, tr);
         }
-
         return 0;
     }
 
@@ -127,7 +113,6 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.w(tag, msg, tr);
         }
-
         return 0;
     }
 
@@ -135,23 +120,20 @@ public class Logger {
         if (IConstant.ENABLE_LOG) {
             return Log.w(tag, msg);
         }
-
         return 0;
     }
 
     public static void logHeap(String prefix, Class<?> clazz) {
-        if (IConstant.ENABLE_LOG && IConstant.ENABLE_MEMORY_LOG) {
 
-            Double allocated = Double.valueOf((Debug.getNativeHeapAllocatedSize())) / Double.valueOf((1048576));
-            Double available = Double.valueOf(Debug.getNativeHeapSize() / 1048576.0);
-            Double free = Double.valueOf(Debug.getNativeHeapFreeSize() / 1048576.0);
-            DecimalFormat df = new DecimalFormat();
-            df.setMaximumFractionDigits(2);
-            df.setMinimumFractionDigits(2);
+        Double allocated = (double) (Debug.getNativeHeapAllocatedSize()) / (double) (1048576);
+        Double available = Debug.getNativeHeapSize() / 1048576.0;
+        Double free = Debug.getNativeHeapFreeSize() / 1048576.0;
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
 
-            Log.w("logHeap", prefix + " allocated " + df.format(allocated) + "MB in ["
-                    + clazz.getName().replaceAll("fr.playsoft.assurland.", "") + "]");
-        }
+        Log.w("logHeap", prefix + " allocated " + df.format(allocated) + "MB in ["
+                + clazz.getName().replaceAll("fr.playsoft.assurland.", "") + "]");
     }
 
     public static void printStackTraces(Exception e) {

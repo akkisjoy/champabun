@@ -131,17 +131,14 @@ public class RayMenu_Functions {
         } else {
             return " ASC";
         }
-
     }
 
     public static String checkstateThe(Dialog dialog2) {
         CheckBox the = (CheckBox) dialog2.findViewById(R.id.checkBox1);
         if (the.isChecked()) {
-
             return ", '<BEGIN>The ', '<BEGIN>')";
         } else {
             return " ";
-
         }
     }
 
@@ -161,8 +158,6 @@ public class RayMenu_Functions {
         String whereVal[] = {click_no};
         if ("-10".equals(click_no)) {
             int duration = AmuzicgApp.GetInstance().getAppSettings().getDurationFilterTime();
-            // where=MediaStore.Audio.Media.DURATION + ">=" + duration;
-            // whereVal = null ;
             where = MediaStore.Audio.Media.DURATION + ">=?";
             whereVal = new String[]{String.valueOf(duration)};
         } else if ("-2".equals(click_no)) {
@@ -171,9 +166,6 @@ public class RayMenu_Functions {
                 whereVal = new String[]{sexy2};
             } else {
                 where = MediaStore.Audio.Media.ALBUM + "=?" + "AND " + MediaStore.Audio.Media.ARTIST + "=?";// +cursor2.getString(0);
-                // + "='"+img.get(position).Album+"'";// AND
-                // "+android.provider.MediaStore.Audio.Media.ARTIST+"="+cursor2.getString(0);
-
                 whereVal = new String[]{pos2, sexy2};
             }
         } else {
@@ -200,7 +192,7 @@ public class RayMenu_Functions {
                 if (songdetails != null) {
                     songdetails.clear();
                 } else {
-                    songdetails = new ArrayList<SongDetails>();
+                    songdetails = new ArrayList<>();
                 }
                 do {
                     int x = Integer.parseInt(songCursor.getString(11));
@@ -212,11 +204,9 @@ public class RayMenu_Functions {
                 while (songCursor.moveToNext());
 
             }
-            TRACK_COLUMNS = null;
         } finally {
             if (songCursor != null) {
                 songCursor.close();
-                songCursor = null;
             }
         }
 
@@ -239,7 +229,7 @@ public class RayMenu_Functions {
     public static ArrayList<SongDetails> getCheckedList(int highlight_zero, SparseBooleanArray checked, ArrayList<SongDetails> songdetails,
                                                         Adapter_SongView adapter) {
 
-        ArrayList<SongDetails> checkedList = new ArrayList<SongDetails>();
+        ArrayList<SongDetails> checkedList = new ArrayList<>();
 
         if (highlight_zero % 2 == 1) {
             if (songdetails != null && songdetails.size() > 0) {
