@@ -66,7 +66,7 @@ import champak.champabun.framework.service.Music_service;
 public class Player extends BaseActivity implements OnSeekBarChangeListener {
     private static final int SELECT_PHOTO = 99;
     Animation fadeOut, fadeIn, fadeInImage, fadeOutImage, fadeInImageBg;
-    View shuffle, repeat, ringtone, NowPlaying, Equalizer, bShufflebg;
+    View shuffle, repeat, NowPlaying, Equalizer, bShufflebg;
     Button brepeat;
     Bitmap album;
     Button bShuffle;
@@ -243,7 +243,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
         repeat = findViewById(R.id.bRepeatbg);
         brepeat = (Button) findViewById(R.id.bRepeat);
-        ringtone = findViewById(R.id.bRing);
         shuffle = findViewById(R.id.bShuffle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songname = (TypefaceTextView) findViewById(R.id.songname);
@@ -349,20 +348,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             }
         });
 
-        ringtone.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                String Artist = AmuzicgApp.GetInstance().GetCurSongDetails().getArtist().trim();
-                Artist = Artist.replaceAll(" ", "+");
-                String Song = AmuzicgApp.GetInstance().GetCurSongDetails().getSong().trim();
-                Song = Song.replaceAll(" ", "+");
-                String URL = "http://app.toneshub.com/?cid=2922&artist=" + Artist + "&song=" + Song;
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
-                startActivity(browserIntent);
-            }
-        });
-
         repeat.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -383,8 +368,14 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         Equalizer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent SecondScreen = new Intent(Player.this, EqualizerActivity.class);
-                startActivity(SecondScreen);
+                Intent intent = new Intent();
+                intent.setAction("android.media.action.DISPLAY_AUDIO_EFFECT_CONTROL_PANEL");
+                if ((intent.resolveActivity(getPackageManager()) != null)) {
+                    startActivity(intent);
+                } else {
+                    Intent SecondScreen = new Intent(Player.this, EqualizerActivity.class);
+                    startActivity(SecondScreen);
+                }
             }
         });
         buttonPlayStop.setOnClickListener(new OnClickListener() {
@@ -409,7 +400,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                     next();
             }
         });
-
         previous.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -431,7 +421,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                     next();
             }
         });
-
         edit.setOnClickListener(new OnClickListener() {
 
             @Override

@@ -188,22 +188,6 @@
                                             android:background="@drawable/repeat_all_tran"
                                             android:clickable="false" />
                                     </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/bRing"
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="@dimen/player_view_left_size"
-                                        android:layout_gravity="center_vertical|center_horizontal"
-                                        android:background="@drawable/selector"
-                                        android:gravity="center_vertical|center_horizontal"
-                                        android:orientation="vertical">
-
-                                        <Button
-                                            android:layout_width="@dimen/player_button_left_size"
-                                            android:layout_height="@dimen/player_button_left_size"
-                                            android:background="@drawable/ring"
-                                            android:clickable="false" />
-                                    </LinearLayout>
                                 </LinearLayout>
 
                                 <ImageView
