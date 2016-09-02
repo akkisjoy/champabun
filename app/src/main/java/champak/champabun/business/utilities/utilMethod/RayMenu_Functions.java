@@ -20,10 +20,10 @@ import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.AppDatabase;
 import champak.champabun.business.dataclasses.SongDetails;
+import champak.champabun.view.activity.Activity_Fragments;
 import champak.champabun.view.activity.Album;
 import champak.champabun.view.activity.Artist;
 import champak.champabun.view.activity.Genre;
-import champak.champabun.view.adapters.Activity_Fragments;
 import champak.champabun.view.adapters.Adapter_SongView;
 
 public class RayMenu_Functions {
@@ -154,7 +154,7 @@ public class RayMenu_Functions {
     public static ArrayList<SongDetails> sort(String sortOrder, int albumornot, Context mActivity, ArrayList<SongDetails> songdetails,
                                               String click_no) {
         Cursor songCursor = null;
-        String where = null;
+        String where;
         String whereVal[] = {click_no};
         if ("-10".equals(click_no)) {
             int duration = AmuzicgApp.GetInstance().getAppSettings().getDurationFilterTime();

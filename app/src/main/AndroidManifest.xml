@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.adapters.Activity_Fragments"
+            android:name=".view.activity.Activity_Fragments"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTask"

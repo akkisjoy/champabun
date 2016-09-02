@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
@@ -59,15 +60,14 @@ import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.framework.service.Music_service;
+import champak.champabun.view.activity.Activity_Fragments;
 import champak.champabun.view.activity.NowPlaying;
 import champak.champabun.view.activity.Player;
 import champak.champabun.view.activity.Settings;
-import champak.champabun.view.adapters.Activity_Fragments;
 import champak.champabun.view.adapters.Adapter_SongView;
 import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
 public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionItemSelectListener {
-    static final int ANIMATION_DURATION = 300;
     static public int highlight_zero = 0;
     public ProgressBar spinner;
     int whichanimation = 0;
@@ -81,7 +81,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     RayMenu rayMenu;
 
     ImageView play2, backPager;
-    AdapterView.AdapterContextMenuInfo info;
     String oldalbum, oldsong;
     public BroadcastReceiver broadcastCoverReceiver = new BroadcastReceiver() {
         @Override
@@ -98,12 +97,10 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     Fragment fragment;
     ListView mListView;
     Adapter_SongView adapter;
-    int i, curItemSelect;
-    View local;
+    int curItemSelect;
     private EditText searchView;
     private Activity_Fragments mActivity;
     private SongHelper songHelper;
-    // private Dialog dialog;
     private FetchSongList fetchSongList;
     private BroadcastReceiver checkagain = new BroadcastReceiver() {
         @Override
@@ -119,7 +116,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         if (savedInstanceState != null) {
             songdetails = savedInstanceState.getParcelableArrayList("F_Songs.songdetails");
         } else {
-            songdetails = new ArrayList<SongDetails>();
+            songdetails = new ArrayList<>();
         }
     }
 
@@ -131,17 +128,14 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         mActivity = (Activity_Fragments) getActivity();
 
         backPager = (ImageView) view.findViewById(R.id.backPager);
-        backPager.setColorFilter(getResources().getColor(R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
+        backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
         mActivity.registerReceiver(broadcastCoverReceiver, new IntentFilter(IConstant.BROADCAST_COVER));
         songs = (TypefaceTextView) view.findViewById(R.id.songstop);
         album2 = (TypefaceTextView) view.findViewById(R.id.albumtop);
         openactivity = view.findViewById(R.id.openactivity);
-        if (!IConstant.IS_PRO_VERSION) {
-            DownloadProVersion.onStart(getActivity());
-            // Show a dialog if criteria is satisfied
-            DownloadProVersion.showRateDialogIfNeeded(getActivity());
-        }
-
+        DownloadProVersion.onStart(getActivity());
+        // Show a dialog if criteria is satisfied
+        DownloadProVersion.showRateDialogIfNeeded(getActivity());
         RateThisApp.onStart(getActivity());
         // Show a dialog if criteria is satisfied
         RateThisApp.showRateDialogIfNeeded(getActivity());
@@ -203,7 +197,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                 if (adapter.GetData().size() > 800) {
                     AmuzicgApp.GetInstance().SetNowPlayingList(adapter.GetData());
                 } else {
-                    AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<SongDetails>(adapter.GetData()));
+                    AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<>(adapter.GetData()));
                 }
                 AmuzicgApp.GetInstance().setCheck(0);
                 startActivity(intent);
@@ -233,8 +227,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
                     dialog2 = Utilities.designdialog(400, mActivity);
 
-                    //LayoutInflater li = ( LayoutInflater ) mActivity.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                    //View list = li.inflate( , null, false );
                     dialog2.setContentView(R.layout.dialog_queue);
                     dialog2.show();
                     pl = Utilities.generatePlaylists(mActivity.getApplicationContext());
@@ -244,7 +236,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                     np = new SongDetails();
                     np.setSong(getString(R.string.create_new));
                     pl.add(1, np);
-                    np = null;
                     ab = new Adapter_playlist_Dialog(pl);
                     ListView dlgLV = (ListView) dialog2.findViewById(R.id.listView1);
                     dlgLV.setAdapter(ab);
@@ -262,16 +253,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                                 // id of the playlist
                                 String plId = pl.get(position).getArtist();
                                 playlistid = Integer.parseInt(plId);
-                                // if (android.os.Build.VERSION.SDK_INT >=
-                                // android.os.Build.VERSION_CODES.HONEYCOMB)
-                                // {
                                 new AddToPlayListMultiple().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-                                // }
-                                // else
-                                // {
-                                // new AddToPlayListMultiple().execute((Void
-                                // ) null);
-                                // }
                             }
                             dialog2.dismiss();
                         }
@@ -306,13 +288,10 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
                     Intent intent = new Intent(mActivity, Player.class);
                     AmuzicgApp.GetInstance().setPosition(0);
-                    // intent.putParcelableArrayListExtra("Data1", adapter.GetData(
-                    // ));
-                    // intent.putExtra("Data2", position);
                     if (checkedList.size() > 800) {
                         AmuzicgApp.GetInstance().SetNowPlayingList(checkedList);
                     } else {
-                        AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<SongDetails>(checkedList));
+                        AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<>(checkedList));
                     }
 
                     AmuzicgApp.GetInstance().setCheck(0);
@@ -325,7 +304,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         });
         bRBackSearch.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                fadeout(00, 700);
+                fadeout(0, 700);
                 bRBackSearch.startAnimation(fadeOut);
                 searchView.startAnimation(fadeOut);
                 fadeOut.setAnimationListener(new AnimationListener() {
@@ -356,7 +335,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             // TODO
             @Override
             public void onClick(View v) {
-                fadeout(00, 700);
+                fadeout(0, 700);
 
                 bRBack.startAnimation(fadeOut);
                 bRAdd.startAnimation(fadeOut);
@@ -382,23 +361,12 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                             }
                         mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
                         adapter.OnUpdate(songdetails);
-                        checked = null;
 
                         mListView.setOnItemClickListener(new OnItemClickListener() {
                             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                                 Intent intent = new Intent(mActivity, Player.class);
                                 AmuzicgApp.GetInstance().setPosition(position);
-                                // intent.putParcelableArrayListExtra("Data1", adapter.GetData(
-                                // ));
-                                // intent.putExtra("Data2", position);
-                                // if (adapter.GetData().size() > 800)
-                                // {
                                 AmuzicgApp.GetInstance().SetNowPlayingList(adapter.GetData());
-                                // }
-                                // else
-                                // {
-                                // AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList < SongDetails >(adapter.GetData()));
-                                // }
                                 AmuzicgApp.GetInstance().setCheck(0);
                                 startActivity(intent);
                             }
@@ -425,32 +393,14 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         });
     }
 
-    // private void set_listview_animation()
-    // {
-    // AnimationSet set = new AnimationSet(true);
-    //
-    // Animation animation = new AlphaAnimation(0.0f, 1.0f);
-    // animation.setDuration(600);
-    // set.addAnimation(animation);
-    //
-    // animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-    // Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
-    // Animation.RELATIVE_TO_SELF, 0.0f);
-    // animation.setDuration(600);
-    // set.addAnimation(animation);
-    //
-    // LayoutAnimationController controller = new LayoutAnimationController(
-    // set, 0.25f);
-    // mListView.setLayoutAnimation(controller);
-    // }
 
     private void SetupRawMenu() {
         int[] ITEM_DRAWABLES = {R.drawable.composer_button_multiselect, R.drawable.composer_button_sort, R.drawable.composer_button_shuffle,
                 R.drawable.composer_icn_search, R.drawable.composer_icn_settings};
-        for (int i = 0; i < ITEM_DRAWABLES.length; i++) {
+        for (int ITEM_DRAWABLE : ITEM_DRAWABLES) {
             ImageView item = new ImageView(mActivity);
-            item.setTag(ITEM_DRAWABLES[i]);
-            item.setImageResource(ITEM_DRAWABLES[i]);
+            item.setTag(ITEM_DRAWABLE);
+            item.setImageResource(ITEM_DRAWABLE);
             rayMenu.addItem(item, new OnClickListener() {
 
                 @Override
@@ -458,7 +408,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                     final int resID = (Integer) v.getTag();
                     switch (resID) {
                         case R.drawable.composer_button_multiselect: {
-                            fadeout(00, 700);
+                            fadeout(0, 700);
                             ActivityUtil.showCrouton(mActivity, getString(R.string.multi_select_initiated));
                             rayMenu.startAnimation(fadeOut);
                             fadeOut.setAnimationListener(new AnimationListener() {
@@ -493,13 +443,11 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                                             highlight_zero = highlight_zero + 1;
                                             mListView.setItemChecked(position, true);
                                             adapter.OnUpdate(songdetails);
-                                            return;
                                         }
 
                                         private void highlight() {
                                             mListView.setItemChecked(0, true);
                                             adapter.OnUpdate(songdetails);
-                                            return;
                                         }
                                     });
                                 }
@@ -541,7 +489,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                                     if (songdetails.size() > 800) {
                                         AmuzicgApp.GetInstance().SetNowPlayingList(songdetails);
                                     } else {
-                                        AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<SongDetails>(songdetails));
+                                        AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<>(songdetails));
                                     }
 
                                     AmuzicgApp.GetInstance().setCheck(0);
@@ -720,7 +668,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                     try {
                         mActivity.getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
                                 new String[]{checkedList.get(i).getPath2()});
-                    } catch (SQLiteException e) {
+                    } catch (SQLiteException ignored) {
                     }
                 }
                 dialog2.dismiss();
@@ -742,14 +690,11 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         } else {
             songs.setText(getString(R.string.total_songs));
             play2.setVisibility(View.GONE);
-            // album2.setText(String.valueOf(songdetails.size()));
-            // fadein(00, 1500);
-            // album2.startAnimation(fadeIn);
         }
     }
 
     private void checkbuttonplaypause() {
-        if (AmuzicgApp.GetInstance().boolMusicPlaying1 == true) {
+        if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
             play2.setImageResource(R.drawable.pause2);
         } else {
             play2.setImageResource(R.drawable.play);
@@ -764,35 +709,33 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     }
 
     protected void inandout() {
-        fadein(00, 1500);
-        fadeout(00, 1500);
+        fadein(0, 1500);
+        fadeout(0, 1500);
 
         if (AmuzicgApp.GetInstance().GetNowPlayingSize() == 0) {
             album2.setText(String.valueOf(songdetails.size()));
             album2.startAnimation(fadeIn);
         } else {
-            if (AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-                    && AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
-            } else if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-                    && AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
-                songs.startAnimation(fadeOut);
-                // album2.startAnimation(fadeOut);
-                whichanimation = 1;
-            } else if (AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-                    && !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
-                // songs.startAnimation(fadeOut);
-                album2.startAnimation(fadeOut);
-                whichanimation = 2;
-            } else if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-                    && !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
-                songs.startAnimation(fadeOut);
-                album2.startAnimation(fadeOut);
-                whichanimation = 3;
+            if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
+                    || !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
+                if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
+                        && AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
+                    songs.startAnimation(fadeOut);
+                    whichanimation = 1;
+                } else if (AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
+                        && !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
+                    album2.startAnimation(fadeOut);
+                    whichanimation = 2;
+                } else if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
+                        && !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
+                    songs.startAnimation(fadeOut);
+                    album2.startAnimation(fadeOut);
+                    whichanimation = 3;
+                }
             }
             fadeOut.setAnimationListener(new AnimationListener() {
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    // mSwitcher.setText("New Text");
                     if (AmuzicgApp.GetInstance().GetNowPlayingSize() > 0) {
                         if (whichanimation == 1) {
                             songs.setText(AmuzicgApp.GetInstance().GetCurSongDetails().getSong());
@@ -852,11 +795,11 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         }
         try {
             mActivity.unregisterReceiver(broadcastCoverReceiver);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         try {
             getActivity().unregisterReceiver(checkagain);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         if (songdetails != null) {
@@ -867,15 +810,14 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         try {
             handler.removeCallbacksAndMessages(null);
             handler = null;
-        } catch (NullPointerException e) {
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
 
         if (pl != null) {
             pl.clear();
             pl = null;
         }
-        if (AmuzicgApp.GetInstance().boolMusicPlaying1 == false) {
+        if (!AmuzicgApp.GetInstance().boolMusicPlaying1) {
             mActivity.getApplicationContext().stopService(new Intent(this.mActivity, Music_service.class));
             AmuzicgApp.GetInstance().CLearNowPlaying();
             System.runFinalizersOnExit(true);
@@ -910,9 +852,8 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
                 try {
                     adapter.getFilter().filter(searchView.getText().toString());
-                } catch (NullPointerException e) {
+                } catch (NullPointerException ignored) {
                 }
-
             }
 
             @Override
@@ -923,20 +864,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             public void afterTextChanged(Editable s) {
             }
         });
-    }
-
-    private void toggleSearchView() {
-        if (searchView.getVisibility() == View.GONE) {
-            searchView.setVisibility(View.VISIBLE);
-            searchView.requestFocus();
-            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
-        } else {
-            searchView.setVisibility(View.GONE);
-            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-            adapter.getFilter().filter(null);
-        }
     }
 
     @Override
@@ -955,7 +882,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
         window.setBackgroundDrawableResource(R.drawable.dialogbg);
-        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog.getWindow().setAttributes(lp);
@@ -969,20 +895,10 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             @Override
             public void onClick(View arg0) {
                 EditText save = (EditText) dialog.findViewById(R.id.save_as);
-                if (save.getText().toString() != null) {
-                    int YOUR_PLAYLIST_ID = NowPlaying.createPlaylist(save.getText().toString(), mActivity);
-                    if (YOUR_PLAYLIST_ID == -1)
-                        return;
-                    // TODO
-                    // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                    // {
-                    new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
-                    // }
-                    // else
-                    // {
-                    // new AddToPl().execute(YOUR_PLAYLIST_ID);
-                    // }
-                }
+                int YOUR_PLAYLIST_ID = NowPlaying.createPlaylist(save.getText().toString(), mActivity);
+                if (YOUR_PLAYLIST_ID == -1)
+                    return;
+                new AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
                 dialog.dismiss();
             }
         });
@@ -1006,18 +922,18 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             case StorageAccessAPI.codeToDelete: {
                 StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, F_Songs.this.getActivity());
                 File file = new File(adapter.getItem(curItemSelect).getPath2());
-                boolean canwrite = false;
+                boolean canWrite;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP
-                        && !(file.getAbsolutePath().toString().contains("emulated") || file.getAbsolutePath().toString().contains("storage0"))
+                        && !(file.getAbsolutePath().contains("emulated") || file.getAbsolutePath().contains("storage0"))
                         ) {
 
                     try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                        canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
                     } catch (Exception e) {
-                        canwrite = false;
+                        canWrite = false;
                     }
 
-                    if (canwrite) {
+                    if (canWrite) {
                         try {
                             StorageAccessAPI.getDocumentFile(file, false).delete();
                             SongHelper.removefromMediastore(adapter.GetData(), curItemSelect, new SongHelper.OnDeleteSongListener() {
@@ -1028,7 +944,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                                         }
                                     }
                                     , mActivity);
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
 
                     } else
@@ -1043,13 +959,13 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
 
                     File file = new File(adapter.getItem(curItemSelect).getPath2());
-                    boolean canwrite = false;
+                    boolean canWrite;
                     try {
-                        canwrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
+                        canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
                     } catch (Exception e) {
-                        canwrite = false;
+                        canWrite = false;
                     }
-                    if (canwrite) {
+                    if (canWrite) {
                         songHelper.EditTags(adapter.getItem(curItemSelect), spinner, play2, new SongHelper.OnEditTagsListener() {
 
                             @Override
@@ -1108,7 +1024,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
             mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             adapter.OnUpdate(songdetails);
-            checked = null;
         }
 
         @Override
@@ -1137,7 +1052,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
-            ArrayList<SongDetails> songs = new ArrayList<SongDetails>();
+            ArrayList<SongDetails> songs = new ArrayList<>();
 
             String sortOrder = ((Activity_Fragments) getActivity()).appSettings.getSongSortKey();
             if (Utilities.IsEmpty(sortOrder)) {
@@ -1158,7 +1073,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                         int ALBUM_ID = -1;
                         try {
                             ALBUM_ID = Integer.parseInt(songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM_ID)));
-                        } catch (NumberFormatException e) {
+                        } catch (NumberFormatException ignored) {
                         }
                         songs.add(new SongDetails(songCursor.getInt(songCursor.getColumnIndex(MediaStore.MediaColumns._ID)), null, songCursor
                                 .getString(0), songCursor.getString(1), songCursor.getString(2),
@@ -1169,9 +1084,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             } finally {
                 if (songCursor != null) {
                     songCursor.close();
-                    songCursor = null;
                 }
-                TRACK_COLUMNS = null;
             }
 
             return songs;
@@ -1183,7 +1096,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             if (songdetails != null) {
                 songdetails.clear();
             } else {
-                songdetails = new ArrayList<SongDetails>();
+                songdetails = new ArrayList<>();
             }
             songdetails.addAll(result);
             result.clear();
@@ -1217,7 +1130,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             for (int index = 0; index < multiplecheckedListforaddtoplaylist.size(); index++) {
                 try {
                     NowPlaying.addToPlaylist(mActivity.getApplicationContext(), multiplecheckedListforaddtoplaylist.get(index).getPath2(),
-                            params[0].intValue());
+                            params[0]);
                 } catch (IllegalStateException e) {
                     ActivityUtil.showCrouton(mActivity, getString(R.string.playlist_name_already_exists));
                     return null;

@@ -31,7 +31,6 @@ public class Adapter_playlist_Dialog extends BaseAdapter {
     }
 
     public SongDetails getItem(int position) {
-
         return _data.get(position);
     }
 
@@ -45,15 +44,13 @@ public class Adapter_playlist_Dialog extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             context = parent.getContext();
             convertView = LayoutInflater.from(context).inflate(R.layout.listview_item, parent, false);
 
             holder.SongView = (TextView) convertView.findViewById(R.id.textview);
-            // holder.TimeView = (TextView) convertView.findViewById(R.id.Time);
-            // holder.ArtistView = (TextView) convertView.findViewById(R.id.Artist);
 
             convertView.setTag(holder);
         } else {
@@ -61,13 +58,10 @@ public class Adapter_playlist_Dialog extends BaseAdapter {
         }
 
         holder.SongView.setText(_data.get(position).getSong());
-        // holder.TimeView.setText(_data.get(position).getTime());
-        // holder.ArtistView.setText(_data.get(position).getArtist());
         return convertView;
     }
 
     class ViewHolder {
         TextView SongView;
-        // TextView TimeView, ArtistView;
     }
 }

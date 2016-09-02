@@ -5,7 +5,7 @@
 
     <bool name="ga_autoActivityTracking">true</bool>
 
-    <screenName name="champak.champabun.view.adapters.Activity_Fragments">Activity_Fragments
+    <screenName name="champak.champabun.view.activity.Activity_Fragments">Activity_Fragments
     </screenName>
     <screenName name="champak.champabun.view.activity.Album">Album</screenName>
     <screenName name="champak.champabun.view.activity.Artist">Artist</screenName>

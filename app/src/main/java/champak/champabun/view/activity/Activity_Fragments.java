@@ -1,4 +1,4 @@
-package champak.champabun.view.adapters;
+package champak.champabun.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import champak.champabun.business.dataclasses.AppDatabase;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
-import champak.champabun.view.activity.BaseActivity;
+import champak.champabun.view.adapters.Adapter_ViewPager;
 import champak.champabun.view.fragment.BaseFragment;
 import champak.champabun.view.fragment.F_Albums;
 import champak.champabun.view.fragment.F_Artists;
@@ -158,7 +158,6 @@ public class Activity_Fragments extends BaseActivity {
                     break;
                 }
 
-
                 case IConstant.REQUEST_CODE_CHANGE_SETTINGS: {
                     Bundle extras = intent.getExtras();
                     if (extras != null) {
@@ -175,7 +174,7 @@ public class Activity_Fragments extends BaseActivity {
                     boolean isDurationFilterChanged = false;
                     try {
                         isDurationFilterChanged = intent.getBooleanExtra("isDurationFilterChanged", false);
-                    } catch (NullPointerException e) {
+                    } catch (NullPointerException ignored) {
                     }
                     if (isDurationFilterChanged) {
                         if (adapter != null) {

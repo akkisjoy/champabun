@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,8 @@ import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.Utilities;
+import champak.champabun.view.activity.Activity_Fragments;
 import champak.champabun.view.activity.Player;
-import champak.champabun.view.adapters.Activity_Fragments;
 import champak.champabun.view.adapters.Adapter_Folder;
 
 public class F_Folder extends BaseFragment {
@@ -58,8 +59,6 @@ public class F_Folder extends BaseFragment {
             rootPath = savedInstanceState.getString("rootPath");
             isRegistered = savedInstanceState.getBoolean("isRegistered");
             songDetails = savedInstanceState.getParcelableArrayList("F_Folder.songDetails");
-            // mMediaFilesObject = savedInstanceState.getParcelable("mMediaFilesObject");
-            // mCurMediaFilesObject = savedInstanceState.getParcelable("mCurMediaFilesObject");
         }
     }
 
@@ -70,7 +69,7 @@ public class F_Folder extends BaseFragment {
         mActivity = (Activity_Fragments) getActivity();
         mAdapter = null;
         backPager = (ImageView) view.findViewById(R.id.backPager);
-        backPager.setColorFilter(getResources().getColor(R.color.purplePager), PorterDuff.Mode.MULTIPLY);
+        backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.purplePager), PorterDuff.Mode.MULTIPLY);
         mPathTextView = (TypefaceTextView) view.findViewById(R.id.path);
         mListView = (ListView) view.findViewById(R.id.list);
         mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -118,21 +117,12 @@ public class F_Folder extends BaseFragment {
         outState.putString("rootPath", rootPath);
         outState.putBoolean("isRegistered", isRegistered);
         outState.putParcelableArrayList("F_Folder.songDetails", songDetails);
-        // outState.putParcelable("mMediaFilesObject", mMediaFilesObject);
-        // outState.putParcelable("mCurMediaFilesObject", mCurMediaFilesObject);
         super.onSaveInstanceState(outState);
     }
 
     private void FetchFolders() {
         if (songDetails != null && songDetails.size() > 0) {
-            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            // {
             new GetMediaFiles(songDetails).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-            // }
-            // else
-            // {
-            // new GetMediaFiles(songDetails).execute((Void) null);
-            // }
         }
     }
 
@@ -180,7 +170,7 @@ public class F_Folder extends BaseFragment {
     }
 
     private ArrayList<SongDetails> GetCurSongDetails() {
-        ArrayList<SongDetails> songdetails = new ArrayList<SongDetails>();
+        ArrayList<SongDetails> songdetails = new ArrayList<>();
         ArrayList<MediaFilesObject> mFiles = mCurMediaFilesObject.getSubMediaFiles();
         for (int i = 0; i < mFiles.size(); i++) {
             if (mFiles.get(i).isSongdetails()) {
@@ -196,7 +186,7 @@ public class F_Folder extends BaseFragment {
         if (songdetails.size() > 800) {
             AmuzicgApp.GetInstance().SetNowPlayingList(songdetails);
         } else {
-            AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<SongDetails>(songdetails));
+            AmuzicgApp.GetInstance().SetNowPlayingList(new ArrayList<>(songdetails));
         }
         AmuzicgApp.GetInstance().setPosition(position);
         AmuzicgApp.GetInstance().setCheck(0);
@@ -208,7 +198,7 @@ public class F_Folder extends BaseFragment {
         try {
             mActivity.unregisterReceiver(receiver);
             isRegistered = false;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         super.onDestroy();
     }
@@ -260,7 +250,7 @@ public class F_Folder extends BaseFragment {
         protected MediaFilesObject doInBackground(Void... arg0) {
             MediaFilesObject root = null;
             if (songDetails != null && songDetails.size() > 0) {
-                ArrayList<SongDetails> temp = new ArrayList<SongDetails>();
+                ArrayList<SongDetails> temp = new ArrayList<>();
                 temp.addAll(songDetails);
                 root = new MediaFilesObject("/", rootPath, null, null);
                 GetMediaFilesObject(root, temp);
@@ -328,7 +318,7 @@ public class F_Folder extends BaseFragment {
         }
 
         private ArrayList<SongDetails> GetSongDetails(String folderPath, ArrayList<SongDetails> temp) {
-            ArrayList<SongDetails> newList = new ArrayList<SongDetails>();
+            ArrayList<SongDetails> newList = new ArrayList<>();
             int index = 0;
             while (index < temp.size()) {
                 if (temp.get(index).getPath2().contains(folderPath)) {

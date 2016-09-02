@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,7 +63,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_playlists, container, false);
         backPager = (ImageView) view.findViewById(R.id.backPager);
-        backPager.setColorFilter(getResources().getColor(R.color.greenPager), PorterDuff.Mode.MULTIPLY);
+        backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.greenPager), PorterDuff.Mode.MULTIPLY);
         mListView = (ListView) view.findViewById(R.id.PlayList);
         ab = null;
         mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -87,14 +88,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
         });
 
         if (Playlists == null || Playlists.size() == 0) {
-            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            // {
             new FetchPlayList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-            // }
-            // else
-            // {
-            // new FetchPlayList().execute((Void) null);
-            // }
         }
 
         return view;
@@ -113,14 +107,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     public void onResume() {
         super.onResume();
         if (AmuzicgApp.GetInstance().isPlaylistAdded) {
-            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            // {
             new FetchPlayList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-            // }
-            // else
-            // {
-            // new FetchPlayList().execute((Void) null);
-            // }
             AmuzicgApp.GetInstance().isPlaylistAdded = false;
         } else {
             OnRefreshListview();
@@ -137,9 +124,6 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // PlayList = null;
-        // ab = null;
-        // intent = null;
         if (IConstant.USE_SYSTEM_GC) {
             System.gc();
         }
@@ -276,8 +260,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
                 play = GetSongs(Integer.parseInt(Playlists.get(curPosition).getClick_no()));
             } catch (NumberFormatException e) {
                 play = GetSongs(0);
-
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         return play;
@@ -296,7 +279,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
             songCursor = getActivity().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, TRACK_COLUMNS,
                     MediaStore.Audio.Media.DURATION + ">=" + duration, null, sortOrder);
             if (songCursor != null && songCursor.moveToFirst()) {
-                play = new ArrayList<SongDetails>();
+                play = new ArrayList<>();
                 int i = 0;
                 do {
                     i = i + 1;
@@ -310,11 +293,9 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
                 while (songCursor.moveToNext());
 
             }
-            TRACK_COLUMNS = null;
         } finally {
             if (songCursor != null) {
                 songCursor.close();
-                songCursor = null;
             }
         }
         return play;
@@ -334,7 +315,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
             cursor = getActivity().getContentResolver().query(uri2, projection1, null, null, null);
 
             if (cursor != null && cursor.moveToFirst()) {
-                _play = new ArrayList<SongDetails>();
+                _play = new ArrayList<>();
 
                 do {
                     SongDetails pl = new SongDetails();
@@ -357,11 +338,8 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
                             max2 = newTimeMinutes + ":" + newTimeSeconds;
                         }
                         pl.setTime(max2);
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
-
-                    // pl.Path=cursor.getString(1);
-                    // pl.Album=cursor.getString(0);
                     _play.add(pl);
                 }
                 while (cursor.moveToNext());
@@ -369,7 +347,6 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
         } finally {
             if (cursor != null) {
                 cursor.close();
-                cursor = null;
             }
         }
         return _play;
@@ -388,7 +365,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     class FetchPlayList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
-            ArrayList<SongDetails> playlists = new ArrayList<SongDetails>();
+            ArrayList<SongDetails> playlists = new ArrayList<>();
             SongDetails Latest = new SongDetails();
             Latest.setSong(prefs.GetPlaylistRecentName());// name
             playlists.add(Latest);
@@ -406,8 +383,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
                         playlists.add(LastPlayed);
                     }
                 }
-            } catch (NullPointerException e) {
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             Cursor cursor = null;
@@ -425,12 +401,10 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
                     }
                     while (cursor.moveToNext());
                 }
-            } catch (NullPointerException e) {
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             } finally {
                 if (cursor != null) {
                     cursor.close();
-                    cursor = null;
                 }
             }
 
@@ -443,7 +417,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
             if (Playlists != null) {
                 Playlists.clear();
             } else {
-                Playlists = new ArrayList<SongDetails>();
+                Playlists = new ArrayList<>();
             }
             Playlists.addAll(result);
             result.clear();

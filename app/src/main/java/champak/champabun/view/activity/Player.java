@@ -64,7 +64,6 @@ import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.driver.iloader.ImageLoader;
 import champak.champabun.framework.equalizer.EqualizerActivity;
 import champak.champabun.framework.service.Music_service;
-import champak.champabun.view.adapters.Activity_Fragments;
 
 public class Player extends BaseActivity implements OnSeekBarChangeListener {
     private static final int SELECT_PHOTO = 99;
@@ -404,9 +403,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
             @Override
             public void onClick(View arg0) {
-                String Artist = new String(AmuzicgApp.GetInstance().GetCurSongDetails().getArtist().trim());
+                String Artist = AmuzicgApp.GetInstance().GetCurSongDetails().getArtist().trim();
                 Artist = Artist.replaceAll(" ", "+");
-                String Song = new String(AmuzicgApp.GetInstance().GetCurSongDetails().getSong().trim());
+                String Song = AmuzicgApp.GetInstance().GetCurSongDetails().getSong().trim();
                 Song = Song.replaceAll(" ", "+");
                 String URL = "http://app.toneshub.com/?cid=2922&artist=" + Artist + "&song=" + Song;
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
@@ -525,7 +524,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             File file = new File(AmuzicgApp.GetInstance().GetCurSongDetails().getPath2());
                             boolean canWrite;
-                            if (file.getAbsolutePath().toString().contains("emulated") || file.getAbsolutePath().toString().contains("storage0")) {
+                            if (file.getAbsolutePath().contains("emulated") || file.getAbsolutePath().contains("storage0")) {
                                 new EditTags().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                             } else {
                                 try {
@@ -658,8 +657,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
                 intentswap.putExtra("swap", 0);
                 sendBroadcast(intentswap);
-            } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_NONE) {
-            } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ONCE) {
+            } else if (AmuzicgApp.GetInstance().GetRepeatMode() != AmuzicgApp.REPEAT_NONE) {
+                if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ONCE) {
+                }
             }
         }
 

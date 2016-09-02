@@ -5,7 +5,6 @@ import android.os.Handler;
 
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
-import champak.champabun.view.adapters.Activity_Fragments;
 
 public class Splash extends BaseActivity {
     final private static long TIME_DELAY = 3 * 1000;

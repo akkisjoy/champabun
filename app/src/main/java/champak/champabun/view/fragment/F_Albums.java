@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ public class F_Albums extends BaseFragment {
     GridView list;
     LazyAdapter adapter;
     ArrayList<SongDetails> songdetails;
-    float wt_px;
     ImageView backPager;
     private Context context;
 
@@ -36,7 +36,7 @@ public class F_Albums extends BaseFragment {
         if (savedInstanceState != null) {
             songdetails = savedInstanceState.getParcelableArrayList("F_Albums.songdetails");
         } else {
-            songdetails = new ArrayList<SongDetails>();
+            songdetails = new ArrayList<>();
         }
     }
 
@@ -44,7 +44,7 @@ public class F_Albums extends BaseFragment {
         View view = inflater.inflate(R.layout.l_albums, container, false);
         context = getActivity().getApplicationContext();
         backPager = (ImageView) view.findViewById(R.id.backPager);
-        backPager.setColorFilter(getResources().getColor(R.color.bluePager), PorterDuff.Mode.MULTIPLY);
+        backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.bluePager), PorterDuff.Mode.MULTIPLY);
 
         list = (GridView) view.findViewById(R.id.grid_view);
         adapter = null;
@@ -60,14 +60,7 @@ public class F_Albums extends BaseFragment {
         });
 
         if (songdetails == null || songdetails.size() == 0) {
-            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            // {
             new FetchAlbumList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-            // }
-            // else
-            // {
-            // new FetchAlbumList().execute((Void) null);
-            // }
         }
 
         return view;
@@ -97,8 +90,6 @@ public class F_Albums extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // list = null;
-        // intent = null;
         adapter.clearCache();
         adapter = null;
     }
@@ -115,7 +106,7 @@ public class F_Albums extends BaseFragment {
     class FetchAlbumList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
-            ArrayList<SongDetails> songs = new ArrayList<SongDetails>();
+            ArrayList<SongDetails> songs = new ArrayList<>();
 
             String[] columns = new String[]{MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM, MediaStore.Audio.Albums.ALBUM_ART,
                     MediaStore.Audio.Albums.ARTIST, MediaStore.MediaColumns._ID};
@@ -135,13 +126,11 @@ public class F_Albums extends BaseFragment {
                     }
                     while (cursor.moveToNext());
                 }
-            } catch (SQLiteException e) {
+            } catch (SQLiteException ignored) {
             } finally {
                 if (cursor != null) {
                     cursor.close();
-                    cursor = null;
                 }
-                columns = null;
             }
 
             return songs;
@@ -153,7 +142,7 @@ public class F_Albums extends BaseFragment {
             if (songdetails != null) {
                 songdetails.clear();
             } else {
-                songdetails = new ArrayList<SongDetails>();
+                songdetails = new ArrayList<>();
             }
             songdetails.addAll(result);
             result.clear();

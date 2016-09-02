@@ -37,11 +37,6 @@ public class Adapter_ViewPager extends FragmentStatePagerAdapter {
         return titles[position];
     }
 
-    public void setCurrentItem(int position) {
-        // position = this.getCount()*100 + (position % this.fragments.size());
-        this.setCurrentItem(position);
-    }
-
     public void Update() {
         for (BaseFragment f : fragments) {
             if (f != null) {

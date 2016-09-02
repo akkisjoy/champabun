@@ -24,17 +24,9 @@ public class Adapter_gallery extends BaseAdapter {
     ViewHolder holder = null;
     int wt_px = 300;
     private ArrayList<SongDetails> _data;
-    //String artist;
 
     public Adapter_gallery(ArrayList<SongDetails> data) {
         _data = data;
-    }
-
-    public Adapter_gallery(ArrayList<SongDetails> data, String artist) {
-        //this.artist = new String();
-        _data = data;
-        //this.artist = artist;
-
     }
 
     public void OnUpdate(ArrayList<SongDetails> data) {
@@ -76,9 +68,6 @@ public class Adapter_gallery extends BaseAdapter {
             holder.albumart = (ImageView) convertView.findViewById(R.id.albumart);
             holder.albumname = (TypefaceTextView) convertView.findViewById(R.id.albumname);
 
-            //convertView.findViewById(R.id.ArtistLayout).setVisibility(View.GONE);
-            // holder.TimeView = (TextView) convertView.findViewById(R.id.Time);
-            // holder.ArtistView = (TextView) convertView.findViewById(R.id.Artist);
             wt_px = (int) context.getResources().getDimension(R.dimen.player_image_width);
             convertView.setTag(holder);
         } else {
@@ -95,15 +84,12 @@ public class Adapter_gallery extends BaseAdapter {
 
         Drawable d = new BitmapDrawable(context.getResources(), album);
         holder.albumart.setImageDrawable(d);
-        //imageLoader.DisplayImage(_data.get(position).getPath2(), holder.albumart, _data.get(position).getAlbum(), _data.get(position).getArtist());
 
         return convertView;
     }
 
     class ViewHolder {
-
         TypefaceTextView albumname;
         ImageView albumart;
-        // TextView TimeView, ArtistView;
     }
 }

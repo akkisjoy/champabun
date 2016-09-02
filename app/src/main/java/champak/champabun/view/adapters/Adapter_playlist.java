@@ -47,7 +47,7 @@ public class Adapter_playlist extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             context = parent.getContext();
@@ -55,8 +55,6 @@ public class Adapter_playlist extends BaseAdapter {
 
             holder.SongView = (TypefaceTextView) convertView.findViewById(R.id.Song);
             convertView.findViewById(R.id.ArtistLayout).setVisibility(View.GONE);
-            // holder.TimeView = (TextView) convertView.findViewById(R.id.Time);
-            // holder.ArtistView = (TextView) convertView.findViewById(R.id.Artist);
 
             convertView.setTag(holder);
         } else {
@@ -64,14 +62,11 @@ public class Adapter_playlist extends BaseAdapter {
         }
 
         holder.SongView.setText(_data.get(position).getSong());
-        // holder.TimeView.setText(_data.get(position).getTime());
-        // holder.ArtistView.setText(_data.get(position).getArtist());
 
         return convertView;
     }
 
     class ViewHolder {
         TypefaceTextView SongView;
-        // TextView TimeView, ArtistView;
     }
 }

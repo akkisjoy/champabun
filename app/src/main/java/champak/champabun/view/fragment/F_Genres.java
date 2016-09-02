@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class F_Genres extends BaseFragment {
         View view = inflater.inflate(R.layout.l_playlists, container, false);
 
         backPager = (ImageView) view.findViewById(R.id.backPager);
-        backPager.setColorFilter(getResources().getColor(R.color.redPager), PorterDuff.Mode.MULTIPLY);
+        backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.redPager), PorterDuff.Mode.MULTIPLY);
         mListView = (ListView) view.findViewById(R.id.PlayList);
         adapter = null;
         mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -54,14 +55,7 @@ public class F_Genres extends BaseFragment {
         registerForContextMenu(mListView);
 
         if (Genredetails == null || Genredetails.size() == 0) {
-            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            // {
             new FetchGenreList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-            // }
-            // else
-            // {
-            // new FetchArtistList().execute((Void) null);
-            // }
         }
         return view;
     }
@@ -94,9 +88,6 @@ public class F_Genres extends BaseFragment {
             Genredetails.clear();
             Genredetails = null;
         }
-        // intent = null;
-        // adapter.clearCache();
-        // adapter = null;
         if (IConstant.USE_SYSTEM_GC) {
             System.gc();
         }
@@ -114,10 +105,8 @@ public class F_Genres extends BaseFragment {
     class FetchGenreList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
-            ArrayList<SongDetails> details = new ArrayList<SongDetails>();
+            ArrayList<SongDetails> details = new ArrayList<>();
 
-            // final String artist_id = MediaStore.Audio.Artists.ALBUM_ID;
-            // final String album_name =MediaStore.Audio.Artists.ALBUM;
             String[] columns = {MediaStore.Audio.Genres._ID, MediaStore.Audio.Genres.NAME};
 
             Cursor cursor = null;
@@ -128,24 +117,21 @@ public class F_Genres extends BaseFragment {
                         Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external", Long.parseLong(cursor.getString(0)));
                         String[] columns1 = {"DISTINCT " + MediaStore.Audio.Genres.Members.ALBUM_ID};
                         Cursor cursor1 = getActivity().getContentResolver().query(uri, columns1, null, null, null);
-                        if (cursor1.getCount() > 0)
+                        if ((null != cursor1 ? cursor1.getCount() : 0) > 0)
                             details.add(new SongDetails(cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID)), cursor.getString(0),
                                     cursor.getString(0), cursor.getString(1)));
 
-                        if (cursor1 != null) {
+                        if (null != cursor1) {
                             cursor1.close();
-                            cursor1 = null;
                         }
                     }
                     while (cursor.moveToNext());
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             } finally {
                 if (cursor != null) {
                     cursor.close();
-                    cursor = null;
                 }
-                columns = null;
             }
 
             return details;
@@ -157,7 +143,7 @@ public class F_Genres extends BaseFragment {
             if (Genredetails != null) {
                 Genredetails.clear();
             } else {
-                Genredetails = new ArrayList<SongDetails>();
+                Genredetails = new ArrayList<>();
             }
             Genredetails.addAll(result);
             result.clear();

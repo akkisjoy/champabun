@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.View;
@@ -103,7 +104,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
         super.onCreate(savedInstanceState);
 
         backPager = (ImageView) findViewById(R.id.backPager);
-        backPager.setColorFilter(getResources().getColor(R.color.yellowPager), PorterDuff.Mode.MULTIPLY);
+        backPager.setColorFilter(ContextCompat.getColor(Artist.this, R.color.yellowPager), PorterDuff.Mode.MULTIPLY);
 
         bRBack = (Button) findViewById(R.id.bRBack);
         bRAdd = (Button) findViewById(R.id.bRAdd);
@@ -278,7 +279,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
 
     //
     private ArrayList<SongDetails> addToLisView(int position, String artistname) {
-        ArrayList<SongDetails> list = new ArrayList<SongDetails>();
+        ArrayList<SongDetails> list = new ArrayList<>();
         this.artistname = artistname;
         String[] columns = {MediaStore.Audio.Media.DATA,
                 MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE,
@@ -471,7 +472,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
 
             @Override
             public void onClick(View v) {
-                fadeout(00, 700);
+                fadeout(0, 700);
 
                 bRBack.startAnimation(fadeOut);
                 bRAdd.startAnimation(fadeOut);
@@ -551,15 +552,13 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
             @Override
             public void onClick(View arg0) {
                 EditText save = (EditText) dialog.findViewById(R.id.save_as);
-                if (save.getText().toString() != null) {
-                    int YOUR_PLAYLIST_ID = NowPlaying.createPlaylist(save
-                            .getText().toString(), Artist.this);
-                    if (YOUR_PLAYLIST_ID == -1)
-                        return;
+                int YOUR_PLAYLIST_ID = NowPlaying.createPlaylist(save
+                        .getText().toString(), Artist.this);
+                if (YOUR_PLAYLIST_ID == -1)
+                    return;
 
-                    new AddToPl().executeOnExecutor(
-                            AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
-                }
+                new AddToPl().executeOnExecutor(
+                        AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
                 dialog.dismiss();
             }
         });
@@ -588,7 +587,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                     final int resID = (Integer) v.getTag();
                     switch (resID) {
                         case R.drawable.composer_button_multiselect: {
-                            fadeout(00, 700);
+                            fadeout(0, 700);
                             ActivityUtil.showCrouton(Artist.this,
                                     getString(R.string.multi_select_initiated));
                             rayMenu.startAnimation(fadeOut);
@@ -703,7 +702,6 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                 }
             });
         }
-        ITEM_DRAWABLES = null;
     }
 
     protected void delete_song_multiple(final ArrayList<SongDetails> checkedList) {
@@ -946,7 +944,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
             } else {
                 tV1.setText(artistname);
                 EcoGallery ecoGallery = (EcoGallery) findViewById(R.id.gallery);
-                ecoGallery.setAdapter(new Adapter_gallery(img, artistname));
+                ecoGallery.setAdapter(new Adapter_gallery(img));
 
                 setupListeners(ecoGallery, artistname);
             }
@@ -977,7 +975,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                 try {
                     NowPlaying.addToPlaylist(getApplicationContext(),
                             multiplecheckedListforaddtoplaylist.get(index)
-                                    .getPath2(), params[0].intValue());
+                                    .getPath2(), params[0]);
                 } catch (IllegalStateException e) {
                     ActivityUtil.showCrouton(Artist.this,
                             getString(R.string.playlist_name_already_exists));

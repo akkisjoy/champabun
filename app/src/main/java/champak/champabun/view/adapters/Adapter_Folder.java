@@ -51,7 +51,7 @@ public class Adapter_Folder extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_songs, parent, false);
@@ -92,10 +92,6 @@ public class Adapter_Folder extends BaseAdapter {
         }
 
         return convertView;
-    }
-
-    public ArrayList<MediaFilesObject> GetData() {
-        return _data;
     }
 
     class ViewHolder {

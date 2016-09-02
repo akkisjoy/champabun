@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class F_Artists extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_artists, container, false);
         backPager = (ImageView) view.findViewById(R.id.backPager);
-        backPager.setColorFilter(getResources().getColor(R.color.yellowPager), PorterDuff.Mode.MULTIPLY);
+        backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.yellowPager), PorterDuff.Mode.MULTIPLY);
 
         mListView = (ListView) view.findViewById(R.id.PlayList);
         adapter = null;
@@ -52,14 +53,7 @@ public class F_Artists extends BaseFragment {
         registerForContextMenu(mListView);
 
         if (Artistdetails == null || Artistdetails.size() == 0) {
-            // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            // {
             new FetchArtistList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-            // }
-            // else
-            // {
-            // new FetchArtistList().execute((Void) null);
-            // }
         }
         return view;
     }
@@ -92,9 +86,6 @@ public class F_Artists extends BaseFragment {
             Artistdetails.clear();
             Artistdetails = null;
         }
-        // intent = null;
-        // adapter.clearCache();
-        // adapter = null;
         if (IConstant.USE_SYSTEM_GC) {
             System.gc();
         }
@@ -112,10 +103,8 @@ public class F_Artists extends BaseFragment {
     class FetchArtistList extends AsyncTask<Void, Void, ArrayList<SongDetails>> {
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
-            ArrayList<SongDetails> details = new ArrayList<SongDetails>();
+            ArrayList<SongDetails> details = new ArrayList<>();
 
-            // final String artist_id = MediaStore.Audio.Artists.ALBUM_ID;
-            // final String album_name =MediaStore.Audio.Artists.ALBUM;
             String[] columns = {MediaStore.Audio.Artists._ID, MediaStore.Audio.Artists.ARTIST, MediaStore.MediaColumns._ID};
 
             Cursor cursor = null;
@@ -131,9 +120,7 @@ public class F_Artists extends BaseFragment {
             } finally {
                 if (cursor != null) {
                     cursor.close();
-                    cursor = null;
                 }
-                columns = null;
             }
 
             return details;
@@ -145,7 +132,7 @@ public class F_Artists extends BaseFragment {
             if (Artistdetails != null) {
                 Artistdetails.clear();
             } else {
-                Artistdetails = new ArrayList<SongDetails>();
+                Artistdetails = new ArrayList<>();
             }
             Artistdetails.addAll(result);
             result.clear();
