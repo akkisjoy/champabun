@@ -34,7 +34,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.enrique.stackblur.StackBlurManager;
+import com.commit451.nativestackblur.NativeStackBlur;
 
 import org.cmc.music.metadata.MusicMetadata;
 import org.cmc.music.metadata.MusicMetadataSet;
@@ -73,7 +73,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     MusicMetadata meta;
     int imagecheck;
     String oldsong = "", oldArtist = "", oldalbum = "", oldTime = "";
-    View PrevBgImage, NextBgImage;
+    ImageView PrevBgImage, NextBgImage;
     private ImageView buttonPlayStop;
     private ImageView i1, previous, next;
     private String progress2;
@@ -255,8 +255,8 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         songalbum.setSelected(true);
         buttonPlayStop = (ImageView) findViewById(R.id.bPlayPause);
 
-        PrevBgImage = findViewById(R.id.extralayerForProperAnimation);
-        NextBgImage = findViewById(R.id.nextImage);
+        PrevBgImage = (ImageView) findViewById(R.id.extralayerForProperAnimation);
+        NextBgImage = (ImageView) findViewById(R.id.nextImage);
         Equalizer = findViewById(R.id.bEq);
         bShufflebg = findViewById(R.id.bShufflebg);
         bShuffle = (Button) findViewById(R.id.bShuffleb);
@@ -1147,18 +1147,16 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             }
             Drawable d = null;
             try {
-                StackBlurManager _stackBlurManager = new StackBlurManager(params[0]);
-                _stackBlurManager.process(65);
-                Bitmap dstBmp = _stackBlurManager.returnBlurredImage();
-                d = new BitmapDrawable(getResources(), dstBmp);
+                Bitmap bm = NativeStackBlur.process(params[0], 20);
+                d = new BitmapDrawable(getResources(), bm);
                 ColorMatrix matrix = new ColorMatrix();
                 matrix.setSaturation((float) 1.24);
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
                 d.setColorFilter(filter);
 
                 if (IConstant.OPTIMIZE_MEM_RECYCLE_BITMAP) {
-                    dstBmp.recycle();
-                    dstBmp = null;
+                    bm.recycle();
+                    bm = null;
                 }
             } catch (OutOfMemoryError e) {
                 outofmemoryerror = true;
@@ -1166,19 +1164,16 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             }
             if (d == null && !outofmemoryerror) {
                 try {
-                    StackBlurManager _stackBlurManager = new StackBlurManager(Bitmap.createScaledBitmap(params[0], 120, 120, false));
-                    _stackBlurManager.process(65);
-                    Bitmap dstBmp = _stackBlurManager.returnBlurredImage();
-                    // dstBmp = adjustedContrast(dstBmp, 9);
-                    d = new BitmapDrawable(getResources(), dstBmp);
+                    Bitmap bm = NativeStackBlur.process(Bitmap.createScaledBitmap(params[0], 120, 120, false), 20);
+                    d = new BitmapDrawable(getResources(), bm);
                     ColorMatrix matrix = new ColorMatrix();
                     matrix.setSaturation((float) 0.84);
                     ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
                     d.setColorFilter(filter);
 
                     if (IConstant.OPTIMIZE_MEM_RECYCLE_BITMAP) {
-                        dstBmp.recycle();
-                        dstBmp = null;
+                        bm.recycle();
+                        bm = null;
                     }
                 } catch (OutOfMemoryError | Exception ignored) {
                 }

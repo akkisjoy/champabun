@@ -9,7 +9,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 
-import com.enrique.stackblur.StackBlurManager;
+import com.commit451.nativestackblur.NativeStackBlur;
 
 import java.io.File;
 import java.util.Random;
@@ -75,10 +75,9 @@ public class BitmapUtil {
     }
 
     public static BitmapDrawable SetBG(Bitmap b, Context context) {
-        StackBlurManager _stackBlurManager = new StackBlurManager(b);
-        _stackBlurManager.process(68);
-        b = _stackBlurManager.returnBlurredImage();
-        BitmapDrawable d = new BitmapDrawable(context.getResources(), b);
+        Bitmap bm = NativeStackBlur.process(b, 20);
+//        b.recycle();
+        BitmapDrawable d = new BitmapDrawable(context.getResources(), bm);
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation((float) 0.84);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);

@@ -36,7 +36,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.0'
-    compile files('libs/stackblur.jar')
     compile files('libs/android-myid3-0.82.jar')
     compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.4'
+    compile 'com.commit451:NativeStackBlur:1.0.2'
 }
