@@ -9,31 +9,11 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
-import champak.champabun.AmuzicgApp;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
-import champak.champabun.business.utilities.utilMethod.Utilities;
 
 public abstract class BaseFragment extends Fragment {
     protected abstract String GetGAScreenName();
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        String screenName = GetGAScreenName();
-        if (!Utilities.IsEmpty(screenName)) {
-            // Get a Tracker (should auto-report)
-            Tracker t = ((AmuzicgApp) getActivity().getApplication()).getTracker(AmuzicgApp.TrackerName.APP_TRACKER);
-            // Set screen name.
-            t.setScreenName(screenName);
-            // Send a screen view.
-            t.send(new HitBuilders.AppViewBuilder().build());
-        }
-    }
 
     @Override
     public void onDestroy() {

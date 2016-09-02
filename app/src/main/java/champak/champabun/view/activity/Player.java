@@ -35,8 +35,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.enrique.stackblur.StackBlurManager;
-import com.heyzap.sdk.ads.HeyzapAds.OnStatusListener;
-import com.heyzap.sdk.ads.InterstitialAd;
 
 import org.cmc.music.metadata.MusicMetadata;
 import org.cmc.music.metadata.MusicMetadataSet;
@@ -103,20 +101,16 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                         false;
             } else if (headsetSwitch == 1) {
                 buttonPlayStop.setBackgroundResource(R.drawable.pause2);
-                AmuzicgApp.GetInstance().boolMusicPlaying1 =
-
-                        true;
+                AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
             }
-
         }
-
     };
+
     private int seekMax;
     private SeekBar seekbar;
     private TypefaceTextView songname, songalbum, songartist;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
-    // ImageView imageBG;
     private Dialog dialog;
     private LinearLayout bfake, edit;
     private boolean ActionIsRegistered, HeadsetIsRegistered, otherReceiverRegistered;
@@ -160,62 +154,18 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        InterstitialAd.setOnStatusListener(new OnStatusListener() {
-
-            @Override
-            public void onAudioFinished() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onAudioStarted() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onAvailable(String arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onClick(String arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onFailedToFetch(String arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onFailedToShow(String arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onHide(String arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onShow(String arg0) {
-                if (AmuzicgApp.secondtimeplayershown == 0)
-                    AmuzicgApp.secondtimeplayershown = 1;
-                else if (AmuzicgApp.secondtimeplayershown == 1)
-                    AmuzicgApp.secondtimeplayershown = 2;
-                else if (AmuzicgApp.secondtimeplayershown == 2)
-                    AmuzicgApp.secondtimeplayershown = 3;
-                else if (AmuzicgApp.secondtimeplayershown == 3)
-                    AmuzicgApp.secondtimeplayershown = 0;
-            }
-        });
+        // Show ad this way.. akki
+//        @Override
+//        public void onShow(String arg0) {
+//            if (AmuzicgApp.secondtimeplayershown == 0)
+//                AmuzicgApp.secondtimeplayershown = 1;
+//            else if (AmuzicgApp.secondtimeplayershown == 1)
+//                AmuzicgApp.secondtimeplayershown = 2;
+//            else if (AmuzicgApp.secondtimeplayershown == 2)
+//                AmuzicgApp.secondtimeplayershown = 3;
+//            else if (AmuzicgApp.secondtimeplayershown == 3)
+//                AmuzicgApp.secondtimeplayershown = 0;
+//        }
 
         imgLoader = new ImageLoader(Player.this);
 
@@ -863,12 +813,13 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     protected void onResume() {
         super.onResume();
         if (AmuzicgApp.secondtimeplayershown == 0)
-            InterstitialAd.display(this);
+            //try to show ad here
+//            InterstitialAd.display(this);
 
-        if (!ActionIsRegistered) {
-            registerReceiver(broadcastReceiver, new IntentFilter(IConstant.BROADCAST_ACTION));
-            ActionIsRegistered = true;
-        }
+            if (!ActionIsRegistered) {
+                registerReceiver(broadcastReceiver, new IntentFilter(IConstant.BROADCAST_ACTION));
+                ActionIsRegistered = true;
+            }
 
         if (!HeadsetIsRegistered) {
             registerReceiver(headsetReceiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));

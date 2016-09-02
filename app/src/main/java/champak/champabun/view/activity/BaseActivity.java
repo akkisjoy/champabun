@@ -37,9 +37,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.AppDatabase;
@@ -47,7 +44,6 @@ import champak.champabun.business.dataclasses.AppSetting;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
-import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.framework.service.Music_service;
 import champak.champabun.framework.service.UpdateWidgetService;
 
@@ -86,17 +82,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         appSettings = ((AmuzicgApp) getApplication()).getAppSettings();
         if (GetLayoutResID() > 0) {
             setContentView(GetLayoutResID());
-        }
-
-        // google analytics
-        String screenName = GetGAScreenName();
-        if (!Utilities.IsEmpty(screenName)) {
-            // Get a Tracker (should auto-report)
-            Tracker t = ((AmuzicgApp) getApplication()).getTracker(AmuzicgApp.TrackerName.APP_TRACKER);
-            // Set screen name.
-            t.setScreenName(screenName);
-            // Send a screen view.
-            t.send(new HitBuilders.AppViewBuilder().build());
         }
     }
 
