@@ -4,9 +4,6 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
-
-
-
     -->
      <style name="ListViewplaymee" parent="android:Widget.Holo.ListView">
       		<item name="android:divider">@null</item>

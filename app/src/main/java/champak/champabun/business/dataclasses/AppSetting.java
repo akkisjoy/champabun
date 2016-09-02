@@ -9,7 +9,6 @@ public class AppSetting {
     private String genreSortKey;
     private boolean autoDownloadAlbumArt;
     private boolean isAppFullscreen;
-    private ELanguage eLanguage;
 
     public AppSetting() {
     }
@@ -76,17 +75,5 @@ public class AppSetting {
 
     public void setAppFullscreen(boolean isAppFullscreen) {
         this.isAppFullscreen = isAppFullscreen;
-    }
-
-    public ELanguage getLanguage() {
-        return eLanguage;
-    }
-
-    public void setLanguage(ELanguage language) {
-        this.eLanguage = language;
-    }
-
-    public void setLanguage(int language) {
-        this.eLanguage = ELanguage.GetLanguage(language);
     }
 }

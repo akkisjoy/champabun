@@ -124,7 +124,6 @@
     <string name="only_one_song">Only one song in the playlist</string>
     <string name="tags_edited">Tags Edited</string>
     <string name="file_cannot_play">Unable to play this type of audio file</string>
-    <string name="just_another_music_player">Just Another Music Player</string>
     <string name="play">Play</string>
     <string name="add_to_playlist">Add To Playlist</string>
     <string name="edit_tags">Edit Tags</string>

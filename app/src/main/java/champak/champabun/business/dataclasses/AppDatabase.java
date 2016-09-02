@@ -53,9 +53,6 @@ public class AppDatabase {
         // genre sort
         settings.setGenreSortKey(pref.getString(KEY_GENRE_SORT, null));
 
-        // genre sort
-        settings.setLanguage(pref.getInt(KEY_LANGUAGE, ELanguage.EN.getLanguageCode()));
-
         settings.setAutoDownloadAlbumArt(pref.getBoolean(KEY_AUTO_DOWNLOAD_ALBUM_ART, true));
         settings.setAppFullscreen(pref.getBoolean(KEY_APP_FULLSCREEN, false));
 

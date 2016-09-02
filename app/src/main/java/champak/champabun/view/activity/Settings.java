@@ -11,39 +11,31 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.AppDatabase;
-import champak.champabun.business.dataclasses.ELanguage;
 import champak.champabun.business.dataclasses.SleepTime;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.utilities.utilClass.MyTimePickerDialog;
 import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.Utilities;
-import champak.champabun.view.adapters.LanguageAdapter;
 
 public class Settings extends BaseActivity implements OnClickListener {
     final private static String TAG = "Settings";
     private CheckBox auto_download_album_art_cb, fullscreen_cb;
     private Calendar calendar;
-    private TypefaceTextView sleepTimerView, languageView, durationFilterView;
+    private TypefaceTextView sleepTimerView, durationFilterView;
     private Dialog dialog;
-    private ListView listview;
     private boolean needRefresh = false;
-    private boolean needRefreshLanguage = false;
     private boolean needRefreshFullscreen = false;
     private OnTimeSetListener callback = new OnTimeSetListener() {
 
@@ -67,11 +59,9 @@ public class Settings extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             needRefresh = savedInstanceState.getBoolean("needRefresh");
-            needRefreshLanguage = savedInstanceState.getBoolean("needRefreshLanguage");
             needRefreshFullscreen = savedInstanceState.getBoolean("needRefreshFullscreen");
         } else if (getIntent().getExtras() != null) {
             needRefresh = getIntent().getExtras().getBoolean("needRefresh", false);
-            needRefreshLanguage = getIntent().getExtras().getBoolean("needRefreshLanguage", false);
             needRefreshFullscreen = getIntent().getExtras().getBoolean("needRefreshFullscreen", false);
         }
         calendar = Calendar.getInstance();
@@ -87,11 +77,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         View dView = findViewById(R.id.duration_filter_view);
         durationFilterView = (TypefaceTextView) dView.findViewById(R.id.duration_filter_time);
         dView.setOnClickListener(this);
-
-        View langView = findViewById(R.id.language_view);
-        languageView = (TypefaceTextView) langView.findViewById(R.id.language);
-        languageView.setText(appSettings.getLanguage().getLanguageName());
-        langView.setOnClickListener(this);
 
         TypefaceTextView cross_fading = (TypefaceTextView) findViewById(R.id.cross_fading);
         cross_fading.setOnClickListener(this);
@@ -156,7 +141,6 @@ public class Settings extends BaseActivity implements OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("needRefresh", needRefresh);
-        outState.putBoolean("needRefreshLanguage", needRefreshLanguage);
         outState.putBoolean("needRefreshFullscreen", needRefreshFullscreen);
         super.onSaveInstanceState(outState);
     }
@@ -187,10 +171,6 @@ public class Settings extends BaseActivity implements OnClickListener {
             }
             case R.id.sleep_timer_view: {
                 ShowTimePickerDialog();
-                break;
-            }
-            case R.id.language_view: {
-                ShowLanguageListDialog();
                 break;
             }
             case R.id.duration_filter_view: {
@@ -231,9 +211,8 @@ public class Settings extends BaseActivity implements OnClickListener {
 
     @Override
     public void OnBackPressed() {
-        if (needRefresh || needRefreshLanguage || needRefreshFullscreen) {
+        if (needRefresh || needRefreshFullscreen) {
             Intent intent = getIntent();
-            intent.putExtra("needRefreshLanguage", needRefreshLanguage);
             intent.putExtra("needRefreshFullscreen", needRefreshFullscreen);
             setResult(Activity.RESULT_OK, intent);
         } else {
@@ -284,53 +263,6 @@ public class Settings extends BaseActivity implements OnClickListener {
             min = String.valueOf(minute);
         }
         sleepTimerView.setText(hour + " : " + min);
-    }
-
-    private void ShowLanguageListDialog() {
-        designdialog(400);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        dialog.setContentView(R.layout.dialoge_listview);
-
-        listview = (ListView) dialog.findViewById(R.id.listview);
-        LanguageAdapter adapter = new LanguageAdapter(Settings.this);
-        listview.setAdapter(adapter);
-
-        listview.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                int language = position;
-                dialog.dismiss();
-                if (appSettings.getLanguage().getLanguageCode() != language) {
-                    ELanguage elanguage = ELanguage.GetLanguage(language);
-                    appSettings.setLanguage(elanguage);
-                    AppDatabase.SetLanguage(getApplicationContext(), language);
-                    ((AmuzicgApp) getApplication()).ChangeLanguage();
-                    needRefresh = true;
-                    needRefreshLanguage = true;
-                    // restart this activity
-                    Intent intent = getIntent();
-                    intent.putExtra("needRefresh", needRefresh);
-                    intent.putExtra("needRefreshLanguage", needRefreshLanguage);
-                    overridePendingTransition(0, 0);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    Settings.this.finish();
-                    overridePendingTransition(0, 0);
-                    Settings.this.startActivity(intent);
-                }
-            }
-        });
-
-        Button bDCancle = (Button) dialog.findViewById(R.id.dBCancel);
-        bDCancle.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
     }
 
     private void ShowEditDurationDialog() {
@@ -403,7 +335,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         // restart this activity
         Intent intent = getIntent();
         intent.putExtra("needRefresh", needRefresh);
-        intent.putExtra("needRefreshLanguage", needRefreshLanguage);
         intent.putExtra("needRefreshFullscreen", needRefreshFullscreen);
         overridePendingTransition(0, 0);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

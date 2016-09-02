@@ -16,8 +16,6 @@ public class Adapter_playlist_Dialog extends BaseAdapter {
     Context context;
     private ArrayList<SongDetails> _data;
 
-    // int xx;
-
     public Adapter_playlist_Dialog(ArrayList<SongDetails> data) {
         _data = data;
     }

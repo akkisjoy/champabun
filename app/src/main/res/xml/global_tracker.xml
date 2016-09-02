@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="TypographyDashes">
 
     <integer name="ga_sessionTimeout">300</integer>
 
@@ -21,7 +22,7 @@
     <screenName name="champak.champabun.view.fragment.F_Genres">F_Genres</screenName>
     <screenName name="champak.champabun.view.fragment.F_Playlists">F_Playlists</screenName>
     <screenName name="champak.champabun.view.fragment.F_Songs">F_Songs</screenName>
-    
+
     <!-- The following value should be replaced with correct property id. -->
     <string name="ga_trackingId">@string/GA_ID</string>
 

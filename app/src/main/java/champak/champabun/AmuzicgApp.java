@@ -2,7 +2,6 @@ package champak.champabun;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -10,7 +9,6 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
 import champak.champabun.business.dataclasses.AppDatabase;
 import champak.champabun.business.dataclasses.AppSetting;
@@ -79,7 +77,6 @@ public class AmuzicgApp extends Application {
         boolshuffled = false;
 
         appSettings = AppDatabase.GetAppSetting(getApplicationContext());
-        ChangeLanguage();
 
         playMeeConfig = AppConfigHelper.getInstance().GetPlayMeeConfig(getApplicationContext());
         // fetch ads config updates
@@ -231,22 +228,6 @@ public class AmuzicgApp extends Application {
 
     public void setPlayMeeConfig(PlayMeeConfig playMeeConfig) {
         this.playMeeConfig = playMeeConfig;
-    }
-
-    public void ChangeLanguage() {
-        Locale locale;
-        try {
-            if (appSettings.getLanguage().getLocale().equals("pt_PT"))
-                locale = new Locale("pt", "PT");
-            else
-                locale = new Locale(appSettings.getLanguage().getLocale());
-        } catch (Exception e) {
-            e.printStackTrace();
-            locale = new Locale("en");
-        }
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 
     public enum TrackerName {
