@@ -17,6 +17,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+
 import java.util.ArrayList;
 
 import champak.champabun.R;
@@ -28,6 +31,7 @@ public class F_Albums extends BaseFragment {
     LazyAdapter adapter;
     ArrayList<SongDetails> songdetails;
     ImageView backPager;
+    private ShimmerTextView titleHeader;
     private Context context;
 
     @Override
@@ -40,11 +44,25 @@ public class F_Albums extends BaseFragment {
         }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            new Shimmer().setRepeatCount(0)
+                    .setDuration(2000)
+                    .setStartDelay(100)
+                    .start(titleHeader);
+
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_albums, container, false);
         context = getActivity().getApplicationContext();
         backPager = (ImageView) view.findViewById(R.id.backPager);
         backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.bluePager), PorterDuff.Mode.MULTIPLY);
+
+        titleHeader = (ShimmerTextView) view.findViewById(R.id.titleHeader);
 
         list = (GridView) view.findViewById(R.id.grid_view);
         adapter = null;

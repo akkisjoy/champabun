@@ -41,6 +41,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,7 +82,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     View openactivity;
     Button bRBack, bRAdd, bRPlay, bRDel, bRBackSearch;
     RayMenu rayMenu;
-
     ImageView play2, backPager;
     String oldalbum, oldsong;
     public BroadcastReceiver broadcastCoverReceiver = new BroadcastReceiver() {
@@ -98,6 +100,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     ListView mListView;
     Adapter_SongView adapter;
     int curItemSelect;
+    private ShimmerTextView titleHeader;
     private EditText searchView;
     private Activity_Fragments mActivity;
     private SongHelper songHelper;
@@ -108,6 +111,18 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             checkbuttonplaypause();
         }
     };
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser && titleHeader != null) {
+            new Shimmer().setRepeatCount(0)
+                    .setDuration(2000)
+                    .setStartDelay(100)
+                    .start(titleHeader);
+
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,6 +144,11 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
         backPager = (ImageView) view.findViewById(R.id.backPager);
         backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
+        titleHeader = (ShimmerTextView) view.findViewById(R.id.titleHeader);
+        new Shimmer().setRepeatCount(0)
+                .setDuration(2000)
+                .setStartDelay(100)
+                .start(titleHeader);
         mActivity.registerReceiver(broadcastCoverReceiver, new IntentFilter(IConstant.BROADCAST_COVER));
         songs = (TypefaceTextView) view.findViewById(R.id.songstop);
         album2 = (TypefaceTextView) view.findViewById(R.id.albumtop);

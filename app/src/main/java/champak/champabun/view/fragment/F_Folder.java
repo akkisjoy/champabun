@@ -17,6 +17,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+
 import java.util.ArrayList;
 
 import champak.champabun.AmuzicgApp;
@@ -41,6 +44,7 @@ public class F_Folder extends BaseFragment {
     private MediaFilesObject mCurMediaFilesObject;
     private ArrayList<SongDetails> songDetails;
     private boolean isRegistered;
+    private ShimmerTextView titleHeader;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
@@ -63,6 +67,18 @@ public class F_Folder extends BaseFragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            new Shimmer().setRepeatCount(0)
+                    .setDuration(2000)
+                    .setStartDelay(100)
+                    .start(titleHeader);
+
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_folder, container, false);
 
@@ -70,6 +86,7 @@ public class F_Folder extends BaseFragment {
         mAdapter = null;
         backPager = (ImageView) view.findViewById(R.id.backPager);
         backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.purplePager), PorterDuff.Mode.MULTIPLY);
+        titleHeader = (ShimmerTextView) view.findViewById(R.id.titleHeader);
         mPathTextView = (TypefaceTextView) view.findViewById(R.id.path);
         mListView = (ListView) view.findViewById(R.id.list);
         mListView.setOnItemClickListener(new OnItemClickListener() {

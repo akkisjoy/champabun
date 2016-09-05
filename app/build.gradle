@@ -39,4 +39,7 @@ dependencies {
     compile files('libs/android-myid3-0.82.jar')
     compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.4'
     compile 'com.commit451:NativeStackBlur:1.0.2'
+    compile 'com.github.adnan-SM:TimelyTextView:1.0'
+    compile 'com.antonionicolaspina:revealtextview:2.0'
+    compile 'com.romainpiel.shimmer:library:1.4.0@aar'
 }

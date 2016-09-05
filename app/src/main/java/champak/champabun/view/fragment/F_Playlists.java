@@ -25,6 +25,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+
 import java.util.ArrayList;
 
 import champak.champabun.AmuzicgApp;
@@ -47,6 +50,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     private int curPosition;
     private Dialog dialog;
     private PlayMeePreferences prefs;
+    private ShimmerTextView titleHeader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,10 +64,23 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            new Shimmer().setRepeatCount(0)
+                    .setDuration(2000)
+                    .setStartDelay(100)
+                    .start(titleHeader);
+
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_playlists, container, false);
         backPager = (ImageView) view.findViewById(R.id.backPager);
         backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.greenPager), PorterDuff.Mode.MULTIPLY);
+        titleHeader = (ShimmerTextView) view.findViewById(R.id.titleHeader);
         mListView = (ListView) view.findViewById(R.id.PlayList);
         ab = null;
         mListView.setOnItemClickListener(new OnItemClickListener() {

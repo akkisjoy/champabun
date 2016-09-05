@@ -15,6 +15,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+
 import java.util.ArrayList;
 
 import champak.champabun.R;
@@ -27,6 +30,7 @@ public class F_Artists extends BaseFragment {
     Adapter_playlist adapter;
     ArrayList<SongDetails> Artistdetails;
     ImageView backPager;
+    private ShimmerTextView titleHeader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,11 +40,23 @@ public class F_Artists extends BaseFragment {
         }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            new Shimmer().setRepeatCount(0)
+                    .setDuration(2000)
+                    .setStartDelay(100)
+                    .start(titleHeader);
+
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_artists, container, false);
         backPager = (ImageView) view.findViewById(R.id.backPager);
         backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.yellowPager), PorterDuff.Mode.MULTIPLY);
-
+        titleHeader = (ShimmerTextView) view.findViewById(R.id.titleHeader);
         mListView = (ListView) view.findViewById(R.id.PlayList);
         adapter = null;
         mListView.setOnItemClickListener(new OnItemClickListener() {

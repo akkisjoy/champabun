@@ -17,25 +17,17 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Albums"
+        android:text="Genre"
         android:textColor="@color/white"
         android:textSize="30sp"
         app:reflectionColor="#888" />
 
-    <GridView
-        android:id="@+id/grid_view"
+    <ListView
+        android:id="@+id/PlayList"
+        style="@style/ListViewplaymee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleHeader"
-        android:columnWidth="@dimen/itemalbum_albumimage_size"
-        android:fadeScrollbars="true"
-        android:fadingEdgeLength="30dp"
-        android:gravity="center"
-        android:horizontalSpacing="0dp"
-        android:listSelector="@drawable/selector"
-        android:numColumns="auto_fit"
-        android:requiresFadingEdge="vertical"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="2dp" />
+        android:fastScrollEnabled="true" />
 
 </RelativeLayout>
