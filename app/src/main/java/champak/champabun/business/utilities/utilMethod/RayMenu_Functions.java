@@ -20,10 +20,10 @@ import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.AppDatabase;
 import champak.champabun.business.dataclasses.SongDetails;
-import champak.champabun.view.activity.Activity_Fragments;
 import champak.champabun.view.activity.Album;
 import champak.champabun.view.activity.Artist;
 import champak.champabun.view.activity.Genre;
+import champak.champabun.view.activity.MainActivity;
 import champak.champabun.view.adapters.Adapter_SongView;
 
 public class RayMenu_Functions {
@@ -105,7 +105,7 @@ public class RayMenu_Functions {
                 } else if (mActivity instanceof Album) {
                     AmuzicgApp.GetInstance().getAppSettings().setAlbumSortKey(sortOrder);
                     AppDatabase.SaveAlbumSortKey(mActivity, sortOrder);
-                } else if (mActivity instanceof Activity_Fragments) {
+                } else if (mActivity instanceof MainActivity) {
                     AmuzicgApp.GetInstance().getAppSettings().setSongSortKey(sortOrder);
                     AppDatabase.SaveSongSortKey(mActivity, sortOrder);
                 }

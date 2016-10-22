@@ -5,22 +5,23 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
     -->
-     <style name="ListViewplaymee" parent="android:Widget.Holo.ListView">
-      		<item name="android:divider">@null</item>
-      		<item name="android:dividerHeight">0dp</item>
-      		<item name="android:fadeScrollbars">true</item>
-      		<item name="android:fadingEdgeLength">34dp</item>
-      		<item name="android:requiresFadingEdge">vertical</item>
-			<item name="android:listSelector">@drawable/selector_list</item>
-			<item name="android:overScrollMode">never</item>      		
-  </style>
-  <style name="SpinnerStyle" parent="android:style/Widget.ListView.DropDown">
-    	<item name="android:dividerHeight">0dp</item>
-    	<item name="android:background">@drawable/selector</item>
-    	<item name="android:textColor">@color/TextColor_Primary_Dialog</item>
-        
-</style>
-    
+    <style name="ListViewplaymee" parent="android:Widget.Holo.ListView">
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:fadeScrollbars">true</item>
+        <item name="android:fadingEdgeLength">34dp</item>
+        <item name="android:requiresFadingEdge">vertical</item>
+        <item name="android:listSelector">@drawable/selector_list</item>
+        <item name="android:overScrollMode">never</item>
+    </style>
+
+    <style name="SpinnerStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:background">@drawable/selector</item>
+        <item name="android:textColor">@color/TextColor_Primary_Dialog</item>
+
+    </style>
+
     <style name="Item">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">300dp</item>
@@ -32,7 +33,7 @@
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
     </style>
 
-    <style name="AppBaseTheme" parent="android:Theme.Light"></style>
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light" />
 
     <style name="GradientLight" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:listViewStyle">@style/listView</item>
@@ -44,8 +45,8 @@
         <item name="android:listViewStyle">@style/listView</item>
         <item name="android:itemBackground">@drawable/default_art</item>
     </style>
-    
-    <style name="listView" parent="@android:style/Widget.ListView.White"></style>
+
+    <style name="listView" parent="@android:style/Widget.ListView.White" />
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -95,8 +96,12 @@
     </style>
 
     <style name="SeekBarplaymee" parent="android:Widget.Holo.SeekBar">
-        <item name="android:progressDrawable">@drawable/playmee_scrubber_progress_horizontal_holo_dark</item>
-        <item name="android:indeterminateDrawable">@drawable/playmee_scrubber_progress_horizontal_holo_dark</item>
+        <item name="android:progressDrawable">
+            @drawable/playmee_scrubber_progress_horizontal_holo_dark
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/playmee_scrubber_progress_horizontal_holo_dark
+        </item>
         <item name="android:thumb">@drawable/playmee_scrubber_control_selector_holo_dark</item>
     </style>
 
@@ -105,75 +110,11 @@
         <item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
     </style>
 
-    <style name="TextViewStyle" parent="@android:style/Widget.Holo.Light.TextView">
+    <style name="TextViewStyle" parent="AppTheme">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@android:color/white</item>
-    </style>
-
-<style name="TextViewStyle.QuickAction" parent="TextViewStyle">
-        <item name="customTypeface">@string/Typeface_JosefinSans</item>
-         <item name="android:textColor">@color/TextColor_Secondary_Dialog</item>
-    </style>
-    <style name="TextViewStyle.Dialouge.heading" parent="TextViewStyle">
-        <item name="customTypeface">@string/Typeface_julius_sans_one</item>
-        <item name="android:textSize">@dimen/dialog_heading</item>
-         <item name="android:textColor">@color/TextColor_Heading_Dialog</item>
-    </style>
-    
-    <style name="TextViewStyle.Dialouge.primary" parent="TextViewStyle">
-        <item name="customTypeface">@string/Typeface_JosefinSans</item>
-        <item name="android:textColor">@color/TextColor_Primary_Dialog</item>
-    </style>
-    
-    <style name="TextViewStyle.Dialouge.secondary" parent="TextViewStyle">
-        <item name="customTypeface">@string/Typeface_JosefinSans</item>
-        <item name="android:textColor">@color/TextColor_Secondary_Dialog</item>
-    </style>
-    <style name="EditTextStyle.Dialouge" parent="@android:style/Widget.Holo.Light.EditText">
-        <item name="customTypeface">@string/Typeface_JosefinSans</item>
-        <item name="android:textColor">@color/EditTextColor_Dialog</item>
-    </style>
-    
-    
-    
-    
-    <style name="TextViewStyle.JosefinSans" parent="TextViewStyle">
-        <item name="customTypeface">@string/Typeface_JosefinSans</item>
-    </style>
-    <style name="TextViewStyle.julius_sans_one" parent="TextViewStyle">
-        <item name="customTypeface">@string/Typeface_julius_sans_one</item>
-    </style>
-
-    <style name="TextViewStyle.JosefinSans_Regular" parent="TextViewStyle">
-        <item name="customTypeface">@string/Typeface_JosefinSans_Regular</item>
-    </style>
-	<style name="TextViewStyle.Splash" parent="TextViewStyle">
-        <item name="customTypeface">@string/Typeface_Splash</item>
-    </style>
-    <style name="TextViewStyle.Settings.Item" parent="TextViewStyle.JosefinSans">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:textSize">@dimen/itemsongs_text_size</item>
-        <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
-        
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">@dimen/lsongs_listview_item_padding_left_right</item>
-        <item name="android:paddingRight">@dimen/lsongs_listview_item_padding_left_right</item>
-    </style>
-    
-    <style name="TextViewStyle.Settings.Item.Desc" parent="TextViewStyle.JosefinSans">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:textSize">@dimen/setting_item_desc_size</item>
-        <item name="android:textStyle">italic</item>
-        <item name="android:minHeight">0dip</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">@dimen/lsongs_listview_item_padding_left_right</item>
-        <item name="android:paddingRight">@dimen/lsongs_listview_item_padding_left_right</item>
-    </style>
-
-    <style name="EditTextStyle.JosefinSans" parent="@android:style/Widget.Holo.Light.EditText">
-        <item name="customTypeface">@string/Typeface_JosefinSans</item>
     </style>
 
 </resources>

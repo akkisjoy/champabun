@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 
 public class Adapter_playlist extends BaseAdapter {
     Context context;
@@ -53,7 +53,7 @@ public class Adapter_playlist extends BaseAdapter {
             context = parent.getContext();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_songs, parent, false);
 
-            holder.SongView = (TypefaceTextView) convertView.findViewById(R.id.Song);
+            holder.SongView = (TextView) convertView.findViewById(R.id.Song);
             convertView.findViewById(R.id.ArtistLayout).setVisibility(View.GONE);
 
             convertView.setTag(holder);
@@ -67,6 +67,6 @@ public class Adapter_playlist extends BaseAdapter {
     }
 
     class ViewHolder {
-        TypefaceTextView SongView;
+        TextView SongView;
     }
 }

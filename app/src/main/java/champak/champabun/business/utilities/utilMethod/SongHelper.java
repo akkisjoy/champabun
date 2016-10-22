@@ -19,9 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.cmc.music.metadata.MusicMetadata;
@@ -301,7 +299,7 @@ public class SongHelper {
         dialog.show();
     }
 
-    public void EditTags(final SongDetails songdetails, final ProgressBar _spinner, final ImageView _play2,
+    public void EditTags(final SongDetails songdetails,
                          final OnEditTagsListener listener, final Fragment fragment) {
         dialog = Utilities.designdialog(330, mActivity);
         if (listener != null)
@@ -363,7 +361,7 @@ public class SongHelper {
 
                     boolean canwrite = false;
                     if (src.getAbsolutePath().contains("emulated") || src.getAbsolutePath().contains("storage0")) {
-                        new EditTagsTask(src, src_set, meta, _spinner, _play2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+                        new EditTagsTask(src, src_set, meta).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                     } else {
                         try {
                             canwrite = StorageAccessAPI.getDocumentFile(src, false).canWrite();
@@ -371,14 +369,14 @@ public class SongHelper {
                             canwrite = false;
                         }
                         if (canwrite) {
-                            new EditTagsTask(src, src_set, meta, _spinner, _play2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+                            new EditTagsTask(src, src_set, meta).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                         } else {
                             int deleteoredit = 1;
                             Permission(deleteoredit, mActivity, fragment);
                         }
                     }
                 } else {
-                    new EditTagsTask(src, src_set, meta, _spinner, _play2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+                    new EditTagsTask(src, src_set, meta).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                 }
                 dialog.dismiss();
             }
@@ -537,24 +535,11 @@ public class SongHelper {
         File src;
         MusicMetadataSet src_set;
         MusicMetadata meta;
-        ProgressBar spinner;
-        ImageView play2;
 
-        public EditTagsTask(File _src, MusicMetadataSet _src_set, MusicMetadata _meta, ProgressBar _spinner, ImageView _play2) {
+        public EditTagsTask(File _src, MusicMetadataSet _src_set, MusicMetadata _meta) {
             src = _src;
             src_set = _src_set;
             meta = _meta;
-            spinner = _spinner;
-            play2 = _play2;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            spinner.setVisibility(View.VISIBLE);
-            if (play2 != null) {
-                play2.setVisibility(View.GONE);
-            }
-            super.onPreExecute();
         }
 
         @Override
@@ -582,11 +567,6 @@ public class SongHelper {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-
-            spinner.setVisibility(View.GONE);
-            if (play2 != null) {
-                play2.setVisibility(View.VISIBLE);
-            }
             if (result) {
                 if (listeneredit != null) {
                     listeneredit.OnEditTagsSuccessful();

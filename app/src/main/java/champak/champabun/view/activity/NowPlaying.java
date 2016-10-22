@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -33,7 +34,6 @@ import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.utilities.dragSortListView.DragSortController;
 import champak.champabun.business.utilities.dragSortListView.DragSortListView;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 
 public class NowPlaying extends BaseActivity {
@@ -320,7 +320,7 @@ public class NowPlaying extends BaseActivity {
             if (v != convertView && v != null) {
                 ViewHolder holder = new ViewHolder();
 
-                holder.albumsView = (TypefaceTextView) v.findViewById(R.id.Songs);
+                holder.albumsView = (TextView) v.findViewById(R.id.Songs);
                 v.setTag(holder);
             }
             ViewHolder holder = (ViewHolder) (v != null ? v.getTag() : null);
@@ -333,6 +333,6 @@ public class NowPlaying extends BaseActivity {
     }
 
     class ViewHolder {
-        public TypefaceTextView albumsView;
+        public TextView albumsView;
     }
 }

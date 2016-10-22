@@ -59,7 +59,7 @@
     <string name="send_level_name">Send Level</string>
     <string name="Sort">Ignore "The"/"A" while sorting</string>
 
-    <!-- Activity_Fragments -->
+    <!-- MainActivity -->
     <string name="tab_Settings">Settings</string>
     <string name="tab_Genres">Genres</string>
     <string name="tab_Playlists">Playlists</string>
@@ -93,12 +93,12 @@
     <string name="duration">Duration</string>
     <string name="directory">Directory</string>
     <string name="f_total_song">%s songs</string>
-    <string name="f_by_artist">By: %s</string>
-    <string name="f_confirm_delete_songs">Are you sure you want to delete %s songs?</string>
+    <string name="f_by_artist">%s</string>
+    <string name="f_confirm_delete_songs">Are you sure you want to delete %d songs?</string>
     <string name="delete_successful">Deleted successfully</string>
-    <string name="now_playing">Now Playing</string>
+    <string name="now_playing">Player queue</string>
     <string name="create_new">Create New</string>
-    <string name="f_song_added_to_queue">%s song(s) was added to the queue</string>
+    <string name="f_song_added_to_queue">%d song(s) was added to the queue</string>
     <string name="f_was_added_to_queue">%s was added to the queue</string>
     <string name="select_an_item_to_add">Please select an item to add to the now playing list</string>
     <string name="select_an_item_to_play">Please select an item to play</string>
@@ -151,7 +151,7 @@
     <string name="title">Title</string>
     <string name="artist">Artist</string>
     <string name="album">Album</string>
-    <string name="sort2">Sort</string>
+    <string name="sort2">Sorting by</string>
     <string name="sort_descending">Sort in descending order</string>
     <string name="year">Year</string>
     <string name="date_added">Date added</string>

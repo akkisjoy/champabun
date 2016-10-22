@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "champak.champabun"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -20,7 +20,7 @@ android {
     dexOptions {
         preDexLibraries true
         javaMaxHeapSize "4g"
-        incremental true
+//        incremental true
         dexInProcess = true
     }
     aaptOptions {
@@ -35,11 +35,12 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:appcompat-v7:25.0.0'
     compile files('libs/android-myid3-0.82.jar')
     compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.4'
     compile 'com.commit451:NativeStackBlur:1.0.2'
     compile 'com.github.adnan-SM:TimelyTextView:1.0'
     compile 'com.antonionicolaspina:revealtextview:2.0'
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
+    compile 'com.crystal:crystalviewpager:1.0.0'
 }

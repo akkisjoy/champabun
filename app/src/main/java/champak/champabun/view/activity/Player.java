@@ -53,7 +53,6 @@ import champak.champabun.business.dataclasses.OnSwipeTouchListener2;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.BitmapUtil;
 import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
@@ -108,7 +107,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     private int seekMax;
     private SeekBar seekbar;
-    private TypefaceTextView songname, songalbum, songartist;
+    private TextView songname, songalbum, songartist;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
     private Dialog dialog;
@@ -245,9 +244,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         brepeat = (Button) findViewById(R.id.bRepeat);
         shuffle = findViewById(R.id.bShuffle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
-        songname = (TypefaceTextView) findViewById(R.id.songname);
-        songartist = (TypefaceTextView) findViewById(R.id.artist);
-        songalbum = (TypefaceTextView) findViewById(R.id.album);
+        songname = (TextView) findViewById(R.id.songname);
+        songartist = (TextView) findViewById(R.id.artist);
+        songalbum = (TextView) findViewById(R.id.album);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
         songname.setSelected(true);
         songartist.setSelected(true);
@@ -370,12 +369,12 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction("android.media.action.DISPLAY_AUDIO_EFFECT_CONTROL_PANEL");
-                if ((intent.resolveActivity(getPackageManager()) != null)) {
-                    startActivity(intent);
-                } else {
+//                if ((intent.resolveActivity(getPackageManager()) != null)) {
+//                    startActivity(intent);
+//                } else {
                     Intent SecondScreen = new Intent(Player.this, EqualizerActivity.class);
                     startActivity(SecondScreen);
-                }
+//                }
             }
         });
         buttonPlayStop.setOnClickListener(new OnClickListener() {
@@ -762,7 +761,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     private void settextetc() {
         fadein(0, 200);
-        fadeout(0, 500);
+        fadeout(0, 200);
         if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)) {
             songname.startAnimation(fadeOut);
         }
@@ -791,11 +790,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         }
         HeadsetIsRegistered = false;
         super.onPause();
-    }
-
-    public void settings(View v) {
-        Intent i = new Intent(Player.this, Settings.class);
-        startActivity(i);
     }
 
     @Override
@@ -957,9 +951,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         // check whether open Player from Music_service or not
         try {
             if ("Music_service".equals(comefrom)) {
-                // check whether Activity_Fragments was removed from recent list or not
-                if (!ActivityUtil.IsActivityCreated("Activity_Fragments")) {
-                    Intent intent = new Intent(this, Activity_Fragments.class);
+                // check whether MainActivity was removed from recent list or not
+                if (!ActivityUtil.IsActivityCreated("MainActivity")) {
+                    Intent intent = new Intent(this, MainActivity.class);
                     setResult(RESULT_OK, intent);
                     startActivity(intent);
                 }
@@ -1179,9 +1173,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             if (result == null) {
                 i1.setImageBitmap(album);
             }
-            fadeinimage(0, 400);
-            fadeoutimage(0, 400);
-            fadeinimageBg(0, 3000);
+            fadeinimage(0, 100);
+            fadeoutimage(0, 100);
+            fadeinimageBg(0, 100);
 
             if (imagecheck == 0) {
                 i1.startAnimation(fadeOutImage);

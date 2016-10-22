@@ -5,19 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <com.gigamole.navigationtabbar.ntb.NavigationTabBar
-        android:id="@+id/ntb_vertical"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        app:ntb_bg_color="@color/white"
-        app:ntb_preview_colors="@array/vertical_ntb" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+                android:id="@+id/ntb_vertical"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:ntb_bg_color="@color/white"
+                app:ntb_preview_colors="@array/vertical_ntb" />
+
+            <ImageView
+                android:id="@+id/settings"
+                android:layout_width="50dp"
+                android:layout_height="70dp"
+                android:background="@drawable/background_setting_button"
+                android:padding="10dp"
+                android:src="@drawable/ic_settings" />
+
+        </LinearLayout>
+
+
+        <com.crystalviewpager.widgets.CrystalViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ctl_vp_transition="stack" />
+
+    </LinearLayout>
+
+    <include layout="@layout/mini_player" />
 
 </LinearLayout>
 

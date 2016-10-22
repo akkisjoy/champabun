@@ -57,6 +57,11 @@ public class Music_service extends Service
     private static int songEnded;
     // Intent intentcoveradapter;
     private final Handler handler = new Handler();
+    private final OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            mMediaplayerHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
+        }
+    };
     /**
      * Initialiser equaliser, bassbooster and Virtualiser
      * <p/>
@@ -272,11 +277,6 @@ public class Music_service extends Service
                     }
                     break;
             }
-        }
-    };
-    private final OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
-        public void onAudioFocusChange(int focusChange) {
-            mMediaplayerHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
         }
     };
     private int mServiceStartId = -1;
@@ -823,7 +823,7 @@ public class Music_service extends Service
                 startService(updateWidgetService);
                 notifyChange();
                 initializeEqualisers();
-            } catch (IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException ignored) {
             } catch (Exception e) {
                 e.printStackTrace();
                 initMediaPlayer();

@@ -2,10 +2,8 @@ package champak.champabun.view.fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.PorterDuff;
@@ -38,7 +36,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.romainpiel.shimmer.Shimmer;
@@ -56,14 +53,13 @@ import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
 import champak.champabun.business.utilities.rayMenu.RayMenu;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.RayMenu_Functions;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.framework.service.Music_service;
-import champak.champabun.view.activity.Activity_Fragments;
+import champak.champabun.view.activity.MainActivity;
 import champak.champabun.view.activity.NowPlaying;
 import champak.champabun.view.activity.Player;
 import champak.champabun.view.activity.Settings;
@@ -72,28 +68,13 @@ import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
 public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionItemSelectListener {
     static public int highlight_zero = 0;
-    public ProgressBar spinner;
-    int whichanimation = 0;
     int playlistid;
     Animation fadeOut, fadeIn;
     ArrayList<SongDetails> songdetails;
-    TypefaceTextView songs, album2;
     ArrayList<SongDetails> multiplecheckedListforaddtoplaylist, pl;
-    View openactivity;
     Button bRBack, bRAdd, bRPlay, bRDel, bRBackSearch;
     RayMenu rayMenu;
-    ImageView play2, backPager;
-    String oldalbum, oldsong;
-    public BroadcastReceiver broadcastCoverReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent serviceIntent) {
-            // check that whether the audio file can play or not
-            if (!serviceIntent.getBooleanExtra("setDataSourceFailed", false)) {
-                // ok, the audio file can play
-                inandout();
-            }
-        }
-    };
+    ImageView backPager;
     Handler handler = new Handler();
     Dialog dialog2;
     Fragment fragment;
@@ -102,15 +83,9 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     int curItemSelect;
     private ShimmerTextView titleHeader;
     private EditText searchView;
-    private Activity_Fragments mActivity;
+    private MainActivity mActivity;
     private SongHelper songHelper;
     private FetchSongList fetchSongList;
-    private BroadcastReceiver checkagain = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent serviceIntent) {
-            checkbuttonplaypause();
-        }
-    };
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -139,8 +114,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_songs, container, false);
 
-        oldsong = getString(R.string.total_songs);
-        mActivity = (Activity_Fragments) getActivity();
+        mActivity = (MainActivity) getActivity();
 
         backPager = (ImageView) view.findViewById(R.id.backPager);
         backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
@@ -149,19 +123,12 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                 .setDuration(2000)
                 .setStartDelay(100)
                 .start(titleHeader);
-        mActivity.registerReceiver(broadcastCoverReceiver, new IntentFilter(IConstant.BROADCAST_COVER));
-        songs = (TypefaceTextView) view.findViewById(R.id.songstop);
-        album2 = (TypefaceTextView) view.findViewById(R.id.albumtop);
-        openactivity = view.findViewById(R.id.openactivity);
         DownloadProVersion.onStart(getActivity());
         // Show a dialog if criteria is satisfied
         DownloadProVersion.showRateDialogIfNeeded(getActivity());
         RateThisApp.onStart(getActivity());
         // Show a dialog if criteria is satisfied
         RateThisApp.showRateDialogIfNeeded(getActivity());
-
-        spinner = (ProgressBar) view.findViewById(R.id.progressBar1);
-        spinner.setVisibility(View.GONE);
 
         bRBack = (Button) view.findViewById(R.id.bRBack);
         bRBackSearch = (Button) view.findViewById(R.id.bRBackSearch);
@@ -177,25 +144,10 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
         rayMenu = (RayMenu) view.findViewById(R.id.ray);
 
-        play2 = (ImageView) view.findViewById(R.id.play2);
         mListView = (ListView) view.findViewById(R.id.list);
-
-        getActivity().registerReceiver(checkagain, new IntentFilter(IConstant.BROADCAST_CHECK_AGAIN));
 
         searchView = (EditText) view.findViewById(R.id.search_view);
         SetupSearchView();
-
-        openactivity.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (AmuzicgApp.GetInstance().GetNowPlayingSize() > 0) {
-                    Intent intent = new Intent(mActivity, Player.class);
-                    intent.putExtra("shouldStartCoverOperation", true);
-                    startActivity(intent);
-                }
-            }
-        });
 
         SetupButton();
         SetupRawMenu();
@@ -404,19 +356,11 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             }
         });
 
-        play2.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                buttonPlayStopClick();
-            }
-        });
     }
-
 
     private void SetupRawMenu() {
         int[] ITEM_DRAWABLES = {R.drawable.composer_button_multiselect, R.drawable.composer_button_sort, R.drawable.composer_button_shuffle,
-                R.drawable.composer_icn_search, R.drawable.composer_icn_settings};
+                R.drawable.composer_icn_search};
         for (int ITEM_DRAWABLE : ITEM_DRAWABLES) {
             ImageView item = new ImageView(mActivity);
             item.setTag(ITEM_DRAWABLE);
@@ -539,6 +483,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                                 }
                             });
 
+                            fadeout(0, 700);
                             fadeOut.setAnimationListener(new AnimationListener() {
                                 @Override
                                 public void onAnimationEnd(Animation animation) {
@@ -623,11 +568,10 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
     @Override
     public void QuickAction_OnEditTags() {
-        songHelper.EditTags(adapter.getItem(curItemSelect), spinner, play2, new SongHelper.OnEditTagsListener() {
+        songHelper.EditTags(adapter.getItem(curItemSelect), new SongHelper.OnEditTagsListener() {
 
             @Override
             public void OnEditTagsSuccessful() {
-
                 OnRefreshSongList();
             }
         }, fragment);
@@ -704,104 +648,12 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         OnRefreshSongList();
         if (!rayMenu.mRayLayout.isExpanded())
             Animate_raymenu();
-        if (AmuzicgApp.GetInstance().GetNowPlayingSize() > 0) {
-            play2.setVisibility(View.VISIBLE);
-            checkbuttonplaypause();
-        } else {
-            songs.setText(getString(R.string.total_songs));
-            play2.setVisibility(View.GONE);
-        }
-    }
-
-    private void checkbuttonplaypause() {
-        if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-            play2.setImageResource(R.drawable.pause2);
-        } else {
-            play2.setImageResource(R.drawable.play);
-        }
-        inandout();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList("F_Songs.songdetails", songdetails);
         super.onSaveInstanceState(outState);
-    }
-
-    protected void inandout() {
-        fadein(0, 1500);
-        fadeout(0, 1500);
-
-        if (AmuzicgApp.GetInstance().GetNowPlayingSize() == 0) {
-            album2.setText(String.valueOf(songdetails.size()));
-            album2.startAnimation(fadeIn);
-        } else {
-            if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-                    || !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
-                if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-                        && AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
-                    songs.startAnimation(fadeOut);
-                    whichanimation = 1;
-                } else if (AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-                        && !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
-                    album2.startAnimation(fadeOut);
-                    whichanimation = 2;
-                } else if (!AmuzicgApp.GetInstance().GetCurSongDetails().getSong().equals(oldsong)
-                        && !AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum().equals(oldalbum)) {
-                    songs.startAnimation(fadeOut);
-                    album2.startAnimation(fadeOut);
-                    whichanimation = 3;
-                }
-            }
-            fadeOut.setAnimationListener(new AnimationListener() {
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    if (AmuzicgApp.GetInstance().GetNowPlayingSize() > 0) {
-                        if (whichanimation == 1) {
-                            songs.setText(AmuzicgApp.GetInstance().GetCurSongDetails().getSong());
-                            songs.startAnimation(fadeIn);
-                        } else if (whichanimation == 2) {
-                            album2.setText(AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum());
-                            album2.startAnimation(fadeIn);
-                        } else if (whichanimation == 3) {
-                            album2.setText(AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum());
-                            album2.startAnimation(fadeIn);
-                            songs.setText(AmuzicgApp.GetInstance().GetCurSongDetails().getSong());
-                            songs.startAnimation(fadeIn);
-                        }
-                    }
-                    oldsong = songs.getText().toString();
-                    oldalbum = album2.getText().toString();
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-            });
-        }
-    }
-
-    private void buttonPlayStopClick() {
-        if (!AmuzicgApp.GetInstance().boolMusicPlaying1) {
-            Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
-            play2.setImageResource(R.drawable.pause2);
-            intentplaypause.putExtra("playpause", 1);
-            mActivity.sendBroadcast(intentplaypause);
-            AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
-        } else {
-            if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-                play2.setImageResource(R.drawable.play);
-                AmuzicgApp.GetInstance().boolMusicPlaying1 = false;
-                Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
-                intentplaypause.putExtra("playpause", 0);
-                mActivity.sendBroadcast(intentplaypause);
-                AmuzicgApp.GetInstance().boolMusicPlaying1 = false;
-            }
-        }
     }
 
     @SuppressWarnings("deprecation")
@@ -812,14 +664,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         if (songHelper != null) {
             songHelper.ShouldDismiss();
             songHelper = null;
-        }
-        try {
-            mActivity.unregisterReceiver(broadcastCoverReceiver);
-        } catch (Exception ignored) {
-        }
-        try {
-            getActivity().unregisterReceiver(checkagain);
-        } catch (Exception ignored) {
         }
 
         if (songdetails != null) {
@@ -861,6 +705,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         } else {
             adapter.OnUpdate(songdetails);
         }
+        titleHeader.setText(songdetails.size() + " Songs");
     }
 
     private void SetupSearchView() {
@@ -933,9 +778,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent)
-
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         switch (requestCode) {
@@ -986,7 +829,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                         canWrite = false;
                     }
                     if (canWrite) {
-                        songHelper.EditTags(adapter.getItem(curItemSelect), spinner, play2, new SongHelper.OnEditTagsListener() {
+                        songHelper.EditTags(adapter.getItem(curItemSelect), new SongHelper.OnEditTagsListener() {
 
                             @Override
                             public void OnEditTagsSuccessful() {
@@ -1017,7 +860,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
     @Override
     public void Update() {
-        // Logger.d( "Activity_Fragments", "............................Update" );
+        // Logger.d( "MainActivity", "............................Update" );
         fetchSongList = new FetchSongList();
         fetchSongList.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
     }
@@ -1030,7 +873,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     class AddToPlayListMultiple extends AsyncTask<Void, String, String> {
         @Override
         protected void onPostExecute(String x) {
-            spinner.setVisibility(View.GONE);
             multiplecheckedListforaddtoplaylist.clear();
             highlight_zero = 0;
             ActivityUtil.showCrouton(mActivity, getString(R.string.songs_were_added_to_playlist));
@@ -1044,12 +886,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
             mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             adapter.OnUpdate(songdetails);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            spinner.setVisibility(View.VISIBLE);
-            super.onPreExecute();
         }
 
         @Override
@@ -1067,14 +903,14 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            duration = ((Activity_Fragments) getActivity()).appSettings.getDurationFilterTime();
+            duration = ((MainActivity) getActivity()).appSettings.getDurationFilterTime();
         }
 
         @Override
         protected ArrayList<SongDetails> doInBackground(Void... arg0) {
             ArrayList<SongDetails> songs = new ArrayList<>();
 
-            String sortOrder = ((Activity_Fragments) getActivity()).appSettings.getSongSortKey();
+            String sortOrder = ((MainActivity) getActivity()).appSettings.getSongSortKey();
             if (Utilities.IsEmpty(sortOrder)) {
                 sortOrder = "REPLACE ('<BEGIN>' || " + MediaStore.Audio.Media.TITLE + ", '<BEGIN>The ', '<BEGIN>')" + " COLLATE NOCASE ASC";
             }
@@ -1121,7 +957,6 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
             songdetails.addAll(result);
             result.clear();
             OnRefreshSongList();
-            inandout();
 
             Animate_raymenu();
 
@@ -1135,14 +970,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     class AddToPl extends AsyncTask<Integer, String, String> {
         @Override
         protected void onPostExecute(String x) {
-            spinner.setVisibility(View.GONE);
             ActivityUtil.showCrouton(mActivity, getString(R.string.playlist_created));
-        }
-
-        @Override
-        protected void onPreExecute() {
-            spinner.setVisibility(View.VISIBLE);
-            super.onPreExecute();
         }
 
         @Override

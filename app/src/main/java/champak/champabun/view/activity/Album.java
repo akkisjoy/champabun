@@ -1,5 +1,4 @@
 package champak.champabun.view.activity;
-// susuSUSU1234!@#$
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -42,7 +41,6 @@ import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.utilities.rayMenu.RayMenu;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.BitmapUtil;
 import champak.champabun.business.utilities.utilMethod.RayMenu_Functions;
@@ -63,7 +61,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
     Animation fadeOut, fadeIn;
     LinearLayout bg;
     int playlistid;
-    TypefaceTextView tV1, artistname, totaltracks, totaltime;
+    TextView tV1, artistname, totaltracks, totaltime;
     ProgressBar spinner;
     Handler handler = new Handler();
     String artist, image_path, name;
@@ -106,11 +104,11 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
 
-        tV1 = (TypefaceTextView) findViewById(R.id.albumname);
+        tV1 = (TextView) findViewById(R.id.albumname);
 
-        artistname = (TypefaceTextView) findViewById(R.id.artistname);
-        totaltracks = (TypefaceTextView) findViewById(R.id.totaltracks);
-        totaltime = (TypefaceTextView) findViewById(R.id.totaltime);
+        artistname = (TextView) findViewById(R.id.artistname);
+        totaltracks = (TextView) findViewById(R.id.totaltracks);
+        totaltime = (TextView) findViewById(R.id.totaltime);
         bg = (LinearLayout) findViewById(R.id.ll);
         albumart = (ImageView) findViewById(R.id.albumart);
 
@@ -508,7 +506,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
 
     @Override
     public void QuickAction_OnEditTags() {
-        songHelper.EditTags(songs.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
+        songHelper.EditTags(songs.get(position2), new SongHelper.OnEditTagsListener() {
 
             @Override
             public void OnEditTagsSuccessful() {
@@ -640,7 +638,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                         canWrite = false;
                     }
                     if (canWrite) {
-                        songHelper.EditTags(songs.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
+                        songHelper.EditTags(songs.get(position2), new SongHelper.OnEditTagsListener() {
 
                             @Override
                             public void OnEditTagsSuccessful() {

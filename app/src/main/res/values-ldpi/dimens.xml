@@ -32,10 +32,10 @@
    <dimen name="arcmenu_child_size">30dp</dimen>
    
    <dimen name="rayMenu_marginTop">0dp</dimen>
-   
-   <dimen name="lsongs_songTextSize">22sp</dimen>
+
+   <dimen name="lsongs_songTextSize">17sp</dimen>
    <dimen name="lsongs_albumTextSize">14sp</dimen>
-   <dimen name="lsongs_playButton_Size">50dp</dimen>
+   <dimen name="lsongs_playButton_Size">40dp</dimen>
    <dimen name="lsongs_RightTextMargin">86dp</dimen>
    <dimen name="lsongs_TopViewTopMargin">40dp</dimen>
    <dimen name="lsongs_TopViewBottomMargin">25dp</dimen>

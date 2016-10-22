@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
@@ -27,19 +28,18 @@ import champak.champabun.R;
 import champak.champabun.business.dataclasses.MediaFilesObject;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.Utilities;
-import champak.champabun.view.activity.Activity_Fragments;
+import champak.champabun.view.activity.MainActivity;
 import champak.champabun.view.activity.Player;
 import champak.champabun.view.adapters.Adapter_Folder;
 
 public class F_Folder extends BaseFragment {
     ImageView backPager;
     private String rootPath = "/";
-    private TypefaceTextView mPathTextView;
+    private TextView mPathTextView;
     private ListView mListView;
     private Adapter_Folder mAdapter;
-    private Activity_Fragments mActivity;
+    private MainActivity mActivity;
     private MediaFilesObject mMediaFilesObject;
     private MediaFilesObject mCurMediaFilesObject;
     private ArrayList<SongDetails> songDetails;
@@ -82,12 +82,12 @@ public class F_Folder extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.l_folder, container, false);
 
-        mActivity = (Activity_Fragments) getActivity();
+        mActivity = (MainActivity) getActivity();
         mAdapter = null;
         backPager = (ImageView) view.findViewById(R.id.backPager);
         backPager.setColorFilter(ContextCompat.getColor(getActivity(), R.color.purplePager), PorterDuff.Mode.MULTIPLY);
         titleHeader = (ShimmerTextView) view.findViewById(R.id.titleHeader);
-        mPathTextView = (TypefaceTextView) view.findViewById(R.id.path);
+        mPathTextView = (TextView) view.findViewById(R.id.path);
         mListView = (ListView) view.findViewById(R.id.list);
         mListView.setOnItemClickListener(new OnItemClickListener() {
 

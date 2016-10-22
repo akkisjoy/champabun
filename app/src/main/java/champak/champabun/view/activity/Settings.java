@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -25,7 +26,6 @@ import champak.champabun.business.dataclasses.AppDatabase;
 import champak.champabun.business.dataclasses.SleepTime;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.utilities.utilClass.MyTimePickerDialog;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 
@@ -33,7 +33,7 @@ public class Settings extends BaseActivity implements OnClickListener {
     final private static String TAG = "Settings";
     private CheckBox auto_download_album_art_cb, fullscreen_cb;
     private Calendar calendar;
-    private TypefaceTextView sleepTimerView, durationFilterView;
+    private TextView sleepTimerView, durationFilterView;
     private Dialog dialog;
     private boolean needRefresh = false;
     private boolean needRefreshFullscreen = false;
@@ -72,19 +72,19 @@ public class Settings extends BaseActivity implements OnClickListener {
         View sleep_timer = findViewById(R.id.sleep_timer_view);
         sleep_timer.setOnClickListener(this);
 
-        sleepTimerView = (TypefaceTextView) findViewById(R.id.sleep_timer_time);
+        sleepTimerView = (TextView) findViewById(R.id.sleep_timer_time);
 
         View dView = findViewById(R.id.duration_filter_view);
-        durationFilterView = (TypefaceTextView) dView.findViewById(R.id.duration_filter_time);
+        durationFilterView = (TextView) dView.findViewById(R.id.duration_filter_time);
         dView.setOnClickListener(this);
 
-        TypefaceTextView cross_fading = (TypefaceTextView) findViewById(R.id.cross_fading);
+        TextView cross_fading = (TextView) findViewById(R.id.cross_fading);
         cross_fading.setOnClickListener(this);
 
-        TypefaceTextView rescan_lib = (TypefaceTextView) findViewById(R.id.rescan_lib);
+        TextView rescan_lib = (TextView) findViewById(R.id.rescan_lib);
         rescan_lib.setOnClickListener(this);
 
-        TypefaceTextView choose_folder = (TypefaceTextView) findViewById(R.id.choose_folder);
+        TextView choose_folder = (TextView) findViewById(R.id.choose_folder);
         choose_folder.setOnClickListener(this);
 
         View auto_download_album_art = findViewById(R.id.auto_download_album_art);
@@ -95,10 +95,10 @@ public class Settings extends BaseActivity implements OnClickListener {
         fullscreen.setOnClickListener(this);
         fullscreen_cb = (CheckBox) fullscreen.findViewById(R.id.fullscreen_cb);
 
-        TypefaceTextView request_feature = (TypefaceTextView) findViewById(R.id.request_feature);
+        TextView request_feature = (TextView) findViewById(R.id.request_feature);
         request_feature.setOnClickListener(this);
 
-        TypefaceTextView report_bug = (TypefaceTextView) findViewById(R.id.report_bug);
+        TextView report_bug = (TextView) findViewById(R.id.report_bug);
         report_bug.setOnClickListener(this);
 
         UpdateView();

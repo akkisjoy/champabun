@@ -47,41 +47,20 @@
                         android:layout_gravity="center_horizontal|bottom"
                         android:gravity="center_vertical">
 
-                        <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
                             android:id="@+id/songname"
-                            style="@style/TextViewStyle.julius_sans_one"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:ellipsize="marquee"
                             android:gravity="center"
+                            android:maxLines="1"
                             android:paddingLeft="@dimen/player_settingsSize"
                             android:paddingRight="@dimen/player_settingsSize"
                             android:paddingTop="20dp"
-                            android:singleLine="true"
                             android:textColor="@color/TextColor_Primary"
                             android:textSize="@dimen/Heading_Size" />
 
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/songname"
-                            android:paddingBottom="4dp"
-                            android:paddingRight="10dp">
-
-                            <Button
-                                android:id="@+id/settings"
-                                android:layout_width="@dimen/player_settingsSize"
-                                android:layout_height="@dimen/player_settingsSize"
-                                android:layout_alignParentBottom="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_gravity="right"
-                                android:background="@drawable/composer_icn_settings_player"
-                                android:clickable="true"
-                                android:gravity="right|center_horizontal"
-                                android:onClick="settings" />
-
-                        </RelativeLayout>
                     </RelativeLayout>
 
                     <LinearLayout
@@ -208,9 +187,8 @@
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-                                <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                                <champak.champabun.business.utilities.utilClass.TextViewGravilight
                                     android:id="@+id/artist"
-                                    style="@style/TextViewStyle.JosefinSans"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -222,9 +200,8 @@
                                     android:textColor="@color/TextColor_Secondary"
                                     android:textSize="@dimen/player_artist_Textsize" />
 
-                                <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                                <champak.champabun.business.utilities.utilClass.TextViewGravilar
                                     android:id="@+id/album"
-                                    style="@style/TextViewStyle.JosefinSans"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"

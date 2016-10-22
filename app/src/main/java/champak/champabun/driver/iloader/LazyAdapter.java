@@ -6,12 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 
 public class LazyAdapter extends BaseAdapter {
     public ImageLoader imageLoader;
@@ -58,7 +58,7 @@ public class LazyAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(x).inflate(R.layout.item_album, parent, false);
             viewHolder = new ViewHolder();
 
-            viewHolder.text = (TypefaceTextView) convertView.findViewById(R.id.text);
+            viewHolder.text = (TextView) convertView.findViewById(R.id.text);
             viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
             convertView.setTag(viewHolder);
         } else {
@@ -73,7 +73,7 @@ public class LazyAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        TypefaceTextView text;
+        TextView text;
         ImageView image;
     }
 }

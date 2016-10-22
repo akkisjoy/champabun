@@ -40,7 +40,7 @@ public class Splash extends BaseActivity {
 
             @Override
             public void run() {
-                startActivity(new Intent(Splash.this, Activity_Fragments.class));
+                startActivity(new Intent(Splash.this, MainActivity.class));
                 finish();
             }
         }, TIME_DELAY);

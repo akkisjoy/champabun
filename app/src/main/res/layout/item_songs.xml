@@ -7,18 +7,17 @@
     android:orientation="vertical"
     android:paddingBottom="6dp"
     android:paddingLeft="@dimen/lsongs_listview_item_padding_left_right"
-    android:paddingRight="@dimen/lsongs_listview_item_padding_left_right" >
+    android:paddingRight="@dimen/lsongs_listview_item_padding_left_right">
 
-    <champak.champabun.business.utilities.utilClass.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TextViewGravilight
         android:id="@+id/Song"
-        style="@style/TextViewStyle.JosefinSans"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:maxLines="1"
         android:paddingTop="5dp"
-        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/TextColor_Primary"
         android:textSize="@dimen/itemsongs_text_size" />
@@ -27,30 +26,28 @@
         android:id="@+id/ArtistLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="-3dp" >
+        android:paddingTop="-3dp">
 
-        <champak.champabun.business.utilities.utilClass.TypefaceTextView
+        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
             android:id="@+id/Time"
-            style="@style/TextViewStyle.JosefinSans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="6dp"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/TextColor_Secondary"
             android:textSize="@dimen/itemsongs_album_size" />
 
-        <champak.champabun.business.utilities.utilClass.TypefaceTextView
+        <champak.champabun.business.utilities.utilClass.TextViewGravilight
             android:id="@+id/Artist"
-            style="@style/TextViewStyle.JosefinSans"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@+id/Time"
             android:gravity="left"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/TextColor_Secondary"
             android:textSize="@dimen/itemsongs_album_size" />
     </RelativeLayout>
@@ -61,5 +58,5 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:visibility="gone" />
-    
+
 </LinearLayout>

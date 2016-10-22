@@ -43,7 +43,6 @@ import champak.champabun.business.definition.Logger;
 import champak.champabun.business.utilities.ecoGallery.EcoGallery;
 import champak.champabun.business.utilities.ecoGallery.EcoGalleryAdapterView;
 import champak.champabun.business.utilities.rayMenu.RayMenu;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.RayMenu_Functions;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
@@ -62,7 +61,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
     Adapter_SongView ab;
     String artist_id;
     ArrayList<SongDetails> play;
-    TypefaceTextView tV1;// album2;
+    TextView tV1;// album2;
     int pos;
     int playlistid;
     Handler handler = new Handler();
@@ -161,7 +160,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
         int s = Integer.parseInt(artist_id);
 
         new FetchListItems().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, s);
-        tV1 = (TypefaceTextView) findViewById(R.id.tV1);
+        tV1 = (TextView) findViewById(R.id.tV1);
         tV1.setSelected(true);
     }
 
@@ -177,7 +176,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
 
     @Override
     public void QuickAction_OnEditTags() {
-        songHelper.EditTags(play.get(position2), spinner, null,
+        songHelper.EditTags(play.get(position2),
                 new SongHelper.OnEditTagsListener() {
 
                     @Override
@@ -770,7 +769,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                         canWrite = false;
                     }
                     if (canWrite) {
-                        songHelper.EditTags(play.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
+                        songHelper.EditTags(play.get(position2), new SongHelper.OnEditTagsListener() {
 
                             @Override
                             public void OnEditTagsSuccessful() {

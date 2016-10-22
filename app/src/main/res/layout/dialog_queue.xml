@@ -5,24 +5,20 @@
     android:layout_gravity="center"
     android:layout_margin="@dimen/dialog_padding"
     android:background="@color/Background_Dialog"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <champak.champabun.business.utilities.utilClass.TypefaceTextView
-        style="@style/TextViewStyle.Dialouge.heading"
+    <champak.champabun.business.utilities.utilClass.TextViewRajdhar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/add_to_playlist"
-        />
+        android:text="@string/add_to_playlist" />
+
     <ListView
         android:id="@+id/listView1"
         style="@style/ListViewplaymee"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

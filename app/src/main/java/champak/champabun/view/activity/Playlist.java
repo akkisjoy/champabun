@@ -3,7 +3,6 @@ package champak.champabun.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
@@ -36,7 +35,7 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
     Adapter_SongView ab;
     ListView SngList;
     String plName;
-    TypefaceTextView playlistname;
+    TextView playlistname;
     ProgressBar spinner;
     int position2;
     private SongHelper songHelper;
@@ -62,9 +61,7 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
 
         Intent i = getIntent();
         SngList = (ListView) findViewById(R.id.listView1);
-        playlistname = (TypefaceTextView) findViewById(R.id.playlistname);
-        Typeface face = Typeface.createFromAsset(this.getAssets(), "fonts/julius-sans-one.ttf");
-        playlistname.setTypeface(face);
+        playlistname = (TextView) findViewById(R.id.playlistname);
         playlistname.setSelected(true);
         click_no = i.getStringExtra("click_no_playlist");
         plName = i.getStringExtra("name");
@@ -163,7 +160,7 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
     @Override
     public void QuickAction_OnEditTags() {
         try {
-            songHelper.EditTags(play.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
+            songHelper.EditTags(play.get(position2), new SongHelper.OnEditTagsListener() {
 
                 @Override
                 public void OnEditTagsSuccessful() {
@@ -247,14 +244,13 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
                         canWrite = false;
                     }
                     if (canWrite) {
-                        songHelper.EditTags(play.get(position2), spinner, null, new SongHelper.OnEditTagsListener() {
+                        songHelper.EditTags(play.get(position2), new SongHelper.OnEditTagsListener() {
 
                             @Override
                             public void OnEditTagsSuccessful() {
                                 OnRefreshSongList();
                             }
                         }, null);
-
                     } else
                         ActivityUtil.showCrouton(Playlist.this, getString(R.string.tag_not_edited));
 

@@ -13,16 +13,15 @@
         android:layout_width="33dp"
         android:layout_height="33dp"
         android:layout_weight="0"
-        android:background="@drawable/drag" />
+        android:background="@drawable/drag_tran" />
 
-    <champak.champabun.business.utilities.utilClass.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TextViewGravilight
         android:id="@+id/Songs"
-        style="@style/TextViewStyle.JosefinSans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="5dp"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/itemsongs_text_size" />

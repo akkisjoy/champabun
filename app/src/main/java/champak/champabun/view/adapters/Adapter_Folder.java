@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.MediaFilesObject;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.view.fragment.F_Songs;
 
 public class Adapter_Folder extends BaseAdapter {
@@ -57,9 +57,9 @@ public class Adapter_Folder extends BaseAdapter {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_songs, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.SongView = (TypefaceTextView) convertView.findViewById(R.id.Song);
-            viewHolder.TimeView = (TypefaceTextView) convertView.findViewById(R.id.Time);
-            viewHolder.ArtistView = (TypefaceTextView) convertView.findViewById(R.id.Artist);
+            viewHolder.SongView = (TextView) convertView.findViewById(R.id.Song);
+            viewHolder.TimeView = (TextView) convertView.findViewById(R.id.Time);
+            viewHolder.ArtistView = (TextView) convertView.findViewById(R.id.Artist);
 
             convertView.setTag(viewHolder);
         } else {
@@ -95,7 +95,7 @@ public class Adapter_Folder extends BaseAdapter {
     }
 
     class ViewHolder {
-        TypefaceTextView SongView, ArtistView;
-        TypefaceTextView TimeView;
+        TextView SongView, ArtistView;
+        TextView TimeView;
     }
 }

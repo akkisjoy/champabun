@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/openactivity"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <champak.champabun.business.utilities.utilClass.TextViewGravilight
+            android:id="@+id/songstop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@color/TextColor_Primary"
+            android:textSize="@dimen/lsongs_songTextSize" />
+
+        <champak.champabun.business.utilities.utilClass.TextViewGravilar
+            android:id="@+id/albumtop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@color/TextColor_Secondary"
+            android:textSize="@dimen/lsongs_albumTextSize" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/lsongs_playButton_Size"
+        android:layout_height="@dimen/lsongs_playButton_Size"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/play2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</LinearLayout>

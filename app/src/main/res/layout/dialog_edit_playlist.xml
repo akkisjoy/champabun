@@ -5,46 +5,36 @@
     android:layout_gravity="center"
     android:layout_margin="@dimen/dialog_padding"
     android:background="@color/Background_Dialog"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <champak.champabun.business.utilities.utilClass.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TextViewRajdhar
         android:id="@+id/title"
-        style="@style/TextViewStyle.Dialouge.heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/rename_playlist"
-        />
+        android:text="@string/rename_playlist" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:paddingRight="10dp">
 
-        <champak.champabun.business.utilities.utilClass.TypefaceTextView
-            style="@style/TextViewStyle.Dialouge.secondary"
+        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:singleLine="true"
-            android:text="@string/name"
-            />
+            android:text="@string/name" />
 
-        <champak.champabun.business.utilities.utilClass.TypefaceEditText
+        <champak.champabun.business.utilities.utilClass.EditTextGravilight
             android:id="@+id/ti"
-            style="@style/EditTextStyle.Dialouge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:singleLine="true"
-            
-            />
+            android:maxLines="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,7 +45,7 @@
         android:orientation="horizontal"
         android:paddingBottom="6dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:paddingRight="10dp">
 
         <Button
             android:id="@+id/dBOK"

@@ -30,70 +30,6 @@
         android:layout_below="@+id/titleHeader"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/openactivity"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:background="@drawable/selector"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/lsongs_TopViewBottomMargin"
-            android:paddingLeft="18dp"
-            android:paddingRight="0dp"
-            android:paddingTop="@dimen/lsongs_TopViewTopMargin">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/lsongs_RightTextMargin"
-                android:orientation="vertical">
-
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
-                    android:id="@+id/songstop"
-                    style="@style/TextViewStyle.JosefinSans"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:singleLine="true"
-                    android:textColor="@color/TextColor_Primary"
-                    android:textSize="@dimen/lsongs_songTextSize" />
-
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
-                    android:id="@+id/albumtop"
-                    style="@style/TextViewStyle.JosefinSans"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:singleLine="true"
-                    android:textColor="@color/TextColor_Secondary"
-                    android:textSize="@dimen/lsongs_albumTextSize" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/lsongs_playButton_Size"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="16dp">
-
-                <ImageView
-                    android:id="@+id/play2"
-                    android:layout_width="@dimen/lsongs_playButton_Size"
-                    android:layout_height="@dimen/lsongs_playButton_Size"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="4dp" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar1"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="4dp" />
-            </RelativeLayout>
-        </RelativeLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="0.4dp"
@@ -126,16 +62,15 @@
                     android:layout_height="@dimen/lsongs_ButtonSize"
                     android:background="@drawable/composer_button_back" />
 
-                <champak.champabun.business.utilities.utilClass.TypefaceEditText
+                <champak.champabun.business.utilities.utilClass.EditTextGravilight
                     android:id="@+id/search_view"
-                    style="@style/EditTextStyle.JosefinSans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/lsongs_listview_item_padding_left_right"
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                     android:hint="@string/search"
+                    android:maxLines="1"
                     android:paddingLeft="5dip"
-                    android:singleLine="true"
                     android:textColor="#FFFFFF"
                     android:visibility="gone" />
             </LinearLayout>

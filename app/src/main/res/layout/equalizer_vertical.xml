@@ -41,9 +41,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="top">
 
-                        <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
                             android:id="@+id/eqControlText"
-                            style="@style/TextViewStyle.julius_sans_one"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -59,6 +58,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/eqControlText"
                             android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
                             android:background="@drawable/selector">
 
                             <Button
@@ -99,7 +99,6 @@
                             android:id="@+id/image"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/titletext"
                             android:adjustViewBounds="true"
                             android:paddingTop="55dp"
                             android:scaleType="centerCrop" />
@@ -121,11 +120,10 @@
                                 android:id="@+id/button1"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:background="@color/buttonbgcolor"></RelativeLayout>
+                                android:background="@color/buttonbgcolor" />
 
-                            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
                                 android:id="@+id/basstext"
-                                style="@style/TextViewStyle.JosefinSans"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_alignBottom="@+id/button1"
@@ -142,11 +140,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:layout_toRightOf="@+id/button1"
-                                android:background="@color/buttonbgcolor"></RelativeLayout>
+                                android:background="@color/buttonbgcolor" />
 
-                            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
                                 android:id="@+id/voltext"
-                                style="@style/TextViewStyle.JosefinSans"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_alignBottom="@+id/button2"
@@ -163,11 +160,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:layout_toRightOf="@+id/button2"
-                                android:background="@color/buttonbgcolor"></RelativeLayout>
+                                android:background="@color/buttonbgcolor" />
 
-                            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
                                 android:id="@+id/virtualizertext"
-                                style="@style/TextViewStyle.JosefinSans"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_alignBottom="@+id/button3"
@@ -184,7 +180,7 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="match_parent"
                                 android:layout_below="@id/basstext"
-                                android:background="@color/buttonbgcolor"></RelativeLayout>
+                                android:background="@color/buttonbgcolor" />
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>

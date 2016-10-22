@@ -9,13 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.Logger;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.view.activity.Album;
 import champak.champabun.view.activity.Artist;
@@ -70,9 +70,9 @@ public class Adapter_SongView extends BaseAdapter implements Filterable {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_songs, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.SongView = (TypefaceTextView) convertView.findViewById(R.id.Song);
-            viewHolder.TimeView = (TypefaceTextView) convertView.findViewById(R.id.Time);
-            viewHolder.ArtistView = (TypefaceTextView) convertView.findViewById(R.id.Artist);
+            viewHolder.SongView = (TextView) convertView.findViewById(R.id.Song);
+            viewHolder.TimeView = (TextView) convertView.findViewById(R.id.Time);
+            viewHolder.ArtistView = (TextView) convertView.findViewById(R.id.Artist);
 
             convertView.setTag(viewHolder);
         } else {
@@ -87,7 +87,6 @@ public class Adapter_SongView extends BaseAdapter implements Filterable {
                     convertView.setBackgroundColor(parent.getContext().getResources().getColor(R.color.multi_highlight));
                 }
             }
-
 
             if (_whichactivity == 1) {
                 if (Album.highlight_zero % 2 == 0) {
@@ -183,7 +182,8 @@ public class Adapter_SongView extends BaseAdapter implements Filterable {
     }
 
     class ViewHolder {
-        TypefaceTextView SongView, ArtistView;
-        TypefaceTextView TimeView;
+        TextView SongView;
+        TextView ArtistView;
+        TextView TimeView;
     }
 }

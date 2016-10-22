@@ -5,35 +5,29 @@
     android:layout_gravity="center"
     android:layout_margin="@dimen/dialog_padding"
     android:background="@color/Background_Dialog"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <champak.champabun.business.utilities.utilClass.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TextViewRajdhar
         android:id="@+id/heading"
-        style="@style/TextViewStyle.Dialouge.heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/delete"
-        />
+        android:text="@string/delete" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:paddingRight="10dp">
 
-        <champak.champabun.business.utilities.utilClass.TypefaceTextView
+        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
             android:id="@+id/title"
-            style="@style/TextViewStyle.Dialouge.secondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-             />
+            android:gravity="center" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +39,7 @@
         android:orientation="horizontal"
         android:paddingBottom="6dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:paddingRight="10dp">
 
         <Button
             android:id="@+id/dBOK"

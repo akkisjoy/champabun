@@ -28,13 +28,12 @@
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip" />
 
-    <champak.champabun.business.utilities.utilClass.TypefaceTextView
+    <champak.champabun.business.utilities.utilClass.TextViewRajdhar
         android:id="@+id/tv_title"
-        style="@style/TextViewStyle.QuickAction"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginTop="3dp"
-        android:gravity="center_vertical|center_horizontal"
+        android:gravity="center"
         android:textSize="@dimen/itemsongs_album_size" />
 
 </LinearLayout>

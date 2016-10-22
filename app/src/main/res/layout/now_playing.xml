@@ -23,9 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
                 android:id="@+id/nowplaying"
-                style="@style/TextViewStyle.julius_sans_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -34,7 +33,6 @@
                 android:paddingLeft="42dp"
                 android:paddingRight="42dp"
                 android:paddingTop="20dp"
-                android:singleLine="true"
                 android:text="@string/now_playing"
                 android:textColor="@color/TextColor_Primary"
                 android:textSize="@dimen/Heading_Size" />
@@ -43,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/nowplaying"
-                android:paddingBottom="4dp"
+                android:gravity="center_vertical"
                 android:paddingRight="10dp">
 
                 <ProgressBar
@@ -51,30 +49,28 @@
                     style="?android:attr/progressBarStyleLarge"
                     android:layout_width="@dimen/now_playing_save_asSize"
                     android:layout_height="@dimen/now_playing_save_asSize"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
                     android:gravity="bottom" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:background="@drawable/selector"
-                    android:gravity="bottom"
                     android:onClick="OnSaveAsButtonClick"
                     android:orientation="vertical">
 
                     <Button
                         android:id="@+id/save_as"
-                        android:layout_width="@dimen/now_playing_save_asSize"
-                        android:layout_height="@dimen/now_playing_save_asSize"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
                         android:background="@drawable/save_as_tran"
                         android:clickable="false"
-                        android:gravity="center_vertical|center_horizontal" />
+                        android:gravity="center" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
@@ -84,7 +80,8 @@
             style="@style/ListViewplaymee"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
             android:fastScrollEnabled="true"
             dslv:collapsed_height="2dp"
             dslv:drag_enabled="true"

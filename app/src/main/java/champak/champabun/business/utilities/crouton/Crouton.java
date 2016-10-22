@@ -36,8 +36,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import champak.champabun.R;
-
 /*
  * Based on an article by Cyril Mottier (http://android.cyrilmottier.com/?p=773) <br>
  */
@@ -762,7 +760,7 @@ public final class Crouton {
         }
 
         TextView text = initializeTextView(resources);
-        Typeface font = Typeface.createFromAsset(activity.getAssets(), activity.getString(R.string.Typeface_JosefinSans_Regular));
+        Typeface font = Typeface.createFromAsset(activity.getAssets(), "fonts/graviolight.otf");
         text.setTypeface(font);
         RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);

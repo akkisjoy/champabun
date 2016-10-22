@@ -12,18 +12,17 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <champak.champabun.business.utilities.utilClass.TypefaceTextView
+        <champak.champabun.business.utilities.utilClass.TextViewLobster
             android:id="@+id/settings"
-            style="@style/TextViewStyle.julius_sans_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ellipsize="marquee"
             android:gravity="center"
+            android:maxLines="1"
             android:paddingLeft="@dimen/player_settingsSize"
             android:paddingRight="@dimen/player_settingsSize"
             android:paddingTop="20dp"
-            android:singleLine="true"
             android:text="@string/settings"
             android:textSize="@dimen/Heading_Size" />
     </RelativeLayout>
@@ -47,17 +46,19 @@
                 android:background="@drawable/selector_list"
                 android:minHeight="?android:attr/listPreferredItemHeight">
 
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TextViewGravilar
                     android:id="@+id/sleep_timer_time"
-                    style="@style/TextViewStyle.JosefinSans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                     android:text="@string/setting_not_set" />
 
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TextViewGravilight
                     android:id="@+id/sleep_timer"
-                    style="@style/TextViewStyle.Settings.Item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dip"
                     android:layout_toLeftOf="@+id/sleep_timer_time"
@@ -81,17 +82,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                    <champak.champabun.business.utilities.utilClass.TextViewGravilar
                         android:id="@+id/duration_filter_time"
-                        style="@style/TextViewStyle.JosefinSans"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                         android:minHeight="0dip"
                         android:text="@string/setting_not_set" />
 
-                    <champak.champabun.business.utilities.utilClass.TypefaceTextView
-                        style="@style/TextViewStyle.Settings.Item"
+                    <champak.champabun.business.utilities.utilClass.TextViewGravilight
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dip"
                         android:layout_toLeftOf="@+id/duration_filter_time"
@@ -100,32 +103,35 @@
                         android:text="@string/hide_small_clips" />
                 </RelativeLayout>
 
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
-                    style="@style/TextViewStyle.Settings.Item.Desc"
+                <champak.champabun.business.utilities.utilClass.TextViewGravilight
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="3dip"
                     android:background="@android:color/transparent"
                     android:minHeight="0dip"
-                    android:singleLine="false"
                     android:text="@string/duration_filter_desc" />
             </LinearLayout>
 
-            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TextViewGravilight
                 android:id="@+id/cross_fading"
-                style="@style/TextViewStyle.Settings.Item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/selector"
                 android:text="@string/setting_cross_fading"
                 android:visibility="gone" />
 
-            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TextViewGravilight
                 android:id="@+id/rescan_lib"
-                style="@style/TextViewStyle.Settings.Item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/selector"
                 android:text="@string/setting_rescan_lib"
                 android:visibility="gone" />
 
-            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TextViewGravilight
                 android:id="@+id/choose_folder"
-                style="@style/TextViewStyle.Settings.Item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/selector"
                 android:text="@string/setting_choose_folder"
                 android:visibility="gone" />
@@ -138,17 +144,19 @@
                 android:minHeight="?android:attr/listPreferredItemHeight"
                 android:visibility="gone">
 
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TextViewGravilar
                     android:id="@+id/choose_background_value"
-                    style="@style/TextViewStyle.JosefinSans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                     android:text="@string/setting_not_set" />
 
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TextViewGravilight
                     android:id="@+id/choose_background"
-                    style="@style/TextViewStyle.Settings.Item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dip"
                     android:layout_toLeftOf="@+id/choose_background_value"
@@ -172,8 +180,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right" />
 
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
-                    style="@style/TextViewStyle.Settings.Item"
+                <champak.champabun.business.utilities.utilClass.TextViewGravilight
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_toLeftOf="@+id/auto_download_album_art_cb"
                     android:text="@string/setting_auto_download_album_art" />
@@ -196,16 +205,16 @@
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                     android:focusableInTouchMode="false" />
 
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
-                    style="@style/TextViewStyle.Settings.Item"
+                <champak.champabun.business.utilities.utilClass.TextViewGravilight
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_toLeftOf="@+id/fullscreen_cb"
                     android:text="@string/settings_fullscreen" />
             </RelativeLayout>
 
-            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TextViewGravilar
                 android:id="@+id/my_apps"
-                style="@style/TextViewStyle.Settings.Item"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/listPreferredItemHeight"
                 android:background="@drawable/selector_list"
@@ -214,16 +223,18 @@
                 android:paddingRight="@dimen/lsongs_listview_item_padding_left_right"
                 android:text="@string/setting_my_apps" />
 
-            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TextViewGravilight
                 android:id="@+id/request_feature"
-                style="@style/TextViewStyle.Settings.Item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/selector_list"
                 android:text="@string/setting_request_feature"
                 android:visibility="gone" />
 
-            <champak.champabun.business.utilities.utilClass.TypefaceTextView
+            <champak.champabun.business.utilities.utilClass.TextViewGravilight
                 android:id="@+id/report_bug"
-                style="@style/TextViewStyle.Settings.Item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/selector_list"
                 android:text="@string/setting_report_bug"
                 android:visibility="gone" />

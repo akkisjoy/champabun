@@ -13,7 +13,6 @@ import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
 
 public class Adapter_playlist_Dialog extends BaseAdapter {
-    Context context;
     private ArrayList<SongDetails> _data;
 
     public Adapter_playlist_Dialog(ArrayList<SongDetails> data) {
@@ -45,7 +44,7 @@ public class Adapter_playlist_Dialog extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            context = parent.getContext();
+            Context context = parent.getContext();
             convertView = LayoutInflater.from(context).inflate(R.layout.listview_item, parent, false);
 
             holder.SongView = (TextView) convertView.findViewById(R.id.textview);
@@ -59,7 +58,7 @@ public class Adapter_playlist_Dialog extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    private class ViewHolder {
         TextView SongView;
     }
 }

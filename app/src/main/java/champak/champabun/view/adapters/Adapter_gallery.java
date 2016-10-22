@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
-import champak.champabun.business.utilities.utilClass.TypefaceTextView;
 import champak.champabun.business.utilities.utilMethod.BitmapUtil;
 import champak.champabun.driver.iloader.ImageLoader;
 
@@ -66,7 +66,7 @@ public class Adapter_gallery extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_artist_albums, parent, false);
 
             holder.albumart = (ImageView) convertView.findViewById(R.id.albumart);
-            holder.albumname = (TypefaceTextView) convertView.findViewById(R.id.albumname);
+            holder.albumname = (TextView) convertView.findViewById(R.id.albumname);
 
             wt_px = (int) context.getResources().getDimension(R.dimen.player_image_width);
             convertView.setTag(holder);
@@ -89,7 +89,7 @@ public class Adapter_gallery extends BaseAdapter {
     }
 
     class ViewHolder {
-        TypefaceTextView albumname;
+        TextView albumname;
         ImageView albumart;
     }
 }

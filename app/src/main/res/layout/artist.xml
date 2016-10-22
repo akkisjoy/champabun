@@ -26,18 +26,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <champak.champabun.business.utilities.utilClass.TypefaceTextView
+                <champak.champabun.business.utilities.utilClass.TextViewRajdhar
                     android:id="@+id/tV1"
-                    style="@style/TextViewStyle.julius_sans_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:paddingBottom="2dp"
                     android:paddingLeft="42dp"
                     android:paddingRight="42dp"
                     android:paddingTop="18dp"
-                    android:singleLine="True"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/Heading_Size" />
 
@@ -77,7 +76,7 @@
                 <champak.champabun.business.utilities.rayMenu.RayMenu
                     android:id="@+id/ray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></champak.champabun.business.utilities.rayMenu.RayMenu>
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -134,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fastScrollEnabled="true"
-                android:paddingTop="4dp"></ListView>
+                android:paddingTop="4dp" />
         </LinearLayout>
 
         <include

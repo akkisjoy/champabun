@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<champak.champabun.business.utilities.utilClass.TypefaceTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<champak.champabun.business.utilities.utilClass.TextViewGravilar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rowTextView"
-    style="@style/TextViewStyle.Dialouge.primary"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/selector"
     android:gravity="center_vertical"
+    android:maxLines="1"
     android:minHeight="@dimen/lv_item_min_height"
-    android:paddingLeft="15dp"
-    android:singleLine="true"
+    android:paddingLeft="20dp"
     android:textAppearance="?android:attr/textAppearanceMedium"
-     ></champak.champabun.business.utilities.utilClass.TypefaceTextView>
+    android:textColor="#90ffffff" />
