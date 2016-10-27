@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dummy1"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <champak.champabun.business.utilities.utilClass.TextViewLobster
+        android:id="@+id/titleHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <champak.champabun.business.utilities.utilClass.TextViewLobster
-            android:id="@+id/settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:maxLines="1"
-            android:paddingLeft="@dimen/player_settingsSize"
-            android:paddingRight="@dimen/player_settingsSize"
-            android:paddingTop="20dp"
-            android:text="@string/settings"
-            android:textSize="@dimen/Heading_Size" />
-    </RelativeLayout>
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Settings"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:reflectionColor="#888" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="never"
-        android:paddingTop="16dp">
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,17 +43,19 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
-                    android:text="@string/setting_not_set" />
+                    android:text="@string/setting_not_set"
+                    android:textColor="@color/white" />
 
                 <champak.champabun.business.utilities.utilClass.TextViewGravilight
                     android:id="@+id/sleep_timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dip"
-                    android:layout_toLeftOf="@+id/sleep_timer_time"
                     android:background="@android:color/transparent"
-                    android:text="@string/setting_sleep_timer" />
+                    android:text="@string/setting_sleep_timer"
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <LinearLayout
@@ -74,7 +66,6 @@
                 android:gravity="center_vertical"
                 android:minHeight="?android:attr/listPreferredItemHeight"
                 android:orientation="vertical"
-                android:paddingBottom="3dip"
                 android:paddingTop="3dip">
 
                 <RelativeLayout
@@ -89,18 +80,19 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
-                        android:minHeight="0dip"
-                        android:text="@string/setting_not_set" />
+                        android:text="@string/setting_not_set"
+                        android:textColor="@color/white" />
 
                     <champak.champabun.business.utilities.utilClass.TextViewGravilight
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dip"
-                        android:layout_toLeftOf="@+id/duration_filter_time"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
                         android:background="@android:color/transparent"
                         android:minHeight="0dip"
-                        android:text="@string/hide_small_clips" />
+                        android:text="@string/hide_small_clips"
+                        android:textColor="@color/white" />
                 </RelativeLayout>
 
                 <champak.champabun.business.utilities.utilClass.TextViewGravilight
@@ -108,136 +100,61 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dip"
                     android:background="@android:color/transparent"
-                    android:minHeight="0dip"
-                    android:text="@string/duration_filter_desc" />
+                    android:text="@string/duration_filter_desc"
+                    android:textColor="@color/white" />
             </LinearLayout>
-
-            <champak.champabun.business.utilities.utilClass.TextViewGravilight
-                android:id="@+id/cross_fading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector"
-                android:text="@string/setting_cross_fading"
-                android:visibility="gone" />
-
-            <champak.champabun.business.utilities.utilClass.TextViewGravilight
-                android:id="@+id/rescan_lib"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector"
-                android:text="@string/setting_rescan_lib"
-                android:visibility="gone" />
-
-            <champak.champabun.business.utilities.utilClass.TextViewGravilight
-                android:id="@+id/choose_folder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector"
-                android:text="@string/setting_choose_folder"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:id="@+id/choose_background_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_list"
-                android:minHeight="?android:attr/listPreferredItemHeight"
-                android:visibility="gone">
-
-                <champak.champabun.business.utilities.utilClass.TextViewGravilar
-                    android:id="@+id/choose_background_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
-                    android:text="@string/setting_not_set" />
-
-                <champak.champabun.business.utilities.utilClass.TextViewGravilight
-                    android:id="@+id/choose_background"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dip"
-                    android:layout_toLeftOf="@+id/choose_background_value"
-                    android:background="@android:color/transparent"
-                    android:text="@string/setting_choose_background" />
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/auto_download_album_art"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:addStatesFromChildren="true"
-                android:background="@drawable/selector_list"
+                android:gravity="center_vertical"
                 android:minHeight="?android:attr/listPreferredItemHeight">
 
                 <CheckBox
                     android:id="@+id/auto_download_album_art_cb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right" />
+                    android:layout_alignParentTop="true" />
 
                 <champak.champabun.business.utilities.utilClass.TextViewGravilight
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_toLeftOf="@+id/auto_download_album_art_cb"
-                    android:text="@string/setting_auto_download_album_art" />
+                    android:layout_alignBaseline="@+id/auto_download_album_art_cb"
+                    android:layout_alignBottom="@+id/auto_download_album_art_cb"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:text="@string/setting_auto_download_album_art"
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/fullscreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:addStatesFromChildren="true"
-                android:background="@drawable/selector_list"
-                android:minHeight="?android:attr/listPreferredItemHeight">
+                android:addStatesFromChildren="true">
+
+                <champak.champabun.business.utilities.utilClass.TextViewGravilight
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/settings_fullscreen"
+                    android:textColor="@color/white" />
 
                 <CheckBox
                     android:id="@+id/fullscreen_cb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/lsongs_listview_item_padding_left_right"
                     android:focusableInTouchMode="false" />
-
-                <champak.champabun.business.utilities.utilClass.TextViewGravilight
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_toLeftOf="@+id/fullscreen_cb"
-                    android:text="@string/settings_fullscreen" />
             </RelativeLayout>
-
-            <champak.champabun.business.utilities.utilClass.TextViewGravilar
-                android:id="@+id/my_apps"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/listPreferredItemHeight"
-                android:background="@drawable/selector_list"
-                android:gravity="center_vertical|left"
-                android:paddingLeft="@dimen/lsongs_listview_item_padding_left_right"
-                android:paddingRight="@dimen/lsongs_listview_item_padding_left_right"
-                android:text="@string/setting_my_apps" />
-
-            <champak.champabun.business.utilities.utilClass.TextViewGravilight
-                android:id="@+id/request_feature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_list"
-                android:text="@string/setting_request_feature"
-                android:visibility="gone" />
-
-            <champak.champabun.business.utilities.utilClass.TextViewGravilight
-                android:id="@+id/report_bug"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_list"
-                android:text="@string/setting_report_bug"
-                android:visibility="gone" />
 
         </LinearLayout>
 

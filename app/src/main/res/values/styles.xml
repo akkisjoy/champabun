@@ -1,11 +1,14 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    <!-- Base application theme. -->
+    <style name="AmuzeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
-    -->
-    <style name="ListViewplaymee" parent="android:Widget.Holo.ListView">
+    <style name="AmuzeListView" parent="AmuzeTheme">
         <item name="android:divider">@null</item>
         <item name="android:dividerHeight">0dp</item>
         <item name="android:fadeScrollbars">true</item>
@@ -33,8 +36,6 @@
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
     </style>
 
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light" />
-
     <style name="GradientLight" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:listViewStyle">@style/listView</item>
         <item name="android:itemBackground">#999999</item>
@@ -47,15 +48,6 @@
     </style>
 
     <style name="listView" parent="@android:style/Widget.ListView.White" />
-
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
 
     <style name="Animations" />
 
@@ -90,27 +82,12 @@
         <item name="@android:windowExitAnimation">@anim/shrink_from_topleft_to_bottomright</item>
     </style>
 
-    <style name="Spinnerplaymee" parent="android:Widget.Holo.Spinner">
-        <item name="android:background">@drawable/playmee_spinner_background_holo_dark</item>
-        <item name="android:dropDownSelector">@drawable/playmee_list_selector_holo_dark</item>
-    </style>
-
-    <style name="SeekBarplaymee" parent="android:Widget.Holo.SeekBar">
-        <item name="android:progressDrawable">
-            @drawable/playmee_scrubber_progress_horizontal_holo_dark
-        </item>
-        <item name="android:indeterminateDrawable">
-            @drawable/playmee_scrubber_progress_horizontal_holo_dark
-        </item>
-        <item name="android:thumb">@drawable/playmee_scrubber_control_selector_holo_dark</item>
-    </style>
-
     <style name="Animations.PopUpMenu.Center">
         <item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
         <item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
     </style>
 
-    <style name="TextViewStyle" parent="AppTheme">
+    <style name="TextViewStyle" parent="AmuzeTheme">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>

@@ -77,7 +77,7 @@
 
         <champak.champabun.business.utilities.dragSortListView.DragSortListView
             android:id="@+id/listview"
-            style="@style/ListViewplaymee"
+            style="@style/AmuzeListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"

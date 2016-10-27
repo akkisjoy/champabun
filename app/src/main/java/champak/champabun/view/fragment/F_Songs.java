@@ -62,7 +62,6 @@ import champak.champabun.framework.service.Music_service;
 import champak.champabun.view.activity.MainActivity;
 import champak.champabun.view.activity.NowPlaying;
 import champak.champabun.view.activity.Player;
-import champak.champabun.view.activity.Settings;
 import champak.champabun.view.adapters.Adapter_SongView;
 import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
@@ -507,18 +506,18 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
                             break;
                         }
-                        case R.drawable.composer_icn_settings: {
-                            handler.removeCallbacksAndMessages(null);
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // open setting
-                                    Intent intent = new Intent(getActivity(), Settings.class);
-                                    getActivity().startActivityForResult(intent, IConstant.REQUEST_CODE_CHANGE_SETTINGS);
-                                }
-                            }, 760);
-                            break;
-                        }
+//                        case R.drawable.composer_icn_settings: {
+//                            handler.removeCallbacksAndMessages(null);
+//                            handler.postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    // open setting
+//                                    Intent intent = new Intent(getActivity(), Settings.class);
+//                                    getActivity().startActivityForResult(intent, IConstant.REQUEST_CODE_CHANGE_SETTINGS);
+//                                }
+//                            }, 760);
+//                            break;
+//                        }
                         default:
                             break;
                     }
@@ -742,7 +741,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
     public void create_new_playlist() { // TODO
         final Dialog dialog;
-        dialog = new Dialog(mActivity, R.style.playmee);
+        dialog = new Dialog(mActivity, R.style.AmuzeTheme);
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);

@@ -70,7 +70,7 @@
                     android:id="@+id/bprev"
                     android:layout_width="@dimen/widget_prev_button_size"
                     android:layout_height="@dimen/widget_prev_button_size"
-                    android:src="@drawable/previous" />
+                    android:src="@drawable/pre2" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -83,7 +83,7 @@
                     android:id="@+id/bPlay"
                     android:layout_width="@dimen/widget_play_button_size"
                     android:layout_height="@dimen/widget_play_button_size"
-                    android:src="@drawable/play" />
+                    android:src="@drawable/play2" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -96,7 +96,7 @@
                     android:id="@+id/bNext"
                     android:layout_width="@dimen/widget_prev_button_size"
                     android:layout_height="@dimen/widget_prev_button_size"
-                    android:src="@drawable/next" />
+                    android:src="@drawable/next2" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+        android:id="@+id/songCurrentDurationLabel"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="-30dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="0:00"
+        android:textColor="@android:color/transparent"
+        android:textSize="21sp" />
+
+    <champak.champabun.business.utilities.utilClass.CircularSeekBar
+        android:id="@+id/songProgressBar"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        app:circle_color="@color/colorPrimaryDark"
+        app:circle_progress_color="@color/colorPrimary"
+        app:circle_stroke_width="5dp"
+        app:circle_x_radius="150dp"
+        app:circle_y_radius="150dp"
+        app:end_angle="-150"
+        app:maintain_equal_circle="false"
+        app:max="100"
+        app:pointer_alpha_ontouch="100"
+        app:pointer_color="@color/colorAccent"
+        app:pointer_halo_color="@color/colorPrimary"
+        app:pointer_halo_color_ontouch="@color/colorPrimary"
+        app:progress="0"
+        app:start_angle="-30"
+        app:use_custom_radii="true" />
+
+    <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+        android:id="@+id/songTotalDurationLabel"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="-30dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="0:00"
+        android:textColor="@android:color/transparent"
+        android:textSize="21sp" />
+</LinearLayout>

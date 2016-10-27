@@ -41,15 +41,14 @@
     <application
         android:name=".AmuzicgApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/playmee">
+        android:theme="@style/AmuzeTheme">
 
         <activity
             android:name=".framework.equalizer.EqualizerActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.Splash"
             android:label="@string/app_name"

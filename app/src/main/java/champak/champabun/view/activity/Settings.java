@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -19,6 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
+
 import java.util.Calendar;
 
 import champak.champabun.R;
@@ -26,7 +28,6 @@ import champak.champabun.business.dataclasses.AppDatabase;
 import champak.champabun.business.dataclasses.SleepTime;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.utilities.utilClass.MyTimePickerDialog;
-import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 
 public class Settings extends BaseActivity implements OnClickListener {
@@ -34,6 +35,7 @@ public class Settings extends BaseActivity implements OnClickListener {
     private CheckBox auto_download_album_art_cb, fullscreen_cb;
     private Calendar calendar;
     private TextView sleepTimerView, durationFilterView;
+    private ShimmerTextView titleHeader;
     private Dialog dialog;
     private boolean needRefresh = false;
     private boolean needRefreshFullscreen = false;
@@ -66,8 +68,11 @@ public class Settings extends BaseActivity implements OnClickListener {
         }
         calendar = Calendar.getInstance();
 
-        View my_apps = findViewById(R.id.my_apps);
-        my_apps.setOnClickListener(this);
+        titleHeader = (ShimmerTextView) findViewById(R.id.titleHeader);
+        new Shimmer().setRepeatCount(0)
+                .setDuration(2000)
+                .setStartDelay(100)
+                .start(titleHeader);
 
         View sleep_timer = findViewById(R.id.sleep_timer_view);
         sleep_timer.setOnClickListener(this);
@@ -78,15 +83,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         durationFilterView = (TextView) dView.findViewById(R.id.duration_filter_time);
         dView.setOnClickListener(this);
 
-        TextView cross_fading = (TextView) findViewById(R.id.cross_fading);
-        cross_fading.setOnClickListener(this);
-
-        TextView rescan_lib = (TextView) findViewById(R.id.rescan_lib);
-        rescan_lib.setOnClickListener(this);
-
-        TextView choose_folder = (TextView) findViewById(R.id.choose_folder);
-        choose_folder.setOnClickListener(this);
-
         View auto_download_album_art = findViewById(R.id.auto_download_album_art);
         auto_download_album_art.setOnClickListener(this);
         auto_download_album_art_cb = (CheckBox) auto_download_album_art.findViewById(R.id.auto_download_album_art_cb);
@@ -94,12 +90,6 @@ public class Settings extends BaseActivity implements OnClickListener {
         View fullscreen = findViewById(R.id.fullscreen);
         fullscreen.setOnClickListener(this);
         fullscreen_cb = (CheckBox) fullscreen.findViewById(R.id.fullscreen_cb);
-
-        TextView request_feature = (TextView) findViewById(R.id.request_feature);
-        request_feature.setOnClickListener(this);
-
-        TextView report_bug = (TextView) findViewById(R.id.report_bug);
-        report_bug.setOnClickListener(this);
 
         UpdateView();
     }
@@ -157,18 +147,6 @@ public class Settings extends BaseActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.my_apps: {
-                if (ActivityUtil.isAPKInstalled(Settings.this, IConstant.CALCULATOR_APP_PACKAGE)) {
-                    try {
-                        ActivityUtil.startActivity(this, IConstant.CALCULATOR_APP_PACKAGE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    ActivityUtil.openPlaystore(this, IConstant.CALCULATOR_APP_PACKAGE);
-                }
-                break;
-            }
             case R.id.sleep_timer_view: {
                 ShowTimePickerDialog();
                 break;
@@ -184,18 +162,6 @@ public class Settings extends BaseActivity implements OnClickListener {
             }
             case R.id.fullscreen: {
                 fullscreen_cb.setChecked(!fullscreen_cb.isChecked());
-                break;
-            }
-            case R.id.request_feature: {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(IConstant.REQUEST_FEATURE_URL));
-                startActivity(intent);
-                break;
-            }
-            case R.id.report_bug: {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(IConstant.REPORT_BUG_URL));
-                startActivity(intent);
                 break;
             }
 
@@ -311,7 +277,7 @@ public class Settings extends BaseActivity implements OnClickListener {
     }
 
     private void designdialog(int x) {
-        dialog = new Dialog(this, R.style.playmee);
+        dialog = new Dialog(this, R.style.AmuzeTheme);
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, x, getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);

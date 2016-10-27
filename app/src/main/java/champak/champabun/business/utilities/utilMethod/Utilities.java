@@ -217,7 +217,7 @@ public class Utilities {
 
     public static Dialog designdialog(int x, Context mActivity) {
         // TODO
-        Dialog dialog2 = new Dialog(mActivity, R.style.playmee);
+        Dialog dialog2 = new Dialog(mActivity, R.style.AmuzeTheme);
         final Window window = dialog2.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, x, mActivity.getResources().getDisplayMetrics());
         dialog2.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);

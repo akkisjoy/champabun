@@ -57,11 +57,6 @@ public class Music_service extends Service
     private static int songEnded;
     // Intent intentcoveradapter;
     private final Handler handler = new Handler();
-    private final OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
-        public void onAudioFocusChange(int focusChange) {
-            mMediaplayerHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
-        }
-    };
     /**
      * Initialiser equaliser, bassbooster and Virtualiser
      * <p/>
@@ -279,6 +274,11 @@ public class Music_service extends Service
             }
         }
     };
+    private final OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            mMediaplayerHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
+        }
+    };
     private int mServiceStartId = -1;
     private boolean mIsInitialized = false;
 
@@ -475,7 +475,9 @@ public class Music_service extends Service
                 mp.stop();
                 mp.release();
             }
-            mp.reset();
+            if (mp != null) {
+                mp.reset();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -708,13 +710,13 @@ public class Music_service extends Service
 
         Notification n = new Notification.Builder(this).setContent(contentView)
                 .setContentTitle(AmuzicgApp.GetInstance().GetCurSongDetails().getSong())
-                .setSmallIcon(R.drawable.ic_launcher).setContentIntent(pIntent)
+                .setSmallIcon(R.drawable.ic_music).setContentIntent(pIntent)
                 .build();
 
 //        Picasso.with(Music_service.this.getApplicationContext()).load(AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum()).error(R.drawable.ic_launcher).into(contentView, R.id.image, NOTIFICATION_ID, n);
 
         contentView.setImageViewResource(R.id.bPlayPause,
-                AmuzicgApp.GetInstance().boolMusicPlaying1 == true ? R.drawable.pause2 : R.drawable.play);
+                AmuzicgApp.GetInstance().boolMusicPlaying1 ? R.drawable.pause : R.drawable.play2);
 
         contentView.setTextViewText(R.id.title, AmuzicgApp.GetInstance().GetCurSongDetails().getSong());
         contentView.setTextViewText(R.id.text, AmuzicgApp.GetInstance().GetCurSongDetails().getArtist());
@@ -754,7 +756,7 @@ public class Music_service extends Service
 
         widgetView.setImageViewBitmap(R.id.album_image, bitmap);
 
-        widgetView.setImageViewResource(R.id.bPlay, AmuzicgApp.GetInstance().boolMusicPlaying1 == true ? R.drawable.pause2 : R.drawable.play);
+        widgetView.setImageViewResource(R.id.bPlay, AmuzicgApp.GetInstance().boolMusicPlaying1 ? R.drawable.pause : R.drawable.play2);
 
         ComponentName myWidget = new ComponentName(getApplicationContext(), MyWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());
@@ -1054,7 +1056,6 @@ public class Music_service extends Service
 
     }
 
-
     /**
      * Releases the Equaliser, Bass Booster and Virtualisers
      * <p>
@@ -1086,7 +1087,5 @@ public class Music_service extends Service
             }
             Singleton.theEqualizer = null;
         }
-
     }
-
 }

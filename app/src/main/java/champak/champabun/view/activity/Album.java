@@ -458,7 +458,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
 
     public void create_new_playlist() { // TODO
         final Dialog dialog;
-        dialog = new Dialog(Album.this, R.style.playmee);
+        dialog = new Dialog(Album.this, R.style.AmuzeTheme);
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);

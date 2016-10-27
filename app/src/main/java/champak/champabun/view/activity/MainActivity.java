@@ -200,9 +200,9 @@ public class MainActivity extends BaseActivity {
 
     private void checkbuttonplaypause() {
         if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-            play2.setImageResource(R.drawable.pause2);
+            play2.setImageResource(R.drawable.pause);
         } else {
-            play2.setImageResource(R.drawable.play);
+            play2.setImageResource(R.drawable.play2);
         }
         inandout();
     }
@@ -282,13 +282,13 @@ public class MainActivity extends BaseActivity {
     private void buttonPlayStopClick() {
         if (!AmuzicgApp.GetInstance().boolMusicPlaying1) {
             Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
-            play2.setImageResource(R.drawable.pause2);
+            play2.setImageResource(R.drawable.pause);
             intentplaypause.putExtra("playpause", 1);
             sendBroadcast(intentplaypause);
             AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
         } else {
             if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-                play2.setImageResource(R.drawable.play);
+                play2.setImageResource(R.drawable.play2);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = false;
                 Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
                 intentplaypause.putExtra("playpause", 0);

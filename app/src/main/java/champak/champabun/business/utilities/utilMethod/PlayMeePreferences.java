@@ -13,7 +13,7 @@ import champak.champabun.R;
 public class PlayMeePreferences {
     private final static String key_uri_for_access = "key_uri_for_access";
     private final static String key_flag = "key_flag";
-    final private static String filename = "playmee";
+    final private static String filename = "amuzetheme";
     final private static String key_equalizer = "equalizer";
     final private static String key_playlist_recent_add_name = "pl_re_name";
     final private static String key_player_repeat_mode = "repeat_mode";

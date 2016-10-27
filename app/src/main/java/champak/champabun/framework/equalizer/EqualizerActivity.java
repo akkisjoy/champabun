@@ -813,7 +813,7 @@ public class EqualizerActivity extends BaseActivity {
     }
 
     private void ShowNewPresetDialog() {
-        dialog = new Dialog(this, R.style.playmee);
+        dialog = new Dialog(this, R.style.AmuzeTheme);
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, (int) pixels);

@@ -531,7 +531,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
 
     public void create_new_playlist() {
         final Dialog dialog;
-        dialog = new Dialog(Artist.this, R.style.playmee);
+        dialog = new Dialog(Artist.this, R.style.AmuzeTheme);
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 210, this.getResources().getDisplayMetrics());

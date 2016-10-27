@@ -94,12 +94,12 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 }
             }
             if (headsetSwitch == 0 && head > 1) {
-                buttonPlayStop.setBackgroundResource(R.drawable.play);
+                buttonPlayStop.setBackgroundResource(R.drawable.play2);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 =
 
                         false;
             } else if (headsetSwitch == 1) {
-                buttonPlayStop.setBackgroundResource(R.drawable.pause2);
+                buttonPlayStop.setBackgroundResource(R.drawable.pause);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
             }
         }
@@ -331,9 +331,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     private void checkbuttonplaypause() {
         if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-            buttonPlayStop.setBackgroundResource(R.drawable.pause2);
+            buttonPlayStop.setBackgroundResource(R.drawable.pause);
         } else {
-            buttonPlayStop.setBackgroundResource(R.drawable.play);
+            buttonPlayStop.setBackgroundResource(R.drawable.play2);
         }
     }
 
@@ -601,7 +601,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             }
         }
 
-        buttonPlayStop.setBackgroundResource(R.drawable.pause2);
+        buttonPlayStop.setBackgroundResource(R.drawable.pause);
         AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
     }
 
@@ -611,7 +611,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
             intentswap.putExtra("swap", 1);
             sendBroadcast(intentswap);
-            buttonPlayStop.setBackgroundResource(R.drawable.pause2);
+            buttonPlayStop.setBackgroundResource(R.drawable.pause);
             AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
         } else if (AmuzicgApp.GetInstance().getPosition() == AmuzicgApp.GetInstance().GetNowPlayingSize() - 1
                 && AmuzicgApp.GetInstance().GetNowPlayingSize() > 0) {
@@ -624,7 +624,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
                 intentswap.putExtra("swap", 1);
                 sendBroadcast(intentswap);
-                buttonPlayStop.setBackgroundResource(R.drawable.pause2);
+                buttonPlayStop.setBackgroundResource(R.drawable.pause);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
             }
         }
@@ -632,12 +632,12 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     private void buttonPlayStopClick() {
         if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-            buttonPlayStop.setBackgroundResource(R.drawable.play);
+            buttonPlayStop.setBackgroundResource(R.drawable.play2);
             Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
             intentplaypause.putExtra("playpause", 0);
             sendBroadcast(intentplaypause);
         } else {
-            buttonPlayStop.setBackgroundResource(R.drawable.pause2);
+            buttonPlayStop.setBackgroundResource(R.drawable.pause);
             Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
             intentplaypause.putExtra("playpause", 1);
             sendBroadcast(intentplaypause);
@@ -645,7 +645,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     }
 
     private void playAudio() {
-        buttonPlayStop.setBackgroundResource(R.drawable.pause2);
+        buttonPlayStop.setBackgroundResource(R.drawable.pause);
         AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
         Intent serviceIntent = new Intent(this, Music_service.class);
         startService(serviceIntent);
@@ -655,7 +655,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
         if (fromUser) {
             int seekPos = sb.getProgress();
-            buttonPlayStop.setBackgroundResource(R.drawable.pause2);
+            buttonPlayStop.setBackgroundResource(R.drawable.pause);
             Intent intent = new Intent(IConstant.BROADCAST_SEEKBAR);
             intent.putExtra("seekpos", seekPos);
             sendBroadcast(intent);

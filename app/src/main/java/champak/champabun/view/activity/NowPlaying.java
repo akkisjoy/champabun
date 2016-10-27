@@ -202,7 +202,7 @@ public class NowPlaying extends BaseActivity {
 
     public void OnSaveAsButtonClick(View view) {
         final Dialog dialog;
-        dialog = new Dialog(this, R.style.playmee);
+        dialog = new Dialog(this, R.style.AmuzeTheme);
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
