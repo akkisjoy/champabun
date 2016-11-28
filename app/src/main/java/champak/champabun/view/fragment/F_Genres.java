@@ -49,6 +49,8 @@ public class F_Genres extends BaseFragment {
                     .setStartDelay(100)
                     .start(titleHeader);
 
+            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.redPager), PorterDuff.Mode.MULTIPLY);
         }
         super.setUserVisibleHint(isVisibleToUser);
     }

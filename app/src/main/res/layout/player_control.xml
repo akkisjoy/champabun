@@ -1,23 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/layout_player_control"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp" />
+    <ImageView
+        android:id="@+id/bPlayPause"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent" />
 
-    <include
-        android:id="@+id/include2"
-        layout="@layout/layout_player_seekbar"
-        android:layout_width="wrap_content"
+    <champak.champabun.business.utilities.utilClass.CircularSeekBar
+        android:id="@+id/songProgressBar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        app:circle_color="@color/TextColor_Secondary"
+        app:circle_progress_color="@color/TextColor_Primary"
+        app:circle_stroke_width="1.5dp"
+        app:circle_x_radius="150dp"
+        app:circle_y_radius="150dp"
+        app:end_angle="360"
+        app:maintain_equal_circle="false"
+        app:max="100"
+        app:pointer_alpha_ontouch="100"
+        app:pointer_color="@color/colorAccent"
+        app:pointer_halo_color="@android:color/transparent"
+        app:pointer_halo_color_ontouch="@android:color/transparent"
+        app:progress="0"
+        app:start_angle="180"
+        app:use_custom_radii="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/ainvayee"
+            android:layout_width="85dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/composer_button" />
+
+        <ImageView
+            android:id="@+id/bPrevious"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignBottom="@+id/songCurrentDurationLabel"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/songCurrentDurationLabel"
+            android:layout_toStartOf="@+id/songCurrentDurationLabel"
+            android:background="@android:color/transparent"
+            android:src="@drawable/pre2" />
+
+        <ImageView
+            android:id="@+id/bNext"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignBottom="@+id/songTotalDurationLabel"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/songTotalDurationLabel"
+            android:layout_toRightOf="@+id/songTotalDurationLabel"
+            android:background="@android:color/transparent"
+            android:src="@drawable/next2" />
+
+        <champak.champabun.business.utilities.utilClass.TextViewGravilar
+            android:id="@+id/songCurrentDurationLabel"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ainvayee"
+            android:layout_toLeftOf="@+id/ainvayee"
+            android:layout_toStartOf="@+id/ainvayee"
+            android:gravity="right"
+            android:text="0:00"
+            android:textColor="@color/TextColor_Secondary"
+            android:textSize="@dimen/album_Text_Size" />
+
+        <champak.champabun.business.utilities.utilClass.TextViewGravilar
+            android:id="@+id/songTotalDurationLabel"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ainvayee"
+            android:layout_toEndOf="@+id/ainvayee"
+            android:layout_toRightOf="@+id/ainvayee"
+            android:gravity="left"
+            android:text="9:99"
+            android:textColor="@color/TextColor_Secondary"
+            android:textSize="@dimen/album_Text_Size" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

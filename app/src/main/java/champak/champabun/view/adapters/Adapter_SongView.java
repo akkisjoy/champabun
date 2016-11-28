@@ -24,8 +24,8 @@ import champak.champabun.view.activity.Playlist;
 import champak.champabun.view.fragment.F_Songs;
 
 public class Adapter_SongView extends BaseAdapter implements Filterable {
-    Context context;
-    int _whichactivity;
+    private Context context;
+    private int _whichactivity;
     private ArrayList<SongDetails> _originalData;
     private ArrayList<SongDetails> _data;
 
@@ -181,7 +181,7 @@ public class Adapter_SongView extends BaseAdapter implements Filterable {
         return _data;
     }
 
-    class ViewHolder {
+    private class ViewHolder {
         TextView SongView;
         TextView ArtistView;
         TextView TimeView;

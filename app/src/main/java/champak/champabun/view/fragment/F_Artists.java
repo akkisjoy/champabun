@@ -48,6 +48,8 @@ public class F_Artists extends BaseFragment {
                     .setStartDelay(100)
                     .start(titleHeader);
 
+            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.yellowPager), PorterDuff.Mode.MULTIPLY);
         }
         super.setUserVisibleHint(isVisibleToUser);
     }

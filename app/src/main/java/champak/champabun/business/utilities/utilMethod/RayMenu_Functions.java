@@ -40,7 +40,7 @@ public class RayMenu_Functions {
         dialog2.setContentView(R.layout.dialoug_sort);
         final RadioButton r0, r1, r2, r3, r4, r5;
         dialog2.show();
-        Typeface font = Typeface.createFromAsset(mActivity.getAssets(), mActivity.getString(R.string.Typeface_JosefinSans_Regular));
+        Typeface font = Typeface.createFromAsset(mActivity.getAssets(), "fonts/graviolar.otf");
         CheckBox chk1 = (CheckBox) dialog2.findViewById(R.id.checkBox1);
         CheckBox chk2 = (CheckBox) dialog2.findViewById(R.id.checkBox2);
         r0 = (RadioButton) dialog2.findViewById(R.id.radio0);

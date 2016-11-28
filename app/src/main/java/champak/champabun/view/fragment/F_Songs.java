@@ -58,6 +58,8 @@ import champak.champabun.business.utilities.utilMethod.RayMenu_Functions;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
 import champak.champabun.business.utilities.utilMethod.Utilities;
+import champak.champabun.framework.listener.EditTagsListener;
+import champak.champabun.framework.listener.OptionItemSelectListener;
 import champak.champabun.framework.service.Music_service;
 import champak.champabun.view.activity.MainActivity;
 import champak.champabun.view.activity.NowPlaying;
@@ -65,7 +67,7 @@ import champak.champabun.view.activity.Player;
 import champak.champabun.view.adapters.Adapter_SongView;
 import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
-public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionItemSelectListener {
+public class F_Songs extends BaseFragment implements OptionItemSelectListener {
     static public int highlight_zero = 0;
     int playlistid;
     Animation fadeOut, fadeIn;
@@ -93,6 +95,9 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                     .setDuration(2000)
                     .setStartDelay(100)
                     .start(titleHeader);
+
+            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
 
         }
         super.setUserVisibleHint(isVisibleToUser);
@@ -122,6 +127,10 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                 .setDuration(2000)
                 .setStartDelay(100)
                 .start(titleHeader);
+
+        ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+        miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
+
         DownloadProVersion.onStart(getActivity());
         // Show a dialog if criteria is satisfied
         DownloadProVersion.showRateDialogIfNeeded(getActivity());
@@ -150,6 +159,10 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
 
         SetupButton();
         SetupRawMenu();
+        if (songdetails == null || songdetails.size() == 0) {
+            fetchSongList = new FetchSongList();
+            fetchSongList.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+        }
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -157,7 +170,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                 if (songHelper == null) {
                     songHelper = new SongHelper();
                 }
-                songHelper.Show(mActivity, getView(), F_Songs.this, SongHelper.F_SONG);
+                songHelper.Show(mActivity, adapter.GetData().get(curItemSelect).getSong(), adapter.GetData().get(curItemSelect).getArtist(), F_Songs.this, SongHelper.F_SONG);
                 return true;
             }
         });
@@ -174,10 +187,7 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                 startActivity(intent);
             }
         });
-        if (songdetails == null || songdetails.size() == 0) {
-            fetchSongList = new FetchSongList();
-            fetchSongList.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
-        }
+
 
         return view;
     }
@@ -556,43 +566,44 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     }
 
     @Override
-    public void QuickAction_OnPlaySong() {
+    public void action_OnPlaySong() {
         songHelper.PlaySong(adapter.GetData(), curItemSelect);
     }
 
     @Override
-    public void QuickAction_OnAdd2Playlist() {
+    public void action_OnAdd2Playlist() {
         songHelper.Add2Playlist(adapter.getItem(curItemSelect));
     }
 
     @Override
-    public void QuickAction_OnEditTags() {
-        songHelper.EditTags(adapter.getItem(curItemSelect), new SongHelper.OnEditTagsListener() {
+    public void action_OnEditTags() {
+        songHelper.EditTags(adapter.getItem(curItemSelect), new EditTagsListener() {
 
             @Override
-            public void OnEditTagsSuccessful() {
+            public void onEditTagsSuccessful() {
                 OnRefreshSongList();
             }
         }, fragment);
     }
 
     @Override
-    public void QuickAction_OnSetAsRingtone() {
+    public void action_OnSetAsRingtone() {
         songHelper.SetAsRingtone(adapter.getItem(curItemSelect));
     }
 
     @Override
-    public void QuickAction_OnViewDetails() {
+    public void action_OnViewDetails() {
     }
 
     @Override
-    public void QuickAction_OnDeleteSong() {
+    public void action_OnDeleteSong() {
         songHelper.DeleteSong(adapter.GetData(), curItemSelect, new SongHelper.OnDeleteSongListener() {
 
             @Override
             public void OnSongDeleted() {
                 OnRefreshSongList();
             }
+
         }, fragment);
     }
 
@@ -731,11 +742,11 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
     }
 
     @Override
-    public void QuickAction_OnRemoveSong() {
+    public void action_OnRemoveSong() {
     }
 
     @Override
-    public void QuickAction_OnSendSong() {
+    public void action_OnSendSong() {
         SendSong();
     }
 
@@ -828,10 +839,10 @@ public class F_Songs extends BaseFragment implements SongHelper.OnQuickActionIte
                         canWrite = false;
                     }
                     if (canWrite) {
-                        songHelper.EditTags(adapter.getItem(curItemSelect), new SongHelper.OnEditTagsListener() {
+                        songHelper.EditTags(adapter.getItem(curItemSelect), new EditTagsListener() {
 
                             @Override
-                            public void OnEditTagsSuccessful() {
+                            public void onEditTagsSuccessful() {
                                 OnRefreshSongList();
                             }
                         }, fragment);

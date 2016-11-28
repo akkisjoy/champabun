@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LL"
+    android:id="@+id/swipeBack"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/extralayerForProperAnimation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/player_back"
         android:scaleType="centerCrop" />
 
     <ImageView
@@ -18,291 +18,133 @@
         android:scaleType="centerCrop" />
 
     <RelativeLayout
-        android:id="@+id/extralayerForSiblingOfAnotherLayerForProperAnimation"
+        android:id="@+id/extralayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#90000000"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/extralayer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/bFake"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:gravity="center_vertical">
-
-                        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
-                            android:id="@+id/songname"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:ellipsize="marquee"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:paddingLeft="@dimen/player_settingsSize"
-                            android:paddingRight="@dimen/player_settingsSize"
-                            android:paddingTop="20dp"
-                            android:textColor="@color/TextColor_Primary"
-                            android:textSize="@dimen/Heading_Size" />
-
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:id="@+id/random"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/player_random_marginTop"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingTop="44dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="#60000000"
-                            android:orientation="vertical"
-
-                            android:paddingRight="2.5dp"
-                            android:paddingTop="2.5dp">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <LinearLayout
-                                    android:layout_width="@dimen/player_view_left_size"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical|center_horizontal"
-                                    android:orientation="vertical">
-
-                                    <LinearLayout
-                                        android:id="@+id/bNp"
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="40dp"
-                                        android:layout_gravity="center_vertical|center_horizontal"
-                                        android:background="@drawable/selector"
-                                        android:gravity="center_vertical|center_horizontal"
-                                        android:orientation="vertical">
-
-                                        <Button
-                                            android:layout_width="@dimen/player_button_left_size"
-                                            android:layout_height="@dimen/player_button_left_size"
-                                            android:background="@drawable/now_playing_tran"
-                                            android:clickable="false" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/bEq"
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="@dimen/player_view_left_size"
-                                        android:layout_gravity="center_vertical|center_horizontal"
-                                        android:background="@drawable/selector"
-                                        android:gravity="center_vertical|center_horizontal"
-                                        android:orientation="vertical">
-
-                                        <Button
-                                            android:layout_width="@dimen/player_button_left_size"
-                                            android:layout_height="@dimen/player_button_left_size"
-                                            android:background="@drawable/equalizer_tran"
-                                            android:clickable="false" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/bShuffle"
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="@dimen/player_view_left_size"
-                                        android:layout_gravity="center_vertical|center_horizontal"
-                                        android:background="@drawable/selector"
-                                        android:gravity="center_vertical|center_horizontal"
-                                        android:orientation="vertical">
-
-                                        <LinearLayout
-                                            android:id="@+id/bShufflebg"
-                                            android:layout_width="fill_parent"
-                                            android:layout_height="@dimen/player_view_left_size"
-                                            android:layout_gravity="center_vertical|center_horizontal"
-
-                                            android:gravity="center_vertical|center_horizontal"
-                                            android:orientation="vertical">
-
-                                            <Button
-                                                android:id="@+id/bShuffleb"
-                                                android:layout_width="@dimen/player_button_left_size"
-                                                android:layout_height="@dimen/player_button_left_size"
-                                                android:background="@drawable/shuffle_tran"
-                                                android:clickable="false" />
-                                        </LinearLayout>
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:id="@+id/bRepeatbg"
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="@dimen/player_view_left_size"
-                                        android:layout_gravity="center_vertical|center_horizontal"
-                                        android:background="@drawable/selector"
-                                        android:gravity="center_vertical|center_horizontal"
-                                        android:orientation="vertical">
-
-                                        <Button
-                                            android:id="@+id/bRepeat"
-                                            android:layout_width="@dimen/player_button_left_size"
-                                            android:layout_height="@dimen/player_button_left_size"
-                                            android:background="@drawable/repeat_all_tran"
-                                            android:clickable="false" />
-                                    </LinearLayout>
-                                </LinearLayout>
-
-                                <ImageView
-                                    android:id="@+id/i1"
-                                    android:layout_width="@dimen/player_image_size"
-                                    android:layout_height="@dimen/player_image_size" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/edit"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginBottom="2.5dp"
-                                android:layout_marginLeft="2.5dp"
-                                android:layout_marginTop="2.5dp"
-                                android:background="@drawable/selector"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <champak.champabun.business.utilities.utilClass.TextViewGravilight
-                                    android:id="@+id/artist"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:background="@android:color/transparent"
-                                    android:ellipsize="marquee"
-                                    android:gravity="center"
-                                    android:shadowColor="#FFFFFF"
-                                    android:singleLine="true"
-                                    android:textColor="@color/TextColor_Secondary"
-                                    android:textSize="@dimen/player_artist_Textsize" />
-
-                                <champak.champabun.business.utilities.utilClass.TextViewGravilar
-                                    android:id="@+id/album"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:background="@android:color/transparent"
-                                    android:ellipsize="marquee"
-                                    android:gravity="center"
-                                    android:paddingBottom="4dp"
-                                    android:singleLine="true"
-                                    android:textColor="@color/TextColor_Secondary"
-                                    android:textSize="@dimen/player_artist_Textsize" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
+        android:orientation="vertical"
+        android:paddingTop="60dp">
 
         <LinearLayout
-            android:id="@+id/LLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            android:layout_alignBottom="@+id/extralayer"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/player_seekbar_gap"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp">
-
-                <champak.champabun.business.utilities.utilClass.TextViewRajdhar
-                    android:id="@+id/songCurrentDurationLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:gravity="left"
-                    android:text="0.00"
-                    android:textColor="@color/TextColor_Secondary" />
-
-                <champak.champabun.business.utilities.utilClass.TextViewRajdhar
-                    android:id="@+id/songTotalDurationLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:gravity="right"
-                    android:textColor="@color/TextColor_Secondary" />
-            </LinearLayout>
-
-            <SeekBar
-                android:id="@+id/songProgressBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingBottom="@dimen/player_seekbar_gap"
-                android:thumb="@drawable/head" />
+            <ImageView
+                android:id="@+id/albumImage"
+                android:layout_width="@dimen/player_image_size"
+                android:layout_height="@dimen/player_image_size" />
 
             <LinearLayout
+                android:id="@+id/edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="2.5dp"
+                android:layout_marginLeft="2.5dp"
+                android:layout_marginTop="2.5dp"
+                android:background="@drawable/selector"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/bPrevious"
-                    android:layout_width="@dimen/player_buttonNext_size"
-                    android:layout_height="@dimen/player_buttonNext_size"
+                <champak.champabun.business.utilities.utilClass.TextViewGravilar
+                    android:id="@+id/songname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginRight="40dp"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/TextColor_Primary"
+                    android:textSize="24sp" />
+
+                <champak.champabun.business.utilities.utilClass.TextViewGravilight
+                    android:id="@+id/artist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:background="@android:color/transparent"
-                    android:paddingTop="4dp"
-                    android:src="@drawable/pre2" />
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:shadowColor="#FFFFFF"
+                    android:textColor="@color/TextColor_Secondary"
+                    android:textSize="@dimen/player_artist_Textsize" />
 
-                <ImageView
-                    android:id="@+id/bPlayPause"
-                    android:layout_width="@dimen/player_buttonPlay_size"
-                    android:layout_height="@dimen/player_buttonPlay_size"
+                <champak.champabun.business.utilities.utilClass.TextViewGravilar
+                    android:id="@+id/album"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@android:color/transparent" />
-
-                <ImageView
-                    android:id="@+id/bNext"
-                    android:layout_width="@dimen/player_buttonNext_size"
-                    android:layout_height="@dimen/player_buttonNext_size"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="40dp"
                     android:background="@android:color/transparent"
-                    android:paddingTop="4dp"
-                    android:src="@drawable/next2" />
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/TextColor_Secondary"
+                    android:textSize="@dimen/player_artist_Textsize" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+
+    <include
+        layout="@layout/player_control"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignBottom="@+id/extralayer"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/bEq"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:clickable="false"
+            android:src="@drawable/equalizer_tran" />
+
+        <ImageView
+            android:id="@+id/bShuffle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:clickable="false"
+            android:src="@drawable/shuffle_off" />
+
+        <ImageView
+            android:id="@+id/bRepeat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:clickable="false"
+            android:src="@drawable/repeat_all_tran" />
+
+        <ImageView
+            android:id="@+id/bNp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:clickable="false"
+            android:src="@drawable/now_playing_tran" />
+    </LinearLayout>
+
 
 </RelativeLayout>

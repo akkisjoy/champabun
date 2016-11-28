@@ -26,9 +26,11 @@ import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.SongListUtil;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
 import champak.champabun.business.utilities.utilMethod.Utilities;
+import champak.champabun.framework.listener.EditTagsListener;
+import champak.champabun.framework.listener.OptionItemSelectListener;
 import champak.champabun.view.adapters.Adapter_SongView;
 
-public class Playlist extends BaseActivity implements SongHelper.OnQuickActionItemSelectListener {
+public class Playlist extends BaseActivity implements OptionItemSelectListener {
     static public int highlight_zero = 0;
     String click_no;
     ArrayList<SongDetails> play = new ArrayList<>();
@@ -118,9 +120,9 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
                 }
 
                 if (click_no == null && prefs.GetPlaylistRecentName().equals(plName)) {
-                    songHelper.Show(Playlist.this, GetRootView(), Playlist.this, SongHelper.DEFAULT);
+                    songHelper.Show(Playlist.this, play.get(position2).getSong(), play.get(position2).getAlbum(), Playlist.this, SongHelper.DEFAULT);
                 } else {
-                    songHelper.Show(Playlist.this, GetRootView(), Playlist.this, SongHelper.PLAYLIST);
+                    songHelper.Show(Playlist.this, play.get(position2).getSong(), play.get(position2).getAlbum(), Playlist.this, SongHelper.PLAYLIST);
                 }
                 return true;
             }
@@ -148,22 +150,22 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
     }
 
     @Override
-    public void QuickAction_OnPlaySong() {
+    public void action_OnPlaySong() {
         songHelper.PlaySong(play, position2);
     }
 
     @Override
-    public void QuickAction_OnAdd2Playlist() {
+    public void action_OnAdd2Playlist() {
         songHelper.Add2Playlist(play.get(position2));
     }
 
     @Override
-    public void QuickAction_OnEditTags() {
+    public void action_OnEditTags() {
         try {
-            songHelper.EditTags(play.get(position2), new SongHelper.OnEditTagsListener() {
+            songHelper.EditTags(play.get(position2), new EditTagsListener() {
 
                 @Override
-                public void OnEditTagsSuccessful() {
+                public void onEditTagsSuccessful() {
                     try {
                         OnRefreshSongList();
                     } catch (Exception ignored) {
@@ -175,16 +177,16 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
     }
 
     @Override
-    public void QuickAction_OnSetAsRingtone() {
+    public void action_OnSetAsRingtone() {
         songHelper.SetAsRingtone(play.get(position2));
     }
 
     @Override
-    public void QuickAction_OnViewDetails() {
+    public void action_OnViewDetails() {
     }
 
     @Override
-    public void QuickAction_OnDeleteSong() {
+    public void action_OnDeleteSong() {
         songHelper.DeleteSong(play, position2, new SongHelper.OnDeleteSongListener() {
 
             @Override
@@ -244,10 +246,10 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
                         canWrite = false;
                     }
                     if (canWrite) {
-                        songHelper.EditTags(play.get(position2), new SongHelper.OnEditTagsListener() {
+                        songHelper.EditTags(play.get(position2), new EditTagsListener() {
 
                             @Override
-                            public void OnEditTagsSuccessful() {
+                            public void onEditTagsSuccessful() {
                                 OnRefreshSongList();
                             }
                         }, null);
@@ -260,13 +262,13 @@ public class Playlist extends BaseActivity implements SongHelper.OnQuickActionIt
     }
 
     @Override
-    public void QuickAction_OnRemoveSong() {
+    public void action_OnRemoveSong() {
         songHelper.RemoveSong(Playlist.this.getContentResolver(), play.get(position2).getAudioID(), Integer.parseInt(click_no));
         initializesongs();
     }
 
     @Override
-    public void QuickAction_OnSendSong() {
+    public void action_OnSendSong() {
         // never call for this case
     }
 

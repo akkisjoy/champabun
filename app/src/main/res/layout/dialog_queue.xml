@@ -7,13 +7,15 @@
     android:background="@color/Background_Dialog"
     android:orientation="vertical">
 
-    <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+    <champak.champabun.business.utilities.utilClass.TextViewLobster
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="@string/add_to_playlist" />
+        android:text="@string/add_to_playlist"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
 
     <ListView
         android:id="@+id/listView1"

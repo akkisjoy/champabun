@@ -48,24 +48,26 @@ import champak.champabun.business.utilities.utilMethod.RayMenu_Functions;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
 import champak.champabun.business.utilities.utilMethod.Utilities;
+import champak.champabun.framework.listener.EditTagsListener;
+import champak.champabun.framework.listener.OptionItemSelectListener;
 import champak.champabun.view.adapters.Adapter_SongView;
 import champak.champabun.view.adapters.Adapter_gallery;
 import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
-public class Artist extends BaseActivity implements SongHelper.OnQuickActionItemSelectListener {
+public class Artist extends BaseActivity implements OptionItemSelectListener {
     static public int highlight_zero = 0;
     public ListView mListView;
     public ProgressBar spinner;
     String artistname;
     ArrayList<SongDetails> img = new ArrayList<>();
-    Adapter_SongView ab;
+    Adapter_SongView adapter;
     String artist_id;
     ArrayList<SongDetails> play;
     TextView tV1;// album2;
     int pos;
     int playlistid;
     Handler handler = new Handler();
-    int position2;
+    int curItemSelect;
     int albumNameCheck;
     Dialog dialog2;
     ArrayList<SongDetails> multiplecheckedListforaddtoplaylist, pl;
@@ -128,12 +130,11 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int arg2, long arg3) {
-                position2 = arg2;
+                curItemSelect = arg2;
                 if (songHelper == null) {
                     songHelper = new SongHelper();
                 }
-                songHelper.Show(Artist.this, mListView, Artist.this,
-                        SongHelper.ARTIST);
+                songHelper.Show(Artist.this, adapter.GetData().get(curItemSelect).getSong(), adapter.GetData().get(curItemSelect).getArtist(), Artist.this, SongHelper.ARTIST);
                 return true;
             }
         });
@@ -165,25 +166,24 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
     }
 
     @Override
-    public void QuickAction_OnPlaySong() {
-        songHelper.PlaySong(play, position2);
+    public void action_OnPlaySong() {
+        songHelper.PlaySong(play, curItemSelect);
     }
 
     @Override
-    public void QuickAction_OnAdd2Playlist() {
-        songHelper.Add2Playlist(play.get(position2));
+    public void action_OnAdd2Playlist() {
+        songHelper.Add2Playlist(play.get(curItemSelect));
     }
 
     @Override
-    public void QuickAction_OnEditTags() {
-        songHelper.EditTags(play.get(position2),
-                new SongHelper.OnEditTagsListener() {
+    public void action_OnEditTags() {
+        songHelper.EditTags(play.get(curItemSelect), new EditTagsListener() {
 
-                    @Override
-                    public void OnEditTagsSuccessful() {
-                        OnRefreshListView();
-                    }
-                }, null);
+            @Override
+            public void onEditTagsSuccessful() {
+                OnRefreshListView();
+            }
+        }, null);
     }
 
     @Override
@@ -195,17 +195,17 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
     }
 
     @Override
-    public void QuickAction_OnSetAsRingtone() {
-        songHelper.SetAsRingtone(play.get(position2));
+    public void action_OnSetAsRingtone() {
+        songHelper.SetAsRingtone(play.get(curItemSelect));
     }
 
     @Override
-    public void QuickAction_OnViewDetails() {
+    public void action_OnViewDetails() {
     }
 
     @Override
-    public void QuickAction_OnDeleteSong() {
-        songHelper.DeleteSong(play, position2,
+    public void action_OnDeleteSong() {
+        songHelper.DeleteSong(play, curItemSelect,
                 new SongHelper.OnDeleteSongListener() {
 
                     @Override
@@ -216,12 +216,12 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
     }
 
     private void OnRefreshListView() {
-        if (ab == null) {
-            ab = new Adapter_SongView(play,
+        if (adapter == null) {
+            adapter = new Adapter_SongView(play,
                     Artist.this.getApplicationContext(), 3);
-            mListView.setAdapter(ab);
+            mListView.setAdapter(adapter);
         } else {
-            ab.OnUpdate(play);
+            adapter.OnUpdate(play);
         }
     }
 
@@ -364,7 +364,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                 SparseBooleanArray checked = mListView
                         .getCheckedItemPositions();
                 multiplecheckedListforaddtoplaylist = RayMenu_Functions
-                        .getCheckedList(highlight_zero, checked, play, ab);
+                        .getCheckedList(highlight_zero, checked, play, adapter);
 
                 if (multiplecheckedListforaddtoplaylist.size() > 0) {
                     Adapter_playlist_Dialog ab;
@@ -427,7 +427,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                 SparseBooleanArray checked = mListView
                         .getCheckedItemPositions();
                 ArrayList<SongDetails> checkedList = RayMenu_Functions
-                        .getCheckedList(highlight_zero, checked, play, ab);
+                        .getCheckedList(highlight_zero, checked, play, adapter);
                 if (checkedList.size() > 0) {
                     delete_song_multiple(checkedList);
                 } else {
@@ -444,7 +444,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                 SparseBooleanArray checked = mListView
                         .getCheckedItemPositions();
                 ArrayList<SongDetails> checkedList = RayMenu_Functions
-                        .getCheckedList(highlight_zero, checked, play, ab);
+                        .getCheckedList(highlight_zero, checked, play, adapter);
                 if (checkedList.size() > 0) {
 
                     Intent intent = new Intent(Artist.this, Player.class);
@@ -498,7 +498,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                                 }
                             }
                         mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-                        ab.OnUpdate(play);
+                        adapter.OnUpdate(play);
                         mListView
                                 .setOnItemClickListener(new OnItemClickListener() {
                                     public void onItemClick(AdapterView<?> a,
@@ -509,7 +509,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                                                 .setPosition(position);
                                         AmuzicgApp
                                                 .GetInstance()
-                                                .SetNowPlayingList(ab.GetData());
+                                                .SetNowPlayingList(adapter.GetData());
                                         AmuzicgApp.GetInstance()
                                                 .setCheck(0);
                                         startActivity(intent);
@@ -623,13 +623,13 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
 
                                                 private void highlight2() {
                                                     highlight_zero = highlight_zero + 1;
-                                                    ab.OnUpdate(play);
+                                                    adapter.OnUpdate(play);
                                                 }
 
                                                 private void highlight(int position) {
                                                     mListView.setItemChecked(
                                                             position, true);
-                                                    ab.OnUpdate(play);
+                                                    adapter.OnUpdate(play);
                                                 }
                                             });
                                 }
@@ -652,13 +652,13 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                                     public void run() {
                                         if (albumNameCheck == 1) {
                                             RayMenu_Functions
-                                                    .sort("-2", Artist.this, ab,
+                                                    .sort("-2", Artist.this, adapter,
                                                             play, mListView, 1,
                                                             play.get(0).getAlbum(),
                                                             artistname);
                                         } else if (albumNameCheck == 2)
                                             RayMenu_Functions.sort("-2",
-                                                    Artist.this, ab, play,
+                                                    Artist.this, adapter, play,
                                                     mListView, 1, null, artistname);
                                         // 1 for album
                                     }
@@ -729,12 +729,12 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                     SongHelper.DeleteSongMultiple(Artist.this, checkedList, i, null, null);
 
                     play.remove(checkedList.get(i));
-                    ab.OnUpdate(play);
+                    adapter.OnUpdate(play);
                 }
                 highlight_zero = 0;
                 ActivityUtil.showCrouton(Artist.this,
                         getString(R.string.delete_successful));
-                ab.OnUpdate(play);
+                adapter.OnUpdate(play);
                 for (int i = 0; i < checkedList.size(); i++) {
                     try {
                         getContentResolver().delete(
@@ -761,7 +761,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                     StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Artist.this);
 
 
-                    File file = new File(play.get(position2).getPath2());
+                    File file = new File(play.get(curItemSelect).getPath2());
                     boolean canWrite;
                     try {
                         canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
@@ -769,10 +769,10 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                         canWrite = false;
                     }
                     if (canWrite) {
-                        songHelper.EditTags(play.get(position2), new SongHelper.OnEditTagsListener() {
+                        songHelper.EditTags(play.get(curItemSelect), new EditTagsListener() {
 
                             @Override
-                            public void OnEditTagsSuccessful() {
+                            public void onEditTagsSuccessful() {
                                 OnRefreshListView();
                             }
                         }, null);
@@ -809,11 +809,11 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
     }
 
     @Override
-    public void QuickAction_OnRemoveSong() {
+    public void action_OnRemoveSong() {
     }
 
     @Override
-    public void QuickAction_OnSendSong() {
+    public void action_OnSendSong() {
     }
 
     @Override
@@ -1007,7 +1007,7 @@ public class Artist extends BaseActivity implements SongHelper.OnQuickActionItem
                 }
             mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
             mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-            ab.OnUpdate(play);
+            adapter.OnUpdate(play);
         }
 
         @Override

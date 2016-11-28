@@ -37,8 +37,8 @@ import champak.champabun.R;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.utilities.utilMethod.BitmapUtil;
 import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
-import champak.champabun.driver.iloader.ImageLoader;
 import champak.champabun.framework.equalizer.Singleton;
+import champak.champabun.iloader.ImageLoader;
 import champak.champabun.view.activity.Player;
 
 @SuppressWarnings("deprecation")
@@ -57,6 +57,11 @@ public class Music_service extends Service
     private static int songEnded;
     // Intent intentcoveradapter;
     private final Handler handler = new Handler();
+    private final OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            mMediaplayerHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
+        }
+    };
     /**
      * Initialiser equaliser, bassbooster and Virtualiser
      * <p/>
@@ -272,11 +277,6 @@ public class Music_service extends Service
                     }
                     break;
             }
-        }
-    };
-    private final OnAudioFocusChangeListener mAudioFocusListener = new OnAudioFocusChangeListener() {
-        public void onAudioFocusChange(int focusChange) {
-            mMediaplayerHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
         }
     };
     private int mServiceStartId = -1;
@@ -688,7 +688,6 @@ public class Music_service extends Service
 
         int wt_px = (int) getResources().getDimension(R.dimen.notification_height);
 
-
         Bitmap bitmap = imgLoader.fetchfilefromcahce(AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum(),
                 AmuzicgApp.GetInstance().GetCurSongDetails().getArtist());
         if (bitmap != null)
@@ -1025,7 +1024,11 @@ public class Music_service extends Service
         sendBroadcast(new Intent(IConstant.BROADCAST_CHECK_AGAIN));
     }
 
-    private void initializeEqualisers() {//prefs=new PlayMeePreferences(Music_service.this);
+    private void initializeEqualisers() {
+
+        if (prefs == null) {
+            prefs = new PlayMeePreferences(Music_service.this);
+        }
 
         try {
             Singleton.theEqualizer = new android.media.audiofx.Equalizer(1, mp.getAudioSessionId());

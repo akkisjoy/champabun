@@ -244,7 +244,10 @@ final class Manager extends Handler {
             }
         }
 
-        croutonView.requestLayout(); // This is needed so the animation can use the measured with/height
+        croutonView.requestLayout(); // This is needed so the animation can use the measured wit
+
+
+        // h/height
         croutonView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {

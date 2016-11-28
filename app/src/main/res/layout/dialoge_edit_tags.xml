@@ -7,104 +7,110 @@
     android:background="@color/Background_Dialog"
     android:orientation="vertical">
 
-    <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_weight="9"
-        android:gravity="center"
-        android:text="@string/edit_tags" />
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/dBCancel"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/dialog_icn_cancel_normal" />
+
+        <champak.champabun.business.utilities.utilClass.TextViewLobster
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Edit Tags"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/dBOK"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/dialog_icn_ok_normal" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="12"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+        <champak.champabun.business.utilities.utilClass.TextViewGravilar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:text="@string/title" />
+            android:gravity="center"
+            android:text="@string/title"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
         <champak.champabun.business.utilities.utilClass.EditTextGravilight
             android:id="@+id/ti"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:maxLines="1" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="12"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+        <champak.champabun.business.utilities.utilClass.TextViewGravilar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:text="@string/artist" />
+            android:gravity="center"
+            android:text="@string/artist"
+            android:textColor="@color/white"
+
+            android:textSize="18sp" />
 
         <champak.champabun.business.utilities.utilClass.EditTextGravilight
             android:id="@+id/ar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:maxLines="1" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="12"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+        <champak.champabun.business.utilities.utilClass.TextViewGravilar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:text="@string/album" />
+            android:gravity="center"
+            android:text="@string/album"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
         <champak.champabun.business.utilities.utilClass.EditTextGravilight
             android:id="@+id/al"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:maxLines="1" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="6dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <Button
-            android:id="@+id/dBOK"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginRight="7dp"
-            android:background="@drawable/dialog_icn_ok_normal" />
-
-        <Button
-            android:id="@+id/dBCancel"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginLeft="7dp"
-            android:background="@drawable/dialog_icn_cancel_normal" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

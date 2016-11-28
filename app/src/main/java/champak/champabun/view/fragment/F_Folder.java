@@ -74,6 +74,8 @@ public class F_Folder extends BaseFragment {
                     .setStartDelay(100)
                     .start(titleHeader);
 
+            ImageView miniBack = (ImageView) MainActivity.getMainActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(MainActivity.getMainActivity(), R.color.purplePager), PorterDuff.Mode.MULTIPLY);
         }
         super.setUserVisibleHint(isVisibleToUser);
     }

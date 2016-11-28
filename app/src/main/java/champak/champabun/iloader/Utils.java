@@ -1,4 +1,4 @@
-package champak.champabun.driver.iloader;
+package champak.champabun.iloader;
 
 import java.io.InputStream;
 import java.io.OutputStream;

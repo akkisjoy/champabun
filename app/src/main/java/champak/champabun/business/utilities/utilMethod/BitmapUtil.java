@@ -12,12 +12,11 @@ import android.media.MediaMetadataRetriever;
 import com.commit451.nativestackblur.NativeStackBlur;
 
 import java.io.File;
-import java.util.Random;
 
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.definition.IConstant;
-import champak.champabun.driver.iloader.FileCache;
+import champak.champabun.iloader.FileCache;
 
 public class BitmapUtil {
     public static Bitmap SetAlbumArtBG(Context c, String image_path, String name, String artist) {
@@ -29,7 +28,7 @@ public class BitmapUtil {
         } else {
             b = BitmapUtil.fetchfilefromcahce(name, artist, c.getApplicationContext());
             if (b == null) {
-                b = BitmapFactory.decodeResource(c.getResources(), IConstant.arr[new Random().nextInt(IConstant.arr.length - 1)]);
+                b = BitmapFactory.decodeResource(c.getResources(), R.drawable.default_art);
             }
             b = Bitmap.createScaledBitmap(b, wt_px, wt_px, true);
         }
@@ -90,7 +89,7 @@ public class BitmapUtil {
     }
 
     public static Bitmap GetRandomBitmap(Resources res, int albumID, int desireWidth, int desireHeight) {
-        int x = R.drawable.album_art_1 + albumID % IConstant.arr.length;
+        int x = R.drawable.default_art;
         Bitmap bitmap = BitmapFactory.decodeResource(res, x);
 
         return Bitmap.createScaledBitmap(bitmap, desireWidth, desireHeight, true);

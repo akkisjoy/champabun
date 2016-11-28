@@ -7,14 +7,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
@@ -38,14 +40,15 @@ import champak.champabun.view.fragment.F_Playlists;
 import champak.champabun.view.fragment.F_Songs;
 
 public class MainActivity extends BaseActivity {
+    protected static MainActivity mInstance;
     private List<BaseFragment> fragments;
     private Adapter_ViewPager adapter;
     private ViewPager pager;
     private View openactivity;
     private TextView songs;
     private TextView album2;
-    private ImageView play2, settings;
-    private ProgressBar spinner;
+    private ImageView play2;
+    private ImageView settings;
     private int whichanimation = 0;
     private Animation fadeOut, fadeIn;
     private String oldalbum, oldsong;
@@ -66,6 +69,10 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    public static AppCompatActivity getMainActivity() {
+        return mInstance;
+    }
+
     @Override
     public int GetLayoutResID() {
         return R.layout.adapter_fragment;
@@ -74,6 +81,18 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mInstance = this;
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                Animation animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.zoom_in);
+                ImageView splashImage = (ImageView) findViewById(R.id.splashImage);
+                splashImage.startAnimation(animZoomIn);
+            }
+        }, 1000);
 
         fragments = new ArrayList<>();
         fragments.add(new F_Genres());
@@ -151,8 +170,6 @@ public class MainActivity extends BaseActivity {
         album2 = (TextView) findViewById(R.id.albumtop);
         openactivity = findViewById(R.id.openactivity);
         play2 = (ImageView) findViewById(R.id.play2);
-        spinner = (ProgressBar) findViewById(R.id.progressBar1);
-        spinner.setVisibility(View.GONE);
 
         openactivity.setOnClickListener(new View.OnClickListener() {
 
@@ -193,7 +210,7 @@ public class MainActivity extends BaseActivity {
             play2.setVisibility(View.VISIBLE);
             checkbuttonplaypause();
         } else {
-            songs.setText(getString(R.string.total_songs));
+            songs.setText("No song in player queue");
             play2.setVisibility(View.GONE);
         }
     }

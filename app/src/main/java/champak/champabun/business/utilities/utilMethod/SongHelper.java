@@ -7,18 +7,27 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.graphics.PorterDuff;
 import android.media.MediaScannerConnection;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListener;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,23 +42,25 @@ import java.util.ArrayList;
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
-import champak.champabun.business.utilities.popupMenu.ActionItem;
 import champak.champabun.business.utilities.popupMenu.QuickAction;
+import champak.champabun.framework.listener.EditTagsListener;
+import champak.champabun.framework.listener.OptionItemSelectListener;
+import champak.champabun.framework.listener.ResponseListener;
 import champak.champabun.view.activity.NowPlaying;
 import champak.champabun.view.activity.Player;
 import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
 public class SongHelper {
     final public static int DEFAULT = -1;
-    final public static int F_SONG = 0;
-    final public static int F_PLAYLIST = 2;
-    final public static int PLAYLIST = 5;
+    public final static int F_SONG = 0;
+    public final static int F_PLAYLIST = 2;
+    public final static int PLAYLIST = 5;
     final public static int ARTIST = 6;
     final public static int ALBUM = 7;
     private static Activity mActivity;
-    public OnEditTagsListener listeneredit;
+    private EditTagsListener listeneredit;
     private QuickAction mQuickAction;
-    private OnQuickActionItemSelectListener mListener;
+    private OptionItemSelectListener mListener;
 
     private Dialog dialog;
     private boolean isBusy;
@@ -57,7 +68,7 @@ public class SongHelper {
     public SongHelper() {
     }
 
-    protected static void Permission(final int deleteoredit, final Activity mActivity, final Fragment fragment) {
+    private static void Permission(final int deleteoredit, final Activity mActivity, final Fragment fragment) {
         // 0 for delete 1 for edit tags
         PlayMeePreferences prefs = new PlayMeePreferences(mActivity);
         prefs.DeleteSharedPreferenceUri();
@@ -126,7 +137,7 @@ public class SongHelper {
         try {
             mActivity.getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
                     new String[]{songdetails.get(position2).getPath2()});
-        } catch (SQLiteException e) {
+        } catch (SQLiteException ignored) {
         }
         ActivityUtil.showCrouton(mActivity,
                 String.format(mActivity.getResources().getString(R.string.f_delete_successful), songdetails.get(position2).getSong()));
@@ -134,116 +145,171 @@ public class SongHelper {
         if (listener != null) {
             listener.OnSongDeleted();
         }
-
     }
 
-    private void SetupQuickAction(int fragmentID) {
-        mQuickAction = new QuickAction(mActivity);
+    private static void zoomEffect(View view, final ResponseListener responseListner) {
+        ViewCompat.animate(view)
+                .setDuration(100)
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .setInterpolator(new CycleInterpolator())
+                .setListener(new ViewPropertyAnimatorListener() {
+                    @Override
+                    public void onAnimationStart(View view) {
 
-        ActionItem Play = new ActionItem(1, mActivity.getResources().getString(R.string.play), mActivity.getResources().getDrawable(
-                R.drawable.menu_play));
-        mQuickAction.addActionItem(Play);
-
-        if (fragmentID != F_PLAYLIST) {
-            ActionItem Queue_Song = new ActionItem(2, mActivity.getResources().getString(R.string.add_to_playlist), mActivity.getResources()
-                    .getDrawable(R.drawable.menu_queue));
-            mQuickAction.addActionItem(Queue_Song);
-        }
-
-        String Edit_Tags_Name = mActivity.getResources().getString(R.string.edit_tags);
-        if (fragmentID == F_PLAYLIST) {
-            Edit_Tags_Name = mActivity.getResources().getString(R.string.rename);
-        }
-        ActionItem Edit_Tags = new ActionItem(3, Edit_Tags_Name, mActivity.getResources().getDrawable(R.drawable.menu_tags));
-        mQuickAction.addActionItem(Edit_Tags);
-
-        if (fragmentID != F_PLAYLIST) {
-            ActionItem Set_As_Ringtone = new ActionItem(4, mActivity.getResources().getString(R.string.set_as_ringtone), mActivity.getResources()
-                    .getDrawable(R.drawable.menu_ring));
-            mQuickAction.addActionItem(Set_As_Ringtone);
-        }
-
-        // ActionItem View_Details = new ActionItem(5, "View Details", getResources().getDrawable(R.drawable.menu_details));
-        // mQuickAction.addActionItem(View_Details);
-
-        ActionItem Delete = new ActionItem(6, mActivity.getResources().getString(R.string.delete), mActivity.getResources().getDrawable(
-                R.drawable.menu_delete));
-        mQuickAction.addActionItem(Delete);
-
-        if (fragmentID == F_SONG) {
-            ActionItem send = new ActionItem(7, mActivity.getResources().getString(R.string.send), mActivity.getResources().getDrawable(
-                    R.drawable.share));
-            mQuickAction.addActionItem(send);
-        }
-
-        mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-            @Override
-            public void onItemClick(QuickAction quickAction, int position, int actionId) {
-                if (mListener != null) {
-                    switch (actionId) {
-                        case 1:
-                            mListener.QuickAction_OnPlaySong();
-                            break;
-                        case 2:
-                            mListener.QuickAction_OnAdd2Playlist();
-                            break;
-                        case 3:
-                            mListener.QuickAction_OnEditTags();
-                            break;
-                        case 4:
-                            mListener.QuickAction_OnSetAsRingtone();
-                            break;
-                        case 5:
-                            mListener.QuickAction_OnViewDetails();
-                            break;
-                        case 6:
-                            mListener.QuickAction_OnDeleteSong();
-                            break;
-                        case 7:
-                            mListener.QuickAction_OnRemoveSong();
-                        case 8:
-                            mListener.QuickAction_OnSendSong();
-                            break;
                     }
-                }
-            }
-        });
+
+                    @Override
+                    public void onAnimationEnd(View view) {
+                        responseListner.onSuccess("");
+                    }
+
+                    @Override
+                    public void onAnimationCancel(View view) {
+
+                    }
+                })
+                .withLayer()
+                .start();
     }
 
-    public void CheckQuickAction(int fragmentID) {
-        if (mQuickAction == null) {
-            SetupQuickAction(fragmentID);
-        }
-        if (mQuickAction != null) {
-            if (fragmentID == PLAYLIST) {
-                ActionItem Remove = new ActionItem(7, mActivity.getResources().getString(R.string.remove_from_playlist), mActivity.getResources()
-                        .getDrawable(R.drawable.menu_remove));
-                mQuickAction.addActionItem(Remove);
-            }
-        }
-    }
-
-    public void SetOnQuickActionItemSelectListener(OnQuickActionItemSelectListener listener) {
+    private void SetOnQuickActionItemSelectListener(OptionItemSelectListener listener) {
         this.mListener = listener;
     }
 
-    public void Show(Activity activity, View anchor, OnQuickActionItemSelectListener listener, int fragmentID) {
+    public void Show(Activity activity, String titleSong, String subTitileSong, OptionItemSelectListener listener, int fragmentID) {
         mActivity = activity;
-        CheckQuickAction(fragmentID);
         SetOnQuickActionItemSelectListener(listener);
-        mQuickAction.show(anchor);
+        showMoreOption(fragmentID, titleSong, subTitileSong);
     }
 
-    public void ShowF_Playlist_QA(Activity activity, View anchor, OnQuickActionItemSelectListener listener) {
-        mActivity = activity;
-        if (mQuickAction == null) {
-            SetupQuickAction(F_PLAYLIST);
+    private void showMoreOption(int fragmentID, String titleSong, String subTitileSong) {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mActivity, R.style.bottomPopStyle);
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View dialogView = inflater.inflate(R.layout.dialog_song_more, null);
+        dialogBuilder.setView(dialogView);
+        final AlertDialog alertDialog = dialogBuilder.create();
+
+        ImageView imageDialog = (ImageView) dialogView.findViewById(R.id.dialogBack);
+        TextView titleDialog = (TextView) dialogView.findViewById(R.id.titleD);
+        TextView subTitleDialog = (TextView) dialogView.findViewById(R.id.subTitleD);
+//        ImageView ringtoneD = (ImageView) dialogView.findViewById(R.id.ringtoneD);
+//        ImageView tagsD = (ImageView) dialogView.findViewById(R.id.tagsD);
+//        ImageView shareD = (ImageView) dialogView.findViewById(R.id.shareD);
+//        ImageView playD = (ImageView) dialogView.findViewById(R.id.playD);
+//        ImageView addPlayD = (ImageView) dialogView.findViewById(R.id.addPlayD);
+//        ImageView removeD = (ImageView) dialogView.findViewById(R.id.removeD);
+
+        LinearLayout linRingtone = (LinearLayout) dialogView.findViewById(R.id.linRingtone);
+        LinearLayout linTagsEdit = (LinearLayout) dialogView.findViewById(R.id.linTagsEdit);
+        LinearLayout linShare = (LinearLayout) dialogView.findViewById(R.id.linShare);
+        LinearLayout linPLay = (LinearLayout) dialogView.findViewById(R.id.linPLay);
+        LinearLayout linAdd2PLay = (LinearLayout) dialogView.findViewById(R.id.linAdd2PLay);
+        LinearLayout linRemove = (LinearLayout) dialogView.findViewById(R.id.linRemove);
+
+        titleDialog.setText(titleSong);
+        subTitleDialog.setText(subTitileSong);
+
+        if (fragmentID == F_SONG) {
+            linShare.setVisibility(View.VISIBLE);
+            imageDialog.setColorFilter(ContextCompat.getColor(mActivity, R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
         }
-        SetOnQuickActionItemSelectListener(listener);
-        mQuickAction.show(anchor);
+
+        if (fragmentID == PLAYLIST) {
+            linRemove.setVisibility(View.VISIBLE);
+        }
+
+        if (fragmentID != F_PLAYLIST) {
+            linPLay.setVisibility(View.VISIBLE);
+            linRingtone.setVisibility(View.VISIBLE);
+        }
+
+
+        linRingtone.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomEffect(view, new ResponseListener() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        alertDialog.dismiss();
+                        mListener.action_OnPlaySong();
+                    }
+                });
+            }
+        });
+
+        linTagsEdit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomEffect(view, new ResponseListener() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        alertDialog.dismiss();
+                        mListener.action_OnEditTags();
+                    }
+                });
+            }
+        });
+
+        linShare.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomEffect(view, new ResponseListener() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        alertDialog.dismiss();
+                        mListener.action_OnSendSong();
+                    }
+                });
+            }
+        });
+
+        linPLay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomEffect(view, new ResponseListener() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        alertDialog.dismiss();
+                        mListener.action_OnPlaySong();
+                    }
+                });
+            }
+        });
+
+        linAdd2PLay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomEffect(view, new ResponseListener() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        alertDialog.dismiss();
+                        mListener.action_OnAdd2Playlist();
+                    }
+                });
+            }
+        });
+
+        linRemove.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomEffect(view, new ResponseListener() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        alertDialog.dismiss();
+                        mListener.action_OnDeleteSong();
+                    }
+                });
+            }
+        });
+
+        WindowManager.LayoutParams wmlp = alertDialog.getWindow().getAttributes();
+//        wmlp.gravity = Gravity.BOTTOM;
+        wmlp.windowAnimations = R.style.bottomPopStyle;
+        alertDialog.show();
     }
 
-    //	private void ShowSaveAsDialog( final SongDetails
     public void PlaySong(ArrayList<SongDetails> songdetails, int position) {
         AmuzicgApp.GetInstance().setCheck(0);
         Intent intent = new Intent(mActivity, Player.class);
@@ -262,8 +328,7 @@ public class SongHelper {
         }
 
         cr.delete(uri, MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + AudioId, null);
-        ActivityUtil.showCrouton(mActivity,
-                String.format(mActivity.getResources().getString(R.string.remove_from_playlist)));
+        ActivityUtil.showCrouton(mActivity, String.format(mActivity.getResources().getString(R.string.remove_from_playlist)));
     }
 
     public void Add2Playlist(final SongDetails songdetails) {
@@ -300,7 +365,7 @@ public class SongHelper {
     }
 
     public void EditTags(final SongDetails songdetails,
-                         final OnEditTagsListener listener, final Fragment fragment) {
+                         final EditTagsListener listener, final Fragment fragment) {
         dialog = Utilities.designdialog(330, mActivity);
         if (listener != null)
             listeneredit = listener;
@@ -479,12 +544,11 @@ public class SongHelper {
         dialog.show();
     }
 
-    public void addToNowPlaying(SongDetails songdetails) {
+    private void addToNowPlaying(SongDetails songdetails) {
         ActivityUtil.showCrouton(mActivity,
                 String.format(mActivity.getResources().getString(R.string.f_was_added_to_queue), songdetails.getSong()));
         AmuzicgApp.GetInstance().Add2NowPlaying(songdetails);
     }
-
 
     public void ShouldDismiss() {
         if (dialog != null && dialog.isShowing()) {
@@ -501,28 +565,6 @@ public class SongHelper {
         this.isBusy = isBusy;
     }
 
-    public interface OnQuickActionItemSelectListener {
-        void QuickAction_OnPlaySong();
-
-        void QuickAction_OnAdd2Playlist();
-
-        void QuickAction_OnEditTags();
-
-        void QuickAction_OnSetAsRingtone();
-
-        void QuickAction_OnViewDetails();
-
-        void QuickAction_OnDeleteSong();
-
-        void QuickAction_OnRemoveSong();
-
-        void QuickAction_OnSendSong();
-    }
-
-    public interface OnEditTagsListener {
-        void OnEditTagsSuccessful();
-    }
-
     public interface OnRemoveSongListener {
         void OnRemoveSong();
     }
@@ -531,12 +573,22 @@ public class SongHelper {
         void OnSongDeleted();
     }
 
-    class EditTagsTask extends AsyncTask<Void, String, Boolean> {
+    private static class CycleInterpolator implements android.view.animation.Interpolator {
+
+        private final float mCycles = 0.5f;
+
+        @Override
+        public float getInterpolation(final float input) {
+            return (float) Math.sin(2.0f * mCycles * Math.PI * input);
+        }
+    }
+
+    private class EditTagsTask extends AsyncTask<Void, String, Boolean> {
         File src;
         MusicMetadataSet src_set;
         MusicMetadata meta;
 
-        public EditTagsTask(File _src, MusicMetadataSet _src_set, MusicMetadata _meta) {
+        EditTagsTask(File _src, MusicMetadataSet _src_set, MusicMetadata _meta) {
             src = _src;
             src_set = _src_set;
             meta = _meta;
@@ -569,7 +621,7 @@ public class SongHelper {
             super.onPostExecute(result);
             if (result) {
                 if (listeneredit != null) {
-                    listeneredit.OnEditTagsSuccessful();
+                    listeneredit.onEditTagsSuccessful();
                 }
 
                 ActivityUtil.showCrouton(mActivity, mActivity.getResources().getString(R.string.tags_edited));

@@ -29,23 +29,22 @@ import android.widget.ImageView;
  */
 public class Style {
 
-    public static final int holoRedLight = 0xffff4444;
-    public static final int holoGreenLight = 0xff99cc00;
-    public static final int holoBlueLight = 0xff33b5e5;
     public static final Style MY;
-
+    private static final int holoRedLight = 0xffff4444;
+    private static final int holoGreenLight = 0xff99cc00;
+    private static final int holoBlueLight = 0xff33b5e5;
     /**
      * Default style for alerting the user.
      */
-    public static final Style ALERT;
+    private static final Style ALERT;
     /**
      * Default style for confirming an action.
      */
-    public static final Style CONFIRM;
+    private static final Style CONFIRM;
     /**
      * Default style for general information.
      */
-    public static final Style INFO;
+    private static final Style INFO;
 
     static {
         MY = new Builder()
@@ -267,7 +266,7 @@ public class Style {
         /**
          * Creates a {@link Builder} to build a {@link Style} upon.
          */
-        public Builder() {
+        Builder() {
             configuration = Configuration.DEFAULT;
             paddingInPixels = 10;
             backgroundColorResourceId = android.R.color.holo_blue_light;

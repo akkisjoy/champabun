@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -53,28 +53,27 @@ import champak.champabun.business.dataclasses.OnSwipeTouchListener2;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
+import champak.champabun.business.utilities.utilClass.CircularSeekBar;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
 import champak.champabun.business.utilities.utilMethod.BitmapUtil;
 import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
 import champak.champabun.business.utilities.utilMethod.Utilities;
-import champak.champabun.driver.iloader.ImageLoader;
 import champak.champabun.framework.equalizer.EqualizerActivity;
 import champak.champabun.framework.service.Music_service;
+import champak.champabun.iloader.ImageLoader;
 
 public class Player extends BaseActivity implements OnSeekBarChangeListener {
     private static final int SELECT_PHOTO = 99;
     Animation fadeOut, fadeIn, fadeInImage, fadeOutImage, fadeInImageBg;
-    View shuffle, repeat, NowPlaying, Equalizer, bShufflebg;
-    Button brepeat;
+    ImageView shuffle, repeat, NowPlaying, Equalizer;
     Bitmap album;
-    Button bShuffle;
     MusicMetadata meta;
     int imagecheck;
     String oldsong = "", oldArtist = "", oldalbum = "", oldTime = "";
     ImageView PrevBgImage, NextBgImage;
     private ImageView buttonPlayStop;
-    private ImageView i1, previous, next;
+    private ImageView albumImage, previous, next;
     private String progress2;
     private int headsetSwitch, head;
     BroadcastReceiver headsetReceiver = new BroadcastReceiver() {
@@ -106,12 +105,13 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     };
 
     private int seekMax;
-    private SeekBar seekbar;
+    private CircularSeekBar seekbar;
     private TextView songname, songalbum, songartist;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
     private Dialog dialog;
-    private LinearLayout bfake, edit;
+    private LinearLayout edit;
+    private RelativeLayout swipeBack;
     private boolean ActionIsRegistered, HeadsetIsRegistered, otherReceiverRegistered;
     private boolean isStartCoverOperation = false;
     private String comefrom = null;
@@ -146,7 +146,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     @Override
     public int GetLayoutResID() {
-        return R.layout.player;
+        return R.layout.player2;
     }
 
     @Override
@@ -228,6 +228,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         checkbuttonplaypause();
         SharedPreferences preferences = this.getSharedPreferences("shuffle_setting", MODE_PRIVATE);
         AmuzicgApp.GetInstance().boolshuffled = preferences.getBoolean("shuffle_setting", false);
+        shuffle.setImageResource(R.drawable.shuffle_off);
         if (AmuzicgApp.GetInstance().boolshuffled && !AmuzicgApp.alreadyshuffled) {
             setShuffleState();
             AmuzicgApp.alreadyshuffled = true;
@@ -235,14 +236,12 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     }
 
     private void initViews() {
-        NowPlaying = findViewById(R.id.bNp);
         previous = (ImageView) findViewById(R.id.bPrevious);
-
         next = (ImageView) findViewById(R.id.bNext);
 
-        repeat = findViewById(R.id.bRepeatbg);
-        brepeat = (Button) findViewById(R.id.bRepeat);
-        shuffle = findViewById(R.id.bShuffle);
+        NowPlaying = (ImageView) findViewById(R.id.bNp);
+        repeat = (ImageView) findViewById(R.id.bRepeat);
+        shuffle = (ImageView) findViewById(R.id.bShuffle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songname = (TextView) findViewById(R.id.songname);
         songartist = (TextView) findViewById(R.id.artist);
@@ -255,12 +254,11 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
         PrevBgImage = (ImageView) findViewById(R.id.extralayerForProperAnimation);
         NextBgImage = (ImageView) findViewById(R.id.nextImage);
-        Equalizer = findViewById(R.id.bEq);
-        bShufflebg = findViewById(R.id.bShufflebg);
-        bShuffle = (Button) findViewById(R.id.bShuffleb);
-        i1 = (ImageView) findViewById(R.id.i1);
-        seekbar = (SeekBar) findViewById(R.id.songProgressBar);
-        bfake = (LinearLayout) findViewById(R.id.bFake);
+        Equalizer = (ImageView) findViewById(R.id.bEq);
+        shuffle = (ImageView) findViewById(R.id.bShuffle);
+        albumImage = (ImageView) findViewById(R.id.albumImage);
+        seekbar = (CircularSeekBar) findViewById(R.id.songProgressBar);
+        swipeBack = (RelativeLayout) findViewById(R.id.swipeBack);
         edit = (LinearLayout) findViewById(R.id.edit);
 
         checkbuttonplaypause();
@@ -292,13 +290,13 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
                             bitmap = Bitmap.createScaledBitmap(bitmap, AmuzicgApp.GetInstance().sizeofimage,
                                     AmuzicgApp.GetInstance().sizeofimage, false);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bytes);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
                             file.createNewFile();
                             FileOutputStream fo = new FileOutputStream(file);
                             fo.write(bytes.toByteArray());
                             fo.close();
-                            i1.setImageBitmap(bitmap);
+                            albumImage.setImageBitmap(bitmap);
                             return;
                         }
                     } catch (IOException e) {
@@ -310,7 +308,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 if (resultCode == RESULT_OK) {
 
                     StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Player.this);
-
 
                     File file = new File(AmuzicgApp.GetInstance().GetCurSongDetails().getPath2());
                     boolean canWrite;
@@ -372,8 +369,8 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 //                if ((intent.resolveActivity(getPackageManager()) != null)) {
 //                    startActivity(intent);
 //                } else {
-                    Intent SecondScreen = new Intent(Player.this, EqualizerActivity.class);
-                    startActivity(SecondScreen);
+                Intent SecondScreen = new Intent(Player.this, EqualizerActivity.class);
+                startActivity(SecondScreen);
 //                }
             }
         });
@@ -407,7 +404,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             }
         });
 
-        bfake.setOnTouchListener(new OnSwipeTouchListener2() {
+        swipeBack.setOnTouchListener(new OnSwipeTouchListener2() {
             @Override
             public void onSwipeRight() {
                 if (AmuzicgApp.GetInstance().GetNowPlayingSize() > 0)
@@ -524,7 +521,29 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             }
         });
 
-        seekbar.setOnSeekBarChangeListener(this);
+//        seekbar.setOnSeekBarChangeListener(this);
+        seekbar.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    int seekPos = circularSeekBar.getProgress();
+                    buttonPlayStop.setBackgroundResource(R.drawable.pause);
+                    Intent intent = new Intent(IConstant.BROADCAST_SEEKBAR);
+                    intent.putExtra("seekpos", seekPos);
+                    sendBroadcast(intent);
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(CircularSeekBar seekBar) {
+
+            }
+        });
     }
 
     private void changeShuffleState() {
@@ -547,6 +566,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         if (AmuzicgApp.GetInstance().GetNowPlayingSize() > 1) {
             SharedPreferences.Editor editor = this.getSharedPreferences("shuffle_setting", MODE_PRIVATE).edit();
             if (AmuzicgApp.GetInstance().boolshuffled) {
+                shuffle.setImageResource(R.drawable.shuffle_on);
                 editor.putBoolean("shuffle_setting", true);
                 editor.apply();
                 if (AmuzicgApp.GetInstance().GetNowPlayingList().size() > 800) // to avoid crashes due to memory
@@ -559,8 +579,8 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 AmuzicgApp.GetInstance().RemoveCurSongDetails();
                 Collections.shuffle(AmuzicgApp.GetInstance().GetNowPlayingList());
                 AmuzicgApp.GetInstance().Add2CurSongDetails(temp);
-                bShufflebg.setBackgroundColor(Color.parseColor("#30000000"));
             } else {
+                shuffle.setImageResource(R.drawable.shuffle_off);
                 editor.putBoolean("shuffle_setting", false);
                 editor.apply();
                 int x = 0;
@@ -568,7 +588,6 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                     x = AmuzicgApp.GetInstance().backup.indexOf(AmuzicgApp.GetInstance().GetCurSongDetails());
                 } catch (Exception ignored) {
                 }
-                bShufflebg.setBackgroundColor(Color.parseColor("#00ffffff"));
 
                 AmuzicgApp.GetInstance().NP_List = AmuzicgApp.GetInstance().backup;
                 AmuzicgApp.GetInstance().setPosition(x);
@@ -813,7 +832,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             songname.setText(getString(R.string.no_songs));
             songalbum.setText("");
             songartist.setText("");
-            PrevBgImage.setBackgroundResource(R.drawable.grad);
+            PrevBgImage.setBackgroundResource(R.drawable.player_back);
         } else {
             startCoverOperation();
         }
@@ -917,11 +936,11 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     public void checkButtonRandom() {
         if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_NONE) {
-            brepeat.setBackgroundResource(R.drawable.repeat_off_tran);
+            repeat.setImageResource(R.drawable.repeat_off_tran);
         } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ONCE) {
-            brepeat.setBackgroundResource(R.drawable.repeat_one_tran);
+            repeat.setImageResource(R.drawable.repeat_one_tran);
         } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ALL) {
-            brepeat.setBackgroundResource(R.drawable.repeat_all_tran);
+            repeat.setImageResource(R.drawable.repeat_all_tran);
         }
     }
 
@@ -934,9 +953,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     @Override
     public void SetNullForCustomVariable() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            brepeat.setBackgroundDrawable(null);
+            repeat.setBackgroundDrawable(null);
         } else {
-            brepeat.setBackground(null);
+            repeat.setBackground(null);
         }
     }
 
@@ -1040,9 +1059,11 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             super.onPreExecute();
 
             if (AmuzicgApp.GetInstance().boolshuffled) {
-                bShufflebg.setBackgroundColor(Color.parseColor("#30000000"));
+                shuffle.setImageResource(R.drawable.shuffle_on);
+//                shuffle.setBackgroundColor(Color.parseColor("#30000000"));
             } else if (!AmuzicgApp.GetInstance().boolshuffled) {
-                bShufflebg.setBackgroundColor(Color.parseColor("#00ffffff"));
+                shuffle.setImageResource(R.drawable.shuffle_off);
+//                shuffle.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
 
             wt_px = (int) Player.this.getResources().getDimension(R.dimen.player_image_size);
@@ -1171,14 +1192,14 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             super.onPostExecute(result);
 
             if (result == null) {
-                i1.setImageBitmap(album);
+                albumImage.setImageBitmap(album);
             }
             fadeinimage(0, 100);
             fadeoutimage(0, 100);
             fadeinimageBg(0, 100);
 
             if (imagecheck == 0) {
-                i1.startAnimation(fadeOutImage);
+                albumImage.startAnimation(fadeOutImage);
 
                 fadeOutImage.setAnimationListener(new AnimationListener() {
                     @Override
@@ -1191,8 +1212,8 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                             NextBgImage.setBackground(result);
 
                         NextBgImage.startAnimation(fadeInImageBg);
-                        i1.setImageBitmap(album);
-                        i1.startAnimation(fadeInImage);
+                        albumImage.setImageBitmap(album);
+                        albumImage.startAnimation(fadeInImage);
                     }
 
                     @Override
@@ -1234,15 +1255,15 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 }
             });
 
-            i1.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-                    startActivityForResult(intent, SELECT_PHOTO);
-                }
-            });
+//            albumImage.setOnClickListener(new OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    intent.setType("image/*");
+//                    startActivityForResult(intent, SELECT_PHOTO);
+//                }
+//            });
         }
     }
 }

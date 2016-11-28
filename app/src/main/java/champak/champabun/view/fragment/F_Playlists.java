@@ -38,10 +38,11 @@ import champak.champabun.business.definition.Logger;
 import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.Utilities;
+import champak.champabun.framework.listener.OptionItemSelectListener;
 import champak.champabun.view.activity.BaseActivity;
 import champak.champabun.view.adapters.Adapter_playlist;
 
-public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActionItemSelectListener {
+public class F_Playlists extends BaseFragment implements OptionItemSelectListener {
     ImageView backPager;
     private ListView mListView;
     private Adapter_playlist ab;
@@ -71,6 +72,8 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
                     .setStartDelay(100)
                     .start(titleHeader);
 
+            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.greenPager), PorterDuff.Mode.MULTIPLY);
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -99,7 +102,7 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
                 if (songHelper == null) {
                     songHelper = new SongHelper();
                 }
-                songHelper.ShowF_Playlist_QA(getActivity(), getView(), F_Playlists.this);
+                songHelper.Show(getActivity(), Playlists.get(curPosition).getSong(), "", F_Playlists.this, SongHelper.F_PLAYLIST);
                 return false;
             }
         });
@@ -147,17 +150,17 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     }
 
     @Override
-    public void QuickAction_OnPlaySong() {
+    public void action_OnPlaySong() {
         songHelper.PlaySong(GetSonglist(), 0);
     }
 
     @Override
-    public void QuickAction_OnAdd2Playlist() {
+    public void action_OnAdd2Playlist() {
         // never call for this case
     }
 
     @Override
-    public void QuickAction_OnEditTags() {
+    public void action_OnEditTags() {
         dialog = songHelper.GetDialog(210);
 
         LayoutInflater li = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -207,17 +210,17 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     }
 
     @Override
-    public void QuickAction_OnSetAsRingtone() {
+    public void action_OnSetAsRingtone() {
         // never call for this case
     }
 
     @Override
-    public void QuickAction_OnViewDetails() {
+    public void action_OnViewDetails() {
         // never call for this case
     }
 
     @Override
-    public void QuickAction_OnDeleteSong() {
+    public void action_OnDeleteSong() {
         if (prefs.GetPlaylistRecentName().equals(Playlists.get(curPosition).getSong()))// "Recently Added"
         {
             // do nothing
@@ -259,12 +262,12 @@ public class F_Playlists extends BaseFragment implements SongHelper.OnQuickActio
     }
 
     @Override
-    public void QuickAction_OnRemoveSong() {
+    public void action_OnRemoveSong() {
         // never call for this case
     }
 
     @Override
-    public void QuickAction_OnSendSong() {
+    public void action_OnSendSong() {
         // never call for this case
     }
 

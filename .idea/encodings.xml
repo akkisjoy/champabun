@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/EditTextRaleway.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/CircularSeekBar.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/EditTextGravilight.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/TextViewGravilar.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/TextViewGravilight.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/TextViewLobster.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/TextViewRaleway.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/TextViewOstrich.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/champak/champabun/business/utilities/utilClass/TextViewRajdhar.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/menuhide.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/anim/menushow.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_albums.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_artists.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_folder.png" charset="UTF-8" />
@@ -11,6 +17,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_playlists.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_settings.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_songs.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_song_more.xml" charset="UTF-8" />
     <file url="PROJECT" charset="windows-1251" />
   </component>
 </project>

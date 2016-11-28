@@ -145,7 +145,7 @@
                                                 android:id="@+id/bShuffleb"
                                                 android:layout_width="@dimen/player_button_left_size"
                                                 android:layout_height="@dimen/player_button_left_size"
-                                                android:background="@drawable/shuffle_tran"
+                                                android:background="@drawable/shuffle_on"
                                                 android:clickable="false" />
                                         </LinearLayout>
                                     </LinearLayout>

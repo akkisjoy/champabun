@@ -46,7 +46,7 @@ public class AmuzicgApp extends Application {
         PlayMeePreferences prefs = new PlayMeePreferences(getApplicationContext());
         repeatmode = prefs.GetRepeatMode();
 
-        sizeofimage = (int) mInstance.getResources().getDimension(R.dimen.player_image_size) + 20;
+        sizeofimage = (int) mInstance.getResources().getDimension(R.dimen.player_image_size) + 50;
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();

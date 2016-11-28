@@ -12,17 +12,21 @@
         <item name="android:divider">@null</item>
         <item name="android:dividerHeight">0dp</item>
         <item name="android:fadeScrollbars">true</item>
-        <item name="android:fadingEdgeLength">34dp</item>
+        <item name="android:fadingEdgeLength">10dp</item>
         <item name="android:requiresFadingEdge">vertical</item>
         <item name="android:listSelector">@drawable/selector_list</item>
         <item name="android:overScrollMode">never</item>
+    </style>
+
+    <style name="bottomPopStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowEnterAnimation">@anim/menushow</item>
+        <item name="android:windowExitAnimation">@anim/menuhide</item>
     </style>
 
     <style name="SpinnerStyle" parent="android:style/Widget.ListView.DropDown">
         <item name="android:dividerHeight">0dp</item>
         <item name="android:background">@drawable/selector</item>
         <item name="android:textColor">@color/TextColor_Primary_Dialog</item>
-
     </style>
 
     <style name="Item">

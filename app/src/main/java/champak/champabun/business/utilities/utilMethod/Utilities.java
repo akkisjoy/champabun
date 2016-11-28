@@ -221,7 +221,7 @@ public class Utilities {
         final Window window = dialog2.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, x, mActivity.getResources().getDisplayMetrics());
         dialog2.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
-        window.setBackgroundDrawableResource(R.drawable.dialogbg);
+        window.setBackgroundDrawableResource(R.drawable.miniback2);
         WindowManager.LayoutParams lp = dialog2.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog2.getWindow().setAttributes(lp);

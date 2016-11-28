@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.utilities.utilMethod.BitmapUtil;
-import champak.champabun.driver.iloader.ImageLoader;
+import champak.champabun.iloader.ImageLoader;
 
 public class Adapter_gallery extends BaseAdapter {
     public ImageLoader imageLoader;

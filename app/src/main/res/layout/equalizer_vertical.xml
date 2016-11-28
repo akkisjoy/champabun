@@ -14,179 +14,141 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:background="@color/transparentblack"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/eqControlLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top">
+
+                <champak.champabun.business.utilities.utilClass.TextViewLobster
+                    android:id="@+id/eqControlText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:text="@string/equalizer"
+                    android:textColor="@color/TextColor_Primary"
+                    android:textSize="24sp" />
+
+                <RelativeLayout
+                    android:id="@+id/equalizerOnOffwrapping"
+                    android:layout_width="@dimen/now_playing_save_asSize"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/eqControlText"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/selector">
+
+                    <Button
+                        android:id="@+id/equalizerOnOff"
+                        android:layout_width="@dimen/now_playing_save_asSize"
+                        android:layout_height="@dimen/now_playing_save_asSize"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_weight="0.0"
+                        android:background="@drawable/eq"
+                        android:clickable="false" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/saved_preset"
+            style="style/SpinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:popupBackground="#b0000000" />
+
+        <LinearLayout
+            android:id="@+id/SessionFrame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:paddingTop="55dp"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
+                android:id="@+id/button_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/eqControlLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="5dip"
                     android:orientation="horizontal">
 
                     <RelativeLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/button1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="top">
+                        android:layout_weight="1"
+                        android:gravity="center" />
 
-                        <champak.champabun.business.utilities.utilClass.TextViewRajdhar
-                            android:id="@+id/eqControlText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:paddingTop="20dp"
-                            android:text="@string/equalizer"
-                            android:textColor="@color/TextColor_Primary"
-                            android:textSize="@dimen/Heading_Size" />
+                    <RelativeLayout
+                        android:id="@+id/button3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center" />
 
-                        <RelativeLayout
-                            android:id="@+id/equalizerOnOffwrapping"
-                            android:layout_width="@dimen/now_playing_save_asSize"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/eqControlText"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/selector">
-
-                            <Button
-                                android:id="@+id/equalizerOnOff"
-                                android:layout_width="@dimen/now_playing_save_asSize"
-                                android:layout_height="@dimen/now_playing_save_asSize"
-                                android:layout_gravity="center_vertical|right"
-                                android:layout_weight="0.0"
-                                android:background="@drawable/eq"
-                                android:clickable="false" />
-                        </RelativeLayout>
-                    </RelativeLayout>
                 </LinearLayout>
-
-                <Spinner
-                    android:id="@+id/saved_preset"
-                    style="style/SpinnerStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:popupBackground="#b0000000" />
 
                 <LinearLayout
-                    android:id="@+id/SessionFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:weightSum="10">
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:orientation="vertical">
+                    <champak.champabun.business.utilities.utilClass.TextViewOstrich
+                        android:id="@+id/basstext"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/bass"
+                        android:textColor="@color/TextColor_Secondary"
+                        android:textSize="21sp" />
 
-                        <ImageView
-                            android:id="@+id/image"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:paddingTop="55dp"
-                            android:scaleType="centerCrop" />
-                    </LinearLayout>
+                    <champak.champabun.business.utilities.utilClass.TextViewOstrich
+                        android:id="@+id/virtualizertext"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/virtualizer"
+                        android:textColor="@color/TextColor_Secondary"
+                        android:textSize="21sp" />
 
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="7"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:id="@+id/button_layout"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
-
-                            <RelativeLayout
-                                android:id="@+id/button1"
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:background="@color/buttonbgcolor" />
-
-                            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
-                                android:id="@+id/basstext"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/button1"
-                                android:layout_alignLeft="@+id/button1"
-                                android:layout_alignRight="@+id/button1"
-                                android:layout_alignTop="@+id/button1"
-                                android:layout_marginTop="4dp"
-                                android:gravity="center_horizontal|center_vertical"
-                                android:text="@string/bass"
-                                android:textColor="@color/TextColor_Secondary" />
-
-                            <RelativeLayout
-                                android:id="@+id/button2"
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_toRightOf="@+id/button1"
-                                android:background="@color/buttonbgcolor" />
-
-                            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
-                                android:id="@+id/voltext"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/button2"
-                                android:layout_alignLeft="@+id/button2"
-                                android:layout_alignRight="@+id/button2"
-                                android:layout_alignTop="@+id/button2"
-                                android:layout_marginTop="4dp"
-                                android:gravity="center_horizontal|center_vertical"
-                                android:text="@string/vol"
-                                android:textColor="@color/TextColor_Secondary" />
-
-                            <RelativeLayout
-                                android:id="@+id/button3"
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_toRightOf="@+id/button2"
-                                android:background="@color/buttonbgcolor" />
-
-                            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
-                                android:id="@+id/virtualizertext"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/button3"
-                                android:layout_alignLeft="@+id/button3"
-                                android:layout_alignRight="@+id/button3"
-                                android:layout_alignTop="@+id/button3"
-                                android:layout_marginTop="4dp"
-                                android:gravity="center_horizontal|center_vertical"
-                                android:text="@string/virtualizer"
-                                android:textColor="@color/TextColor_Secondary" />
-
-                            <RelativeLayout
-                                android:id="@+id/bottomgap"
-                                android:layout_width="fill_parent"
-                                android:layout_height="match_parent"
-                                android:layout_below="@id/basstext"
-                                android:background="@color/buttonbgcolor" />
-                        </RelativeLayout>
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
-
-
 </RelativeLayout>

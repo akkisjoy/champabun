@@ -21,7 +21,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,7 +51,7 @@ public class EqualizerActivity extends BaseActivity {
     public int prevPresetIndex;
     public Equalizer mEqualizer;
     public DatabaseHandler db;
-    public RoundKnobButton rv2;
+    public RoundKnobButton rv1, rv3;
     public Button eq_status;
     public PlayMeePreferences prefs;
     public ArrayAdapter<String> dataAdapter;
@@ -145,7 +144,7 @@ public class EqualizerActivity extends BaseActivity {
     private BassBoost bassBoost;
     private Dialog dialog;
     private Bitmap bitmap;
-    private ImageView drawingImageView, ivBack1, ivBack2, ivBack3;
+    private ImageView drawingImageView, ivBack1, ivBack3;
     private Canvas canvas;
     private ImageView backPager;
 
@@ -400,35 +399,35 @@ public class EqualizerActivity extends BaseActivity {
         }
         m_Inst.InitGUIFrame(this);
         RelativeLayout panel1 = (RelativeLayout) findViewById(R.id.button1);
-        panel1.getLayoutParams().width = btn_width;
-        panel1.getLayoutParams().height = btn_width;
-        RelativeLayout panel2 = (RelativeLayout) findViewById(R.id.button2);
-        panel2.getLayoutParams().width = btn_width;
-        panel2.getLayoutParams().height = btn_width;
+//        panel1.getLayoutParams().width = btn_width;
+//        panel1.getLayoutParams().height = btn_width;
+//        RelativeLayout panel2 = (RelativeLayout) findViewById(R.id.button2);
+//        panel2.getLayoutParams().width = btn_width;
+//        panel2.getLayoutParams().height = btn_width;
         RelativeLayout panel3 = (RelativeLayout) findViewById(R.id.button3);
-        panel3.getLayoutParams().width = btn_width;
-        panel3.getLayoutParams().height = btn_width;
-        RoundKnobButton rv1 = new RoundKnobButton(this, R.drawable.rotoroff, R.drawable.rotoron, R.drawable.rotoroff,
-                m_Inst.Scale(215), m_Inst.Scale(215));
-        rv2 = new RoundKnobButton(this, R.drawable.rotoroff, R.drawable.rotoron, R.drawable.rotoroff, m_Inst.Scale(215),
-                m_Inst.Scale(215));
-        RoundKnobButton rv3 = new RoundKnobButton(this, R.drawable.rotoroff, R.drawable.rotoron, R.drawable.rotoroff,
-                m_Inst.Scale(215), m_Inst.Scale(215));
+//        panel3.getLayoutParams().width = btn_width;
+//        panel3.getLayoutParams().height = btn_width;
+        rv1 = new RoundKnobButton(this, R.drawable.rotoroff, R.drawable.rotoron, R.drawable.rotoroff,
+                m_Inst.Scale(250), m_Inst.Scale(250));
+//        rv2 = new RoundKnobButton(this, R.drawable.rotoroff, R.drawable.rotoron, R.drawable.rotoroff, m_Inst.Scale(250),
+//                m_Inst.Scale(250));
+        rv3 = new RoundKnobButton(this, R.drawable.rotoroff, R.drawable.rotoron, R.drawable.rotoroff,
+                m_Inst.Scale(250), m_Inst.Scale(250));
         panel1.addView(rv1);
-        panel2.addView(rv2);
+//        panel2.addView(rv2);
         panel3.addView(rv3);
 
         // image bg pic selector
         ivBack1 = new ImageView(getApplicationContext());
         ivBack1.setImageResource(stator1);
-        ivBack2 = new ImageView(getApplicationContext());
+//        ivBack2 = new ImageView(getApplicationContext());
         ivBack3 = new ImageView(getApplicationContext());
         ivBack3.setImageResource(stator3);
 
-        RelativeLayout.LayoutParams lp_ivBack = new RelativeLayout.LayoutParams(215, 215);
-        lp_ivBack.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout.LayoutParams lp_ivBack = new RelativeLayout.LayoutParams(250, 250);
+//        lp_ivBack.addRule(RelativeLayout.CENTER_IN_PARENT);
         panel1.addView(ivBack1, lp_ivBack);
-        panel2.addView(ivBack2, lp_ivBack);
+//        panel2.addView(ivBack2, lp_ivBack);
         panel3.addView(ivBack3, lp_ivBack);
         // end current work
 
@@ -437,24 +436,24 @@ public class EqualizerActivity extends BaseActivity {
         statorselectorVolume();
         statorselectorBassBoost();
         statorselectorVirtualizer();
-        ivBack2.setImageResource(stator2);
-        rv2.setRotorPercentage(per2);
-        TextView voltext = (TextView) findViewById(R.id.voltext);
-        voltext.getLayoutParams().width = btn_width;
-        voltext.setPadding(0, 5, 0, 20);
-        voltext.setTextSize(TypedValue.COMPLEX_UNIT_PX, textsize);
+//        ivBack2.setImageResource(stator2);
+//        rv2.setRotorPercentage(per2);
+//        TextView voltext = (TextView) findViewById(R.id.voltext);
+//        voltext.getLayoutParams().width = btn_width;
+//        voltext.setPadding(0, 5, 0, 20);
+//        voltext.setTextSize(TypedValue.COMPLEX_UNIT_PX, textsize);
         TextView basstext = (TextView) findViewById(R.id.basstext);
         basstext.getLayoutParams().width = btn_width;
-        basstext.setTextSize(TypedValue.COMPLEX_UNIT_PX, textsize);
-        basstext.setPadding(0, 5, 0, 20);
+//        basstext.setTextSize(TypedValue.COMPLEX_UNIT_PX, textsize);
+//        basstext.setPadding(0, 5, 0, 20);
         TextView virtualizertext = (TextView) findViewById(R.id.virtualizertext);
         virtualizertext.getLayoutParams().width = btn_width;
-        virtualizertext.setTextSize(TypedValue.COMPLEX_UNIT_PX, textsize);
-        virtualizertext.setPadding(0, 5, 0, 20);
-        panel1.getLayoutParams().width = btn_width;
-        panel1.setPadding(0, 5, 0, 0);
-        panel2.setPadding(0, 5, 0, 0);
-        panel3.setPadding(0, 5, 0, 0);
+//        virtualizertext.setTextSize(TypedValue.COMPLEX_UNIT_PX, textsize);
+//        virtualizertext.setPadding(0, 5, 0, 20);
+//        panel1.getLayoutParams().width = btn_width;
+//        panel1.setPadding(0, 5, 0, 0);
+//        panel2.setPadding(0, 5, 0, 0);
+//        panel3.setPadding(0, 5, 0, 0);
 
         rv1.setRotorPercentage(per1);
         rv1.SetListener(new RoundKnobButton.RoundKnobButtonListener() {
@@ -469,21 +468,21 @@ public class EqualizerActivity extends BaseActivity {
                 //TODO bass
             }
         });
-        rv2.setRotorPercentage(per2);
-        rv2.SetListener(new RoundKnobButton.RoundKnobButtonListener() {
-            @Override
-            public void onRotate(int percentage, int statorvalue) {
-                per2 = percentage;
-                stator2 = statorvalue;
-                db.updateButtonValue(new Buttonvalues(1, per1, per2, per3, stator1, stator2, stator3));
-                maudiomanager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                volumecalc();
-                maudiomanager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
-                int volumevalue = maudiomanager.getStreamVolume(AudioManager.STREAM_MUSIC);
-                ivBack2.setImageResource(stator2);
-                Log.d("volume" + volume, " is  " + volumevalue);
-            }
-        });
+//        rv2.setRotorPercentage(per2);
+//        rv2.SetListener(new RoundKnobButton.RoundKnobButtonListener() {
+//            @Override
+//            public void onRotate(int percentage, int statorvalue) {
+//                per2 = percentage;
+//                stator2 = statorvalue;
+//                db.updateButtonValue(new Buttonvalues(1, per1, per2, per3, stator1, stator2, stator3));
+//                maudiomanager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+//                volumecalc();
+//                maudiomanager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+//                int volumevalue = maudiomanager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//                ivBack2.setImageResource(stator2);
+//                Log.d("volume" + volume, " is  " + volumevalue);
+//            }
+//        });
         rv3.setRotorPercentage(per3);
         rv3.SetListener(new RoundKnobButton.RoundKnobButtonListener() {
             @Override
@@ -923,7 +922,7 @@ public class EqualizerActivity extends BaseActivity {
         l5 = DeviceHeight * 70 / 100;
 
         if (Y > mid && Y <= h1) {
-            Singleton.theEqualizer.setBandLevel(band, (short) 300);
+            Singleton.theEqualizer.setBandLevel(band, (short) 250);
             return;
         } else if (Y < h1 && Y >= h2) {
             Singleton.theEqualizer.setBandLevel(band, (short) 600);
@@ -932,7 +931,7 @@ public class EqualizerActivity extends BaseActivity {
             Singleton.theEqualizer.setBandLevel(band, (short) 900);
             return;
         } else if (Y < h3 && Y >= h4) {
-            Singleton.theEqualizer.setBandLevel(band, (short) 1200);
+            Singleton.theEqualizer.setBandLevel(band, (short) 1250);
             return;
         } else if (Y < h4 && Y >= h5) {
             Singleton.theEqualizer.setBandLevel(band, (short) 1500);
@@ -941,7 +940,7 @@ public class EqualizerActivity extends BaseActivity {
             Singleton.theEqualizer.setBandLevel(band, (short) 0);
             return;
         } else if (Y > mid && Y <= l1) {
-            Singleton.theEqualizer.setBandLevel(band, (short) -300);
+            Singleton.theEqualizer.setBandLevel(band, (short) -250);
             return;
         } else if (Y > l1 && Y <= l2) {
             Singleton.theEqualizer.setBandLevel(band, (short) -600);
@@ -950,7 +949,7 @@ public class EqualizerActivity extends BaseActivity {
             Singleton.theEqualizer.setBandLevel(band, (short) -900);
             return;
         } else if (Y > l3 && Y <= l4) {
-            Singleton.theEqualizer.setBandLevel(band, (short) -1200);
+            Singleton.theEqualizer.setBandLevel(band, (short) -1250);
             return;
         } else if (Y > l4 && Y <= l5) {
             Singleton.theEqualizer.setBandLevel(band, (short) -1500);
@@ -1448,26 +1447,25 @@ public class EqualizerActivity extends BaseActivity {
         return "EqualizerActivity";
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            percentcalcVolume();
-            statorselectorVolume();
-            rv2.setRotorPercentage(per2);
-            ivBack2.setImageResource(stator2);
-        }
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            percentcalcVolume();
-            statorselectorVolume();
-            rv2.setRotorPercentage(per2);
-            ivBack2.setImageResource(stator2);
-        }
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+//            percentcalcVolume();
+//            statorselectorVolume();
+//            rv2.setRotorPercentage(per2);
+//            ivBack2.setImageResource(stator2);
+//        }
+//        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+//            percentcalcVolume();
+//            statorselectorVolume();
+//            rv2.setRotorPercentage(per2);
+//            ivBack2.setImageResource(stator2);
+//        }
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            finish();
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     private void setBassBoost(BassBoost bassBoost, int percent) {
         try {

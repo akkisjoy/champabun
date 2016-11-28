@@ -47,14 +47,16 @@ import champak.champabun.business.utilities.utilMethod.RayMenu_Functions;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
 import champak.champabun.business.utilities.utilMethod.Utilities;
+import champak.champabun.framework.listener.EditTagsListener;
+import champak.champabun.framework.listener.OptionItemSelectListener;
 import champak.champabun.view.adapters.Adapter_SongView;
 import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
-public class Album extends BaseActivity implements SongHelper.OnQuickActionItemSelectListener {
+public class Album extends BaseActivity implements OptionItemSelectListener {
     static public int highlight_zero = 0;
     ArrayList<SongDetails> songs;
-    Adapter_SongView ab;
-    int position2;
+    Adapter_SongView adapter;
+    int curItemSelect;
     Dialog dialog2;
     String click_no;
     ImageView albumart;
@@ -117,11 +119,11 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                position2 = arg2;
+                curItemSelect = arg2;
                 if (songHelper == null) {
                     songHelper = new SongHelper();
                 }
-                songHelper.Show(Album.this, mListView, Album.this, SongHelper.ALBUM);
+                songHelper.Show(Album.this, adapter.GetData().get(curItemSelect).getSong(), adapter.GetData().get(curItemSelect).getArtist(), Album.this, SongHelper.ALBUM);
                 return true;
             }
         });
@@ -180,11 +182,11 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                     SongHelper.DeleteSongMultiple(Album.this, checkedList, i, null, null);
 
                     songs.remove(checkedList.get(i));
-                    ab.OnUpdate(songs);
+                    adapter.OnUpdate(songs);
                 }
                 highlight_zero = 0;
                 ActivityUtil.showCrouton(Album.this, getString(R.string.delete_successful));
-                ab.OnUpdate(songs);
+                adapter.OnUpdate(songs);
                 for (int i = 0; i < checkedList.size(); i++) {
                     try {
                         getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
@@ -207,7 +209,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                     multiplecheckedListforaddtoplaylist.clear();
                 }
                 SparseBooleanArray checked = mListView.getCheckedItemPositions();
-                multiplecheckedListforaddtoplaylist = RayMenu_Functions.getCheckedList(highlight_zero, checked, songs, ab);
+                multiplecheckedListforaddtoplaylist = RayMenu_Functions.getCheckedList(highlight_zero, checked, songs, adapter);
 
                 if (multiplecheckedListforaddtoplaylist.size() > 0) {
                     Adapter_playlist_Dialog ab;
@@ -257,7 +259,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
             @Override
             public void onClick(View v) {
                 SparseBooleanArray checked = mListView.getCheckedItemPositions();
-                ArrayList<SongDetails> checkedList = RayMenu_Functions.getCheckedList(highlight_zero, checked, songs, ab);
+                ArrayList<SongDetails> checkedList = RayMenu_Functions.getCheckedList(highlight_zero, checked, songs, adapter);
                 if (checkedList.size() > 0) {
                     delete_song_multiple(checkedList);
                 } else {
@@ -271,7 +273,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
             @Override
             public void onClick(View v) {
                 SparseBooleanArray checked = mListView.getCheckedItemPositions();
-                ArrayList<SongDetails> checkedList = RayMenu_Functions.getCheckedList(highlight_zero, checked, songs, ab);
+                ArrayList<SongDetails> checkedList = RayMenu_Functions.getCheckedList(highlight_zero, checked, songs, adapter);
                 if (checkedList.size() > 0) {
 
                     Intent intent = new Intent(Album.this, Player.class);
@@ -320,13 +322,13 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                                 }
                             }
                         mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-                        ab.OnUpdate(songs);
+                        adapter.OnUpdate(songs);
 
                         mListView.setOnItemClickListener(new OnItemClickListener() {
                             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                                 Intent intent = new Intent(Album.this, Player.class);
                                 AmuzicgApp.GetInstance().setPosition(position);
-                                AmuzicgApp.GetInstance().SetNowPlayingList(ab.GetData());
+                                AmuzicgApp.GetInstance().SetNowPlayingList(adapter.GetData());
                                 AmuzicgApp.GetInstance().setCheck(0);
                                 startActivity(intent);
                             }
@@ -392,12 +394,12 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
 
                                         private void highlight2() {
                                             highlight_zero = highlight_zero + 1;
-                                            ab.OnUpdate(songs);
+                                            adapter.OnUpdate(songs);
                                         }
 
                                         private void highlight(int position) {
                                             mListView.setItemChecked(position, true);
-                                            ab.OnUpdate(songs);
+                                            adapter.OnUpdate(songs);
                                         }
                                     });
                                 }
@@ -417,7 +419,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    RayMenu_Functions.sort(click_no, Album.this, ab, songs, mListView, 1, null, null);
+                                    RayMenu_Functions.sort(click_no, Album.this, adapter, songs, mListView, 1, null, null);
                                     // 1 for album
                                 }
                             }, 760);
@@ -495,38 +497,38 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
     }
 
     @Override
-    public void QuickAction_OnPlaySong() {
-        songHelper.PlaySong(songs, position2);
+    public void action_OnPlaySong() {
+        songHelper.PlaySong(songs, curItemSelect);
     }
 
     @Override
-    public void QuickAction_OnAdd2Playlist() {
-        songHelper.Add2Playlist(songs.get(position2));
+    public void action_OnAdd2Playlist() {
+        songHelper.Add2Playlist(songs.get(curItemSelect));
     }
 
     @Override
-    public void QuickAction_OnEditTags() {
-        songHelper.EditTags(songs.get(position2), new SongHelper.OnEditTagsListener() {
+    public void action_OnEditTags() {
+        songHelper.EditTags(songs.get(curItemSelect), new EditTagsListener() {
 
             @Override
-            public void OnEditTagsSuccessful() {
+            public void onEditTagsSuccessful() {
                 OnRefreshListView();
             }
         }, null);
     }
 
     @Override
-    public void QuickAction_OnSetAsRingtone() {
-        songHelper.SetAsRingtone(songs.get(position2));
+    public void action_OnSetAsRingtone() {
+        songHelper.SetAsRingtone(songs.get(curItemSelect));
     }
 
     @Override
-    public void QuickAction_OnViewDetails() {
+    public void action_OnViewDetails() {
     }
 
     @Override
-    public void QuickAction_OnDeleteSong() {
-        songHelper.DeleteSong(songs, position2, new SongHelper.OnDeleteSongListener() {
+    public void action_OnDeleteSong() {
+        songHelper.DeleteSong(songs, curItemSelect, new SongHelper.OnDeleteSongListener() {
 
             @Override
             public void OnSongDeleted() {
@@ -536,11 +538,11 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
     }
 
     private void OnRefreshListView() {
-        if (ab == null) {
-            ab = new Adapter_SongView(songs, getApplicationContext(), 1);
-            mListView.setAdapter(ab);
+        if (adapter == null) {
+            adapter = new Adapter_SongView(songs, getApplicationContext(), 1);
+            mListView.setAdapter(adapter);
         } else {
-            ab.OnUpdate(songs);
+            adapter.OnUpdate(songs);
         }
     }
 
@@ -586,7 +588,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
     }
 
     @Override
-    public void QuickAction_OnRemoveSong() {
+    public void action_OnRemoveSong() {
     }
 
     public void onResume() {
@@ -608,7 +610,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
     }
 
     @Override
-    public void QuickAction_OnSendSong() {
+    public void action_OnSendSong() {
         // never call for this case
     }
 
@@ -630,7 +632,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                     StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Album.this);
 
 
-                    File file = new File(songs.get(position2).getPath2());
+                    File file = new File(songs.get(curItemSelect).getPath2());
                     boolean canWrite;
                     try {
                         canWrite = StorageAccessAPI.getDocumentFile(file, false).canWrite();
@@ -638,10 +640,10 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                         canWrite = false;
                     }
                     if (canWrite) {
-                        songHelper.EditTags(songs.get(position2), new SongHelper.OnEditTagsListener() {
+                        songHelper.EditTags(songs.get(curItemSelect), new EditTagsListener() {
 
                             @Override
-                            public void OnEditTagsSuccessful() {
+                            public void onEditTagsSuccessful() {
                                 OnRefreshListView();
                             }
                         }, null);
@@ -770,7 +772,7 @@ public class Album extends BaseActivity implements SongHelper.OnQuickActionItemS
                 }
             mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
             mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-            ab.OnUpdate(songs);
+            adapter.OnUpdate(songs);
         }
 
         @Override

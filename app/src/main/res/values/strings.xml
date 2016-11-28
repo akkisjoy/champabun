@@ -109,7 +109,7 @@
     <string name="playlist_created">Playlist created</string>
     <string name="playlist_name_already_exists">Playlist name already exists</string>
     <string name="an_error_occurred">An error occurred, please try after some time</string>
-    <string name="f_total_tracks">Total Tracks: %s</string>
+    <string name="f_total_tracks">Total Tracks: %d</string>
     <string name="f_total_time">Total Time: %s</string>
     <string name="songs_were_added_to_playlist">Songs were added to the playlist</string>
     <string name="no_songs">No Songs</string>
@@ -181,5 +181,14 @@
     <string name="genre">Genre</string>
     <string name="pollfish">pollfish</string>
 
+
+    <string-array name="tabs">
+        <item>@string/tab_Genres</item>
+        <item>@string/tab_Playlists</item>
+        <item>@string/tab_Songs</item>
+        <item>@string/tab_Artists</item>
+        <item>@string/tab_Albums</item>
+        <item>@string/tab_My_Files</item>
+    </string-array>
 
 </resources>

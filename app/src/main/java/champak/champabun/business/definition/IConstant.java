@@ -22,8 +22,6 @@
 package champak.champabun.business.definition;
 
 
-import champak.champabun.R;
-
 public interface IConstant {
 
     /**
@@ -66,10 +64,6 @@ public interface IConstant {
      * Enable/Disable optimize mem by recycle bitmap
      */
     boolean OPTIMIZE_MEM_RECYCLE_BITMAP = false;
-
-    int arr[] = {R.drawable.album_art_1, R.drawable.album_art_2, R.drawable.album_art_3, R.drawable.album_art_4,
-            R.drawable.album_art_5, R.drawable.album_art_6, R.drawable.album_art_7, R.drawable.album_art_8, R.drawable.album_art_9,
-            R.drawable.album_art_10, R.drawable.album_art_11, R.drawable.album_art_12, R.drawable.album_art_13,};
 
     String BROADCAST_PLAYPAUSE = ACTION_FREE.BROADCAST_PLAYPAUSE;
     String BROADCAST_SEEKBAR = ACTION_FREE.BROADCAST_SEEKBAR;
