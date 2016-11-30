@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/panel_background"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <champak.champabun.business.utilities.utilClass.TextViewGravilar
+        android:id="@+id/toastText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:text="hello"
+        android:textColor="@color/White"
+        android:textSize="14sp" />
+
+</RelativeLayout>

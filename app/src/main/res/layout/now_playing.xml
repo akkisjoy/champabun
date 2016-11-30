@@ -23,19 +23,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+            <champak.champabun.business.utilities.utilClass.TextViewLobster
                 android:id="@+id/nowplaying"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:ellipsize="marquee"
                 android:gravity="center"
+                android:padding="10dp"
                 android:paddingLeft="42dp"
                 android:paddingRight="42dp"
-                android:paddingTop="20dp"
                 android:text="@string/now_playing"
                 android:textColor="@color/TextColor_Primary"
-                android:textSize="@dimen/Heading_Size" />
+                android:textSize="24sp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"

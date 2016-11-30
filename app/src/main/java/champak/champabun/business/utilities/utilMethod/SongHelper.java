@@ -18,9 +18,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -42,7 +44,6 @@ import java.util.ArrayList;
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
-import champak.champabun.business.utilities.popupMenu.QuickAction;
 import champak.champabun.framework.listener.EditTagsListener;
 import champak.champabun.framework.listener.OptionItemSelectListener;
 import champak.champabun.framework.listener.ResponseListener;
@@ -59,7 +60,6 @@ public class SongHelper {
     final public static int ALBUM = 7;
     private static Activity mActivity;
     private EditTagsListener listeneredit;
-    private QuickAction mQuickAction;
     private OptionItemSelectListener mListener;
 
     private Dialog dialog;
@@ -70,7 +70,7 @@ public class SongHelper {
 
     private static void Permission(final int deleteoredit, final Activity mActivity, final Fragment fragment) {
         // 0 for delete 1 for edit tags
-        PlayMeePreferences prefs = new PlayMeePreferences(mActivity);
+        AmuzePreferences prefs = new AmuzePreferences(mActivity);
         prefs.DeleteSharedPreferenceUri();
         final Dialog dg = Utilities.designdialog(200, mActivity);
         dg.setContentView(R.layout.dialoge_delete);
@@ -173,13 +173,13 @@ public class SongHelper {
                 .start();
     }
 
-    private void SetOnQuickActionItemSelectListener(OptionItemSelectListener listener) {
+    private void SetOnActionItemSelectListener(OptionItemSelectListener listener) {
         this.mListener = listener;
     }
 
     public void Show(Activity activity, String titleSong, String subTitileSong, OptionItemSelectListener listener, int fragmentID) {
         mActivity = activity;
-        SetOnQuickActionItemSelectListener(listener);
+        SetOnActionItemSelectListener(listener);
         showMoreOption(fragmentID, titleSong, subTitileSong);
     }
 
@@ -233,7 +233,7 @@ public class SongHelper {
                     @Override
                     public void onSuccess(Object response) {
                         alertDialog.dismiss();
-                        mListener.action_OnPlaySong();
+                        mListener.action_OnSetAsRingtone();
                     }
                 });
             }
@@ -331,12 +331,69 @@ public class SongHelper {
         ActivityUtil.showCrouton(mActivity, String.format(mActivity.getResources().getString(R.string.remove_from_playlist)));
     }
 
+    private void create_new_playlist() { // TODO
+        final Dialog dialog;
+        dialog = new Dialog(mActivity, R.style.AmuzeTheme);
+        final Window window = dialog.getWindow();
+        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, mActivity.getResources().getDisplayMetrics());
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
+        window.setBackgroundDrawableResource(R.drawable.miniback2);
+        // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
+        dialog.getWindow().setAttributes(lp);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+        dialog.setContentView(R.layout.dialog_create_new_playlist);
+        Button bDOK = (Button) dialog.findViewById(R.id.dBOK);
+        Button bDCancle = (Button) dialog.findViewById(R.id.dBCancel);
+
+        bDOK.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                EditText save = (EditText) dialog.findViewById(R.id.save_as);
+                int YOUR_PLAYLIST_ID = NowPlaying.createPlaylist(save.getText().toString(), mActivity);
+                if (YOUR_PLAYLIST_ID == -1)
+                    return;
+//                new Album.AddToPl().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, YOUR_PLAYLIST_ID);
+                dialog.dismiss();
+                mListener.action_OnAdd2Playlist();
+            }
+        });
+        bDCancle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+                mListener.action_OnAdd2Playlist();
+            }
+
+        });
+        dialog.show();
+    }
+
     public void Add2Playlist(final SongDetails songdetails) {
         Adapter_playlist_Dialog ab;
         dialog = Utilities.designdialog(400, mActivity);
 
         dialog.setContentView(R.layout.dialog_queue);
         dialog.setTitle(mActivity.getResources().getString(R.string.select_playlist));
+
+        Button dBCancel = (Button) dialog.findViewById(R.id.dBCancel);
+        dBCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        final TextView createNew = (TextView) dialog.findViewById(R.id.textview);
+        createNew.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                create_new_playlist();
+                dialog.dismiss();
+            }
+        });
 
         final ArrayList<SongDetails> pl = Utilities.generatePlaylists(mActivity.getApplicationContext());
         SongDetails np = new SongDetails();

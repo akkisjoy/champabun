@@ -10,11 +10,15 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import champak.champabun.business.utilities.crouton.Crouton;
-import champak.champabun.business.utilities.crouton.Style;
+import champak.champabun.R;
 import champak.champabun.view.activity.BaseActivity;
 
 public class ActivityUtil {
@@ -50,16 +54,31 @@ public class ActivityUtil {
         openActivities.clear();
     }
 
-    public static void showCrouton(Activity mActivity, final String text) {
-        final Crouton _Crouton = Crouton.makeText(mActivity, text, Style.MY);
-        mActivity.runOnUiThread(new Runnable() {
+//    public static void showCrouton(Activity mActivity, final String text) {
+//        final Crouton _Crouton = Crouton.makeText(mActivity, text, Style.MY);
+//        mActivity.runOnUiThread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                Crouton.cancelAllCroutons();
+//                _Crouton.show();
+//            }
+//        });
+//    }
 
-            @Override
-            public void run() {
-                Crouton.cancelAllCroutons();
-                _Crouton.show();
-            }
-        });
+    public static void showCrouton(Activity mActivity, final String text) {
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View layout = inflater.inflate(R.layout.toast_layout, null);
+
+        TextView textV = (TextView) layout.findViewById(R.id.toastText);
+        textV.setText(text);
+
+        Toast toast = new Toast(mActivity);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        boolean isLong = true;
+        toast.setDuration((isLong) ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 
     public static boolean IsMyServiceRunning(Context context, Class<?> serviceClass) {

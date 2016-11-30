@@ -21,7 +21,7 @@ import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
-import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
+import champak.champabun.business.utilities.utilMethod.AmuzePreferences;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.SongListUtil;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
@@ -41,7 +41,7 @@ public class Playlist extends BaseActivity implements OptionItemSelectListener {
     ProgressBar spinner;
     int position2;
     private SongHelper songHelper;
-    private PlayMeePreferences prefs;
+    private AmuzePreferences prefs;
     private ImageView backPager;
 
     @Override
@@ -59,7 +59,7 @@ public class Playlist extends BaseActivity implements OptionItemSelectListener {
         backPager = (ImageView) findViewById(R.id.backPager);
         backPager.setColorFilter(getResources().getColor(R.color.purplePager), PorterDuff.Mode.MULTIPLY);
 
-        prefs = new PlayMeePreferences(getApplicationContext());
+        prefs = new AmuzePreferences(getApplicationContext());
 
         Intent i = getIntent();
         SngList = (ListView) findViewById(R.id.listView1);

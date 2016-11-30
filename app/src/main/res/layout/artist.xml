@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+                <champak.champabun.business.utilities.utilClass.TextViewLobster
                     android:id="@+id/tV1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,8 +61,9 @@
 
             <champak.champabun.business.utilities.ecoGallery.EcoGallery
                 android:id="@+id/gallery"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/artist_Image_Size"
+                android:layout_margin="8dp"
                 android:background="#66000000" />
 
             <FrameLayout

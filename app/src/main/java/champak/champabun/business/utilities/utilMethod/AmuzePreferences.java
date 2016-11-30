@@ -10,7 +10,7 @@ import android.os.Build;
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 
-public class PlayMeePreferences {
+public class AmuzePreferences {
     private final static String key_uri_for_access = "key_uri_for_access";
     private final static String key_flag = "key_flag";
     final private static String filename = "amuzetheme";
@@ -24,7 +24,7 @@ public class PlayMeePreferences {
     final private static String key_saved_presets = "saved_presets";
     private Context context;
 
-    public PlayMeePreferences(Context context) {
+    public AmuzePreferences(Context context) {
         this.context = context;
     }
 

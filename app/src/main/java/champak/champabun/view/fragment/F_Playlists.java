@@ -35,7 +35,7 @@ import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
-import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
+import champak.champabun.business.utilities.utilMethod.AmuzePreferences;
 import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.framework.listener.OptionItemSelectListener;
@@ -50,7 +50,7 @@ public class F_Playlists extends BaseFragment implements OptionItemSelectListene
     private SongHelper songHelper;
     private int curPosition;
     private Dialog dialog;
-    private PlayMeePreferences prefs;
+    private AmuzePreferences prefs;
     private ShimmerTextView titleHeader;
 
     @Override
@@ -61,7 +61,7 @@ public class F_Playlists extends BaseFragment implements OptionItemSelectListene
             Playlists = savedInstanceState.getParcelableArrayList("F_Playlists.Playlists");
             curPosition = savedInstanceState.getInt("curPosition");
         }
-        prefs = new PlayMeePreferences(getActivity());
+        prefs = new AmuzePreferences(getActivity());
     }
 
     @Override

@@ -464,7 +464,7 @@ public class Album extends BaseActivity implements OptionItemSelectListener {
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
-        window.setBackgroundDrawableResource(R.drawable.dialogbg);
+        window.setBackgroundDrawableResource(R.drawable.miniback2);
         // window.setBackgroundDrawable(new ColorDrawable(0x99000000));
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
@@ -626,7 +626,7 @@ public class Album extends BaseActivity implements OptionItemSelectListener {
         super.onActivityResult(requestCode, resultCode, intent);
         switch (requestCode) {
             case StorageAccessAPI.Code:
-                // PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
+                // AmuzePreferences prefs = new AmuzePreferences(Player.this);
                 if (resultCode == RESULT_OK) {
 
                     StorageAccessAPI.onActivityResult(requestCode, resultCode, intent, Album.this);

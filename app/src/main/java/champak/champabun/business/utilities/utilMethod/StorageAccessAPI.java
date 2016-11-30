@@ -47,7 +47,7 @@ public class StorageAccessAPI {
                 treeUri = resultData.getData();
 
                 // Persist URI in shared preference so that you can use it later.
-                PlayMeePreferences prefs = new PlayMeePreferences(c);
+                AmuzePreferences prefs = new AmuzePreferences(c);
                 prefs.SaveSharedPreferenceUri(treeUri);
                 System.out.println("from Storage acces APi" + treeUri.toString());
                 // Persist access permissions.
@@ -75,7 +75,7 @@ public class StorageAccessAPI {
         } catch (IOException e) {
             return null;
         }
-        PlayMeePreferences prefs = new PlayMeePreferences(AmuzicgApp.GetInstance().getApplicationContext());
+        AmuzePreferences prefs = new AmuzePreferences(AmuzicgApp.GetInstance().getApplicationContext());
         Uri treeUri = null;
         try {
             treeUri = Uri.parse(prefs.GetSharedPreferenceUri());

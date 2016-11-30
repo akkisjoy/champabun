@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -82,17 +80,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mInstance = this;
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                Animation animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.zoom_in);
-                ImageView splashImage = (ImageView) findViewById(R.id.splashImage);
-                splashImage.startAnimation(animZoomIn);
-            }
-        }, 1000);
 
         fragments = new ArrayList<>();
         fragments.add(new F_Genres());
@@ -170,6 +157,7 @@ public class MainActivity extends BaseActivity {
         album2 = (TextView) findViewById(R.id.albumtop);
         openactivity = findViewById(R.id.openactivity);
         play2 = (ImageView) findViewById(R.id.play2);
+
 
         openactivity.setOnClickListener(new View.OnClickListener() {
 

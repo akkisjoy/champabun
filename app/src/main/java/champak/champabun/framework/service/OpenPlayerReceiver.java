@@ -11,7 +11,7 @@ import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
-import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
+import champak.champabun.business.utilities.utilMethod.AmuzePreferences;
 import champak.champabun.business.utilities.utilMethod.SongListUtil;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.view.activity.Player;
@@ -26,7 +26,7 @@ public class OpenPlayerReceiver extends BroadcastReceiver {
             Intent intent2 = new Intent(context, Player.class);
             ArrayList<SongDetails> play = null;
             int index = 0;
-            PlayMeePreferences prefs = new PlayMeePreferences(context);
+            AmuzePreferences prefs = new AmuzePreferences(context);
 
             if (AmuzicgApp.GetInstance().GetNowPlayingSize() <= 0) {
                 SongListUtil util = new SongListUtil(context);

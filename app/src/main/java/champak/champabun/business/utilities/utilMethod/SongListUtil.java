@@ -64,7 +64,7 @@ public class SongListUtil {
     public ArrayList<SongDetails> FetchLastPlayed() {
         ArrayList<SongDetails> play = null;
         Cursor songCursor = null;
-        PlayMeePreferences prefs = new PlayMeePreferences(context);
+        AmuzePreferences prefs = new AmuzePreferences(context);
         String[] in = prefs.GetLastPlaylist();
         if (in == null) {
             return null;

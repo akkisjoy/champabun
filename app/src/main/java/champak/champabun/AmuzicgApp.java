@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import champak.champabun.business.dataclasses.AppDatabase;
 import champak.champabun.business.dataclasses.AppSetting;
 import champak.champabun.business.dataclasses.SongDetails;
-import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
+import champak.champabun.business.utilities.utilMethod.AmuzePreferences;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 
 public class AmuzicgApp extends Application {
@@ -43,7 +43,7 @@ public class AmuzicgApp extends Application {
         super.onCreate();
         mInstance = this;
 
-        PlayMeePreferences prefs = new PlayMeePreferences(getApplicationContext());
+        AmuzePreferences prefs = new AmuzePreferences(getApplicationContext());
         repeatmode = prefs.GetRepeatMode();
 
         sizeofimage = (int) mInstance.getResources().getDimension(R.dimen.player_image_size) + 50;
@@ -163,7 +163,7 @@ public class AmuzicgApp extends Application {
 
     public void SetRepeatMode(int mode) {
         repeatmode = mode;
-        PlayMeePreferences prefs = new PlayMeePreferences(getApplicationContext());
+        AmuzePreferences prefs = new AmuzePreferences(getApplicationContext());
         prefs.SetRepeatMode(mode);
     }
 
@@ -172,7 +172,7 @@ public class AmuzicgApp extends Application {
     }
 
     public void SaveLastPlaylist(boolean isFromRecentAdded, String click_no) {
-        PlayMeePreferences prefs = new PlayMeePreferences(getApplicationContext());
+        AmuzePreferences prefs = new AmuzePreferences(getApplicationContext());
         if (Utilities.isEmpty(click_no)) {
             if (NP_List != null && NP_List.size() > 0) {
                 String lastPlaylistIDs = "";

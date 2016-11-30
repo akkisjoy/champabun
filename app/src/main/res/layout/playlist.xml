@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+            <champak.champabun.business.utilities.utilClass.TextViewLobster
                 android:id="@+id/playlistname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,11 +30,11 @@
                 android:ellipsize="marquee"
                 android:gravity="center"
                 android:maxLines="1"
+                android:padding="10dp"
                 android:paddingLeft="42dp"
                 android:paddingRight="42dp"
-                android:paddingTop="20dp"
                 android:textColor="#ffffff"
-                android:textSize="@dimen/Heading_Size" />
+                android:textSize="24sp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"

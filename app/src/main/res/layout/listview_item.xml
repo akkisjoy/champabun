@@ -9,4 +9,6 @@
     android:maxLines="1"
     android:minHeight="@dimen/lv_item_min_height"
     android:paddingLeft="15dp"
-    android:textAppearance="?android:attr/textAppearanceMedium" />
+    android:text="@string/create_new"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="@color/White" />

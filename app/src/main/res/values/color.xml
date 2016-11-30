@@ -38,9 +38,9 @@
     <color name="white">#ffffffff</color>
     <color name="buttonbgcolor">#70000000</color>
     <color name="graphbgcolor">#00000000</color>
-    <color name="graphtopcolor">#20bbbbbb</color>
-    <color name="graphnormalcolor">#20bbbbbb</color>
-    <color name="graphbottomcolor">#20bbbbbb</color>
+    <color name="graphtopcolor">#ffff0000</color>
+    <color name="graphnormalcolor">#fff44696</color>
+    <color name="graphbottomcolor">#ffa200ff</color>
     <color name="bottomcolor">#ff48203b</color>
     <color name="silver">#ffc0c0c0</color>
     <color name="buttonstroke">#fff44696</color>

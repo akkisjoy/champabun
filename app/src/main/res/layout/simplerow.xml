@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:maxLines="1"
     android:minHeight="@dimen/lv_item_min_height"
-    android:paddingLeft="20dp"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:textColor="#90ffffff" />

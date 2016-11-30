@@ -55,8 +55,8 @@ import champak.champabun.business.definition.IConstant;
 import champak.champabun.business.definition.Logger;
 import champak.champabun.business.utilities.utilClass.CircularSeekBar;
 import champak.champabun.business.utilities.utilMethod.ActivityUtil;
+import champak.champabun.business.utilities.utilMethod.AmuzePreferences;
 import champak.champabun.business.utilities.utilMethod.BitmapUtil;
-import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
 import champak.champabun.business.utilities.utilMethod.StorageAccessAPI;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.framework.equalizer.EqualizerActivity;
@@ -146,7 +146,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     @Override
     public int GetLayoutResID() {
-        return R.layout.player2;
+        return R.layout.player;
     }
 
     @Override
@@ -470,7 +470,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                                 if (canWrite) {
                                     new EditTags().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
                                 } else {
-                                    PlayMeePreferences prefs = new PlayMeePreferences(Player.this);
+                                    AmuzePreferences prefs = new AmuzePreferences(Player.this);
                                     prefs.DeleteSharedPreferenceUri();
                                     final Dialog dg = Utilities.designdialog(200, Player.this);
                                     dg.setContentView(R.layout.dialoge_delete);
@@ -959,10 +959,10 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         }
     }
 
-    @Override
-    public int GetRootViewID() {
-        return R.id.LL;
-    }
+//    @Override
+//    public int GetRootViewID() {
+//        return R.id.LL;
+//    }
 
     @Override
     public void OnBackPressed() {

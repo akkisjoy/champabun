@@ -96,8 +96,7 @@
                 android:id="@+id/button_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:gravity="bottom"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -107,6 +106,13 @@
 
                     <RelativeLayout
                         android:id="@+id/button1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center" />
+
+                    <RelativeLayout
+                        android:id="@+id/button2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -134,6 +140,16 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/bass"
+                        android:textColor="@color/TextColor_Secondary"
+                        android:textSize="21sp" />
+
+                    <champak.champabun.business.utilities.utilClass.TextViewOstrich
+                        android:id="@+id/voltext"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Volume"
                         android:textColor="@color/TextColor_Secondary"
                         android:textSize="21sp" />
 

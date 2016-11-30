@@ -35,8 +35,8 @@ import android.widget.RemoteViews;
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 import champak.champabun.business.definition.IConstant;
+import champak.champabun.business.utilities.utilMethod.AmuzePreferences;
 import champak.champabun.business.utilities.utilMethod.BitmapUtil;
-import champak.champabun.business.utilities.utilMethod.PlayMeePreferences;
 import champak.champabun.framework.equalizer.Singleton;
 import champak.champabun.iloader.ImageLoader;
 import champak.champabun.view.activity.Player;
@@ -67,7 +67,7 @@ public class Music_service extends Service
      * <p/>
      * This will be called only once or otherwise multiple instances will get created
      */
-    public PlayMeePreferences prefs;
+    public AmuzePreferences prefs;
     public AudioManager maudiomanager;
     Intent bufferIntent, nextsongcoverIntent;
     int playpause;
@@ -708,6 +708,7 @@ public class Music_service extends Service
         }
 
         Notification n = new Notification.Builder(this).setContent(contentView)
+                .setAutoCancel(false).setOngoing(true)
                 .setContentTitle(AmuzicgApp.GetInstance().GetCurSongDetails().getSong())
                 .setSmallIcon(R.drawable.ic_music).setContentIntent(pIntent)
                 .build();
@@ -1027,7 +1028,7 @@ public class Music_service extends Service
     private void initializeEqualisers() {
 
         if (prefs == null) {
-            prefs = new PlayMeePreferences(Music_service.this);
+            prefs = new AmuzePreferences(Music_service.this);
         }
 
         try {

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,13 +14,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import champak.champabun.AmuzicgApp;
 import champak.champabun.R;
 
 public class SplashActivity extends BaseActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
-    final private static long TIME_DELAY = 2 * 1000;
+    final private static long TIME_DELAY = 3 * 1000;
+
+    private ImageView blurred;
 
     @Override
     public String GetActivityID() {
@@ -45,6 +51,10 @@ public class SplashActivity extends BaseActivity implements ActivityCompat.OnReq
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        blurred = (ImageView) findViewById(R.id.blurred);
+        blurred.setColorFilter(getResources().getColor(R.color.redPager), PorterDuff.Mode.MULTIPLY);
+
+
         if (checkPermissionForExternalStorage()) {
             callActivity();
         }
@@ -58,11 +68,22 @@ public class SplashActivity extends BaseActivity implements ActivityCompat.OnReq
 
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                overridePendingTransition(0, 0);
-                finish();
+                Animation animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
+                ImageView logo = (ImageView) findViewById(R.id.logo);
+                logo.startAnimation(animZoomIn);
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        overridePendingTransition(0, 0);
+                        finish();
+                    }
+                }, 2000);
             }
-        }, TIME_DELAY);
+        }, 3000);
+
+
     }
 
     @Override

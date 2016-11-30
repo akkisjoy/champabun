@@ -97,7 +97,7 @@
     <string name="f_confirm_delete_songs">Are you sure you want to delete %d songs?</string>
     <string name="delete_successful">Deleted successfully</string>
     <string name="now_playing">Player queue</string>
-    <string name="create_new">Create New</string>
+    <string name="create_new">Create new playlist</string>
     <string name="f_song_added_to_queue">%d song(s) was added to the queue</string>
     <string name="f_was_added_to_queue">%s was added to the queue</string>
     <string name="select_an_item_to_add">Please select an item to add to the now playing list</string>

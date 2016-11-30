@@ -130,7 +130,10 @@ public class Adapter_SongView extends BaseAdapter implements Filterable {
         }
 
         viewHolder.SongView.setText(_data.get(position).getSong());
-        viewHolder.TimeView.setText(_data.get(position).getTime());
+
+        if (_whichactivity != 2) {
+            viewHolder.TimeView.setText(_data.get(position).getTime());
+        }
         viewHolder.ArtistView.setText(_data.get(position).getsortBy());
 
         return convertView;

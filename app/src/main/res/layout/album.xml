@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <champak.champabun.business.utilities.utilClass.TextViewRajdhar
+                <champak.champabun.business.utilities.utilClass.TextViewLobster
                     android:id="@+id/albumname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,8 +61,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="35dp" >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -95,7 +94,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:maxLines="1"
+                            android:maxLines="3"
                             android:textColor="#ffffff"
                             android:textSize="@dimen/album_Text_Size" />
 

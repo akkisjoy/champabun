@@ -223,7 +223,7 @@ public class Utilities {
         dialog2.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
         window.setBackgroundDrawableResource(R.drawable.miniback2);
         WindowManager.LayoutParams lp = dialog2.getWindow().getAttributes();
-        lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
+        lp.dimAmount = 0.5f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog2.getWindow().setAttributes(lp);
         window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         return dialog2;
