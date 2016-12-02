@@ -55,7 +55,7 @@
             android:layout_toLeftOf="@+id/songCurrentDurationLabel"
             android:layout_toStartOf="@+id/songCurrentDurationLabel"
             android:background="@android:color/transparent"
-            android:src="@drawable/pre2" />
+            android:src="@drawable/act_previous" />
 
         <ImageView
             android:id="@+id/bNext"
@@ -67,7 +67,7 @@
             android:layout_toEndOf="@+id/songTotalDurationLabel"
             android:layout_toRightOf="@+id/songTotalDurationLabel"
             android:background="@android:color/transparent"
-            android:src="@drawable/next2" />
+            android:src="@drawable/act_next" />
 
         <champak.champabun.business.utilities.utilClass.TextViewGravilar
             android:id="@+id/songCurrentDurationLabel"

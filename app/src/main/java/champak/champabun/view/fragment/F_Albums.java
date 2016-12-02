@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.iloader.LazyAdapter;
+import champak.champabun.view.activity.MainActivity;
+
+import static champak.champabun.view.activity.MainActivity.miniBack;
 
 public class F_Albums extends BaseFragment {
     GridView list;
@@ -52,8 +55,8 @@ public class F_Albums extends BaseFragment {
                     .setStartDelay(100)
                     .start(titleHeader);
 
-            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
-            miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.bluePager), PorterDuff.Mode.MULTIPLY);
+//            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(MainActivity.getMainActivity(), R.color.pinkPager), PorterDuff.Mode.OVERLAY);
         }
         super.setUserVisibleHint(isVisibleToUser);
     }

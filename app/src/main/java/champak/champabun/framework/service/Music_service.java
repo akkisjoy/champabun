@@ -716,7 +716,7 @@ public class Music_service extends Service
 //        Picasso.with(Music_service.this.getApplicationContext()).load(AmuzicgApp.GetInstance().GetCurSongDetails().getAlbum()).error(R.drawable.ic_launcher).into(contentView, R.id.image, NOTIFICATION_ID, n);
 
         contentView.setImageViewResource(R.id.bPlayPause,
-                AmuzicgApp.GetInstance().boolMusicPlaying1 ? R.drawable.pause : R.drawable.play2);
+                AmuzicgApp.GetInstance().boolMusicPlaying1 ? R.drawable.act_pause : R.drawable.act_play);
 
         contentView.setTextViewText(R.id.title, AmuzicgApp.GetInstance().GetCurSongDetails().getSong());
         contentView.setTextViewText(R.id.text, AmuzicgApp.GetInstance().GetCurSongDetails().getArtist());
@@ -756,7 +756,7 @@ public class Music_service extends Service
 
         widgetView.setImageViewBitmap(R.id.album_image, bitmap);
 
-        widgetView.setImageViewResource(R.id.bPlay, AmuzicgApp.GetInstance().boolMusicPlaying1 ? R.drawable.pause : R.drawable.play2);
+        widgetView.setImageViewResource(R.id.bPlay, AmuzicgApp.GetInstance().boolMusicPlaying1 ? R.drawable.act_pause : R.drawable.act_play);
 
         ComponentName myWidget = new ComponentName(getApplicationContext(), MyWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());

@@ -20,7 +20,7 @@
         android:layout_marginTop="2dp"
         android:background="@null"
         android:onClick="OnCloseAds"
-        android:src="@drawable/ic_content_remove"
+        android:src="@drawable/close"
         android:visibility="gone" />
 
 </RelativeLayout>

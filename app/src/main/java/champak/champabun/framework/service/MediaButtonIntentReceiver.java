@@ -24,7 +24,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
             int action = event.getAction();
             long eventtime = event.getEventTime();
 
-            // single quick press: pause/resume.
+            // single quick press: act_pause/resume.
             // double press: next track
 
             String command = null;

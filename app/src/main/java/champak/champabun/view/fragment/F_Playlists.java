@@ -40,7 +40,10 @@ import champak.champabun.business.utilities.utilMethod.SongHelper;
 import champak.champabun.business.utilities.utilMethod.Utilities;
 import champak.champabun.framework.listener.OptionItemSelectListener;
 import champak.champabun.view.activity.BaseActivity;
+import champak.champabun.view.activity.MainActivity;
 import champak.champabun.view.adapters.Adapter_playlist;
+
+import static champak.champabun.view.activity.MainActivity.miniBack;
 
 public class F_Playlists extends BaseFragment implements OptionItemSelectListener {
     ImageView backPager;
@@ -72,8 +75,8 @@ public class F_Playlists extends BaseFragment implements OptionItemSelectListene
                     .setStartDelay(100)
                     .start(titleHeader);
 
-            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
-            miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.greenPager), PorterDuff.Mode.MULTIPLY);
+//            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(MainActivity.getMainActivity(), R.color.greenPager), PorterDuff.Mode.MULTIPLY);
         }
         super.setUserVisibleHint(isVisibleToUser);
     }

@@ -39,7 +39,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/pre2" />
+            android:src="@drawable/act_previous" />
 
         <ImageView
             android:id="@+id/bPlayPause"
@@ -49,7 +49,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/pause" />
+            android:src="@drawable/act_pause" />
 
         <ImageView
             android:id="@+id/bNext"
@@ -58,7 +58,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/next2" />
+            android:src="@drawable/act_next" />
     </LinearLayout>
 
     <LinearLayout

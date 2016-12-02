@@ -50,6 +50,8 @@ public class MainActivity extends BaseActivity {
     private int whichanimation = 0;
     private Animation fadeOut, fadeIn;
     private String oldalbum, oldsong;
+    public static ImageView miniBack;
+
     public BroadcastReceiver broadcastCoverReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent serviceIntent) {
@@ -80,6 +82,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mInstance = this;
+
+        miniBack = (ImageView) findViewById(R.id.miniBack);
 
         fragments = new ArrayList<>();
         fragments.add(new F_Genres());
@@ -205,9 +209,9 @@ public class MainActivity extends BaseActivity {
 
     private void checkbuttonplaypause() {
         if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-            play2.setImageResource(R.drawable.pause);
+            play2.setImageResource(R.drawable.act_pause);
         } else {
-            play2.setImageResource(R.drawable.play2);
+            play2.setImageResource(R.drawable.act_play);
         }
         inandout();
     }
@@ -287,13 +291,13 @@ public class MainActivity extends BaseActivity {
     private void buttonPlayStopClick() {
         if (!AmuzicgApp.GetInstance().boolMusicPlaying1) {
             Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
-            play2.setImageResource(R.drawable.pause);
+            play2.setImageResource(R.drawable.act_pause);
             intentplaypause.putExtra("playpause", 1);
             sendBroadcast(intentplaypause);
             AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
         } else {
             if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-                play2.setImageResource(R.drawable.play2);
+                play2.setImageResource(R.drawable.act_play);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = false;
                 Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
                 intentplaypause.putExtra("playpause", 0);

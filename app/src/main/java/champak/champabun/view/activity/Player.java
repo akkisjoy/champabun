@@ -93,12 +93,12 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 }
             }
             if (headsetSwitch == 0 && head > 1) {
-                buttonPlayStop.setBackgroundResource(R.drawable.play2);
+                buttonPlayStop.setBackgroundResource(R.drawable.act_play);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 =
 
                         false;
             } else if (headsetSwitch == 1) {
-                buttonPlayStop.setBackgroundResource(R.drawable.pause);
+                buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
             }
         }
@@ -228,7 +228,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         checkbuttonplaypause();
         SharedPreferences preferences = this.getSharedPreferences("shuffle_setting", MODE_PRIVATE);
         AmuzicgApp.GetInstance().boolshuffled = preferences.getBoolean("shuffle_setting", false);
-        shuffle.setImageResource(R.drawable.shuffle_off);
+        shuffle.setImageResource(R.drawable.act_shuffle_off);
         if (AmuzicgApp.GetInstance().boolshuffled && !AmuzicgApp.alreadyshuffled) {
             setShuffleState();
             AmuzicgApp.alreadyshuffled = true;
@@ -328,9 +328,9 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     private void checkbuttonplaypause() {
         if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-            buttonPlayStop.setBackgroundResource(R.drawable.pause);
+            buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
         } else {
-            buttonPlayStop.setBackgroundResource(R.drawable.play2);
+            buttonPlayStop.setBackgroundResource(R.drawable.act_play);
         }
     }
 
@@ -527,7 +527,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     int seekPos = circularSeekBar.getProgress();
-                    buttonPlayStop.setBackgroundResource(R.drawable.pause);
+                    buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
                     Intent intent = new Intent(IConstant.BROADCAST_SEEKBAR);
                     intent.putExtra("seekpos", seekPos);
                     sendBroadcast(intent);
@@ -566,7 +566,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
         if (AmuzicgApp.GetInstance().GetNowPlayingSize() > 1) {
             SharedPreferences.Editor editor = this.getSharedPreferences("shuffle_setting", MODE_PRIVATE).edit();
             if (AmuzicgApp.GetInstance().boolshuffled) {
-                shuffle.setImageResource(R.drawable.shuffle_on);
+                shuffle.setImageResource(R.drawable.act_shuffle_on);
                 editor.putBoolean("shuffle_setting", true);
                 editor.apply();
                 if (AmuzicgApp.GetInstance().GetNowPlayingList().size() > 800) // to avoid crashes due to memory
@@ -580,7 +580,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 Collections.shuffle(AmuzicgApp.GetInstance().GetNowPlayingList());
                 AmuzicgApp.GetInstance().Add2CurSongDetails(temp);
             } else {
-                shuffle.setImageResource(R.drawable.shuffle_off);
+                shuffle.setImageResource(R.drawable.act_shuffle_off);
                 editor.putBoolean("shuffle_setting", false);
                 editor.apply();
                 int x = 0;
@@ -620,7 +620,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             }
         }
 
-        buttonPlayStop.setBackgroundResource(R.drawable.pause);
+        buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
         AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
     }
 
@@ -630,7 +630,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
             intentswap.putExtra("swap", 1);
             sendBroadcast(intentswap);
-            buttonPlayStop.setBackgroundResource(R.drawable.pause);
+            buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
             AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
         } else if (AmuzicgApp.GetInstance().getPosition() == AmuzicgApp.GetInstance().GetNowPlayingSize() - 1
                 && AmuzicgApp.GetInstance().GetNowPlayingSize() > 0) {
@@ -643,7 +643,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
                 Intent intentswap = new Intent(IConstant.BROADCAST_SWAP);
                 intentswap.putExtra("swap", 1);
                 sendBroadcast(intentswap);
-                buttonPlayStop.setBackgroundResource(R.drawable.pause);
+                buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
                 AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
             }
         }
@@ -651,12 +651,12 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     private void buttonPlayStopClick() {
         if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-            buttonPlayStop.setBackgroundResource(R.drawable.play2);
+            buttonPlayStop.setBackgroundResource(R.drawable.act_play);
             Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
             intentplaypause.putExtra("playpause", 0);
             sendBroadcast(intentplaypause);
         } else {
-            buttonPlayStop.setBackgroundResource(R.drawable.pause);
+            buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
             Intent intentplaypause = new Intent(IConstant.BROADCAST_PLAYPAUSE);
             intentplaypause.putExtra("playpause", 1);
             sendBroadcast(intentplaypause);
@@ -664,7 +664,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     }
 
     private void playAudio() {
-        buttonPlayStop.setBackgroundResource(R.drawable.pause);
+        buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
         AmuzicgApp.GetInstance().boolMusicPlaying1 = true;
         Intent serviceIntent = new Intent(this, Music_service.class);
         startService(serviceIntent);
@@ -674,7 +674,7 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
     public void onProgressChanged(SeekBar sb, int progress, boolean fromUser) {
         if (fromUser) {
             int seekPos = sb.getProgress();
-            buttonPlayStop.setBackgroundResource(R.drawable.pause);
+            buttonPlayStop.setBackgroundResource(R.drawable.act_pause);
             Intent intent = new Intent(IConstant.BROADCAST_SEEKBAR);
             intent.putExtra("seekpos", seekPos);
             sendBroadcast(intent);
@@ -936,11 +936,11 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
 
     public void checkButtonRandom() {
         if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_NONE) {
-            repeat.setImageResource(R.drawable.repeat_off_tran);
+            repeat.setImageResource(R.drawable.act_repeat_off);
         } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ONCE) {
-            repeat.setImageResource(R.drawable.repeat_one_tran);
+            repeat.setImageResource(R.drawable.act_repeat_one);
         } else if (AmuzicgApp.GetInstance().GetRepeatMode() == AmuzicgApp.REPEAT_ALL) {
-            repeat.setImageResource(R.drawable.repeat_all_tran);
+            repeat.setImageResource(R.drawable.act_repeat_all);
         }
     }
 
@@ -1059,10 +1059,10 @@ public class Player extends BaseActivity implements OnSeekBarChangeListener {
             super.onPreExecute();
 
             if (AmuzicgApp.GetInstance().boolshuffled) {
-                shuffle.setImageResource(R.drawable.shuffle_on);
+                shuffle.setImageResource(R.drawable.act_shuffle_on);
 //                shuffle.setBackgroundColor(Color.parseColor("#30000000"));
             } else if (!AmuzicgApp.GetInstance().boolshuffled) {
-                shuffle.setImageResource(R.drawable.shuffle_off);
+                shuffle.setImageResource(R.drawable.act_shuffle_off);
 //                shuffle.setBackgroundColor(Color.parseColor("#00ffffff"));
             }
 

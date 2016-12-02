@@ -43,4 +43,6 @@ dependencies {
     compile 'com.antonionicolaspina:revealtextview:2.0'
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile 'com.crystal:crystalviewpager:1.0.0'
+    // For Circular and Rounded Square Images
+    compile 'com.github.siyamed:android-shape-imageview:0.9.3'
 }

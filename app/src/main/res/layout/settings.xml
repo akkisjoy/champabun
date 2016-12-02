@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dummy1"
+    android:background="@drawable/miniback1"
     android:orientation="vertical">
 
     <champak.champabun.business.utilities.utilClass.TextViewLobster
@@ -109,6 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:addStatesFromChildren="true"
+                android:visibility="gone"
                 android:gravity="center_vertical"
                 android:minHeight="?android:attr/listPreferredItemHeight">
 
@@ -135,6 +136,7 @@
                 android:id="@+id/fullscreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:addStatesFromChildren="true">
 
                 <champak.champabun.business.utilities.utilClass.TextViewGravilight

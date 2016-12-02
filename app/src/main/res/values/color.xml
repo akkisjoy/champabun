@@ -142,7 +142,7 @@
     <color name="Gainsboro">#ffdcdcdc</color>
     <color name="GhostWhite">#fff8f8ff</color>
     <color name="Honeydew">#fff0fff0</color>
-    <color name="HotPink">#ffff69b4</color>
+    <color name="HotPink">#ff69b4</color>
     <color name="Indigo">#ff4b0082</color>
     <color name="Ivory">#fffffff0</color>
     <color name="IndianRed">#ffcd5c5c</color>
@@ -203,14 +203,15 @@
     <color name="YellowGreen">#ff9acd32</color>
     <color name="player_shuffle_on_bg_color">#30000000</color>
     <color name="player_shuffle_off_bg_color">#00ffffff</color>
-    <color name="setting_main">#b33b5b</color>
+    <color name="setting_main">#4682b4</color>
 
-    <color name="redPager">#ea1c44</color>
+    <color name="redPager">#e65100</color>
     <color name="yellowPager">#467ef3</color>
     <color name="pinkPager">#E91E63</color>
     <color name="bluePager">#a335d8</color>
     <color name="greenPager">#67bc29</color>
     <color name="purplePager">#00bb98</color>
+    <color name="darkPink">#5d0c27</color>
     
     <color name="TextColor_Heading_Dialog">#ffffff</color>
     <color name="TextColor_Primary_Dialog">#ffffff</color>

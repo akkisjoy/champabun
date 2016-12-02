@@ -67,6 +67,8 @@ import champak.champabun.view.activity.Player;
 import champak.champabun.view.adapters.Adapter_SongView;
 import champak.champabun.view.adapters.Adapter_playlist_Dialog;
 
+import static champak.champabun.view.activity.MainActivity.miniBack;
+
 public class F_Songs extends BaseFragment implements OptionItemSelectListener {
     static public int highlight_zero = 0;
     int playlistid;
@@ -96,8 +98,8 @@ public class F_Songs extends BaseFragment implements OptionItemSelectListener {
                     .setStartDelay(100)
                     .start(titleHeader);
 
-            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
-            miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
+//            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(MainActivity.getMainActivity(), R.color.Tomato), PorterDuff.Mode.MULTIPLY);
 
         }
         super.setUserVisibleHint(isVisibleToUser);
@@ -756,7 +758,7 @@ public class F_Songs extends BaseFragment implements OptionItemSelectListener {
         final Window window = dialog.getWindow();
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, this.getResources().getDisplayMetrics());
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, (int) pixels);
-        window.setBackgroundDrawableResource(R.drawable.dialogbg);
+        window.setBackgroundDrawableResource(R.drawable.miniback2);
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.8f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
         dialog.getWindow().setAttributes(lp);

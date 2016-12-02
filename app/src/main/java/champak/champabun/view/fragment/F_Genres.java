@@ -24,7 +24,10 @@ import java.util.ArrayList;
 import champak.champabun.R;
 import champak.champabun.business.dataclasses.SongDetails;
 import champak.champabun.business.definition.IConstant;
+import champak.champabun.view.activity.MainActivity;
 import champak.champabun.view.adapters.Adapter_playlist;
+
+import static champak.champabun.view.activity.MainActivity.miniBack;
 
 public class F_Genres extends BaseFragment {
     ListView mListView;
@@ -49,8 +52,8 @@ public class F_Genres extends BaseFragment {
                     .setStartDelay(100)
                     .start(titleHeader);
 
-            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
-            miniBack.setColorFilter(ContextCompat.getColor(getActivity(), R.color.redPager), PorterDuff.Mode.MULTIPLY);
+//            ImageView miniBack = (ImageView) getActivity().findViewById(R.id.miniBack);
+            miniBack.setColorFilter(ContextCompat.getColor(MainActivity.getMainActivity(), R.color.redPager), PorterDuff.Mode.OVERLAY);
         }
         super.setUserVisibleHint(isVisibleToUser);
     }

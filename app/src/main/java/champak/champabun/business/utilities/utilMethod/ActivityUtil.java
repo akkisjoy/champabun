@@ -54,18 +54,6 @@ public class ActivityUtil {
         openActivities.clear();
     }
 
-//    public static void showCrouton(Activity mActivity, final String text) {
-//        final Crouton _Crouton = Crouton.makeText(mActivity, text, Style.MY);
-//        mActivity.runOnUiThread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                Crouton.cancelAllCroutons();
-//                _Crouton.show();
-//            }
-//        });
-//    }
-
     public static void showCrouton(Activity mActivity, final String text) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View layout = inflater.inflate(R.layout.toast_layout, null);
@@ -75,7 +63,7 @@ public class ActivityUtil {
 
         Toast toast = new Toast(mActivity);
         toast.setGravity(Gravity.CENTER, 0, 0);
-        boolean isLong = true;
+        boolean isLong = false;
         toast.setDuration((isLong) ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();

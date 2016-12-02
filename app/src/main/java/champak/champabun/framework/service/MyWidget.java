@@ -34,7 +34,7 @@ public class MyWidget extends AppWidgetProvider {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 
         remoteViews.setTextViewText(R.id.artist, "");
-        remoteViews.setImageViewResource(R.id.bPlay, R.drawable.play2);
+        remoteViews.setImageViewResource(R.id.bPlay, R.drawable.act_play);
 
         linkButtons(context, remoteViews);
         pushUpdate(context, appWidgetIds, remoteViews);
@@ -82,14 +82,14 @@ public class MyWidget extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.artist, artistTitle);
 
             if (AmuzicgApp.GetInstance().boolMusicPlaying1) {
-                remoteViews.setImageViewResource(R.id.bPlay, R.drawable.pause);
+                remoteViews.setImageViewResource(R.id.bPlay, R.drawable.act_pause);
             } else {
-                remoteViews.setImageViewResource(R.id.bPlay, R.drawable.play2);
+                remoteViews.setImageViewResource(R.id.bPlay, R.drawable.act_play);
             }
         } else {
             //remoteViews.setTextViewText(R.id.song, "");
             remoteViews.setTextViewText(R.id.artist, "");
-            remoteViews.setImageViewResource(R.id.bPlay, R.drawable.play2);
+            remoteViews.setImageViewResource(R.id.bPlay, R.drawable.act_play);
         }
 
         // Link actions buttons to intents

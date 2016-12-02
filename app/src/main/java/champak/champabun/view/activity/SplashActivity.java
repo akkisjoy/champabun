@@ -52,8 +52,7 @@ public class SplashActivity extends BaseActivity implements ActivityCompat.OnReq
         super.onCreate(savedInstanceState);
 
         blurred = (ImageView) findViewById(R.id.blurred);
-        blurred.setColorFilter(getResources().getColor(R.color.redPager), PorterDuff.Mode.MULTIPLY);
-
+        blurred.setColorFilter(ContextCompat.getColor(SplashActivity.this, R.color.pinkPager), PorterDuff.Mode.MULTIPLY);
 
         if (checkPermissionForExternalStorage()) {
             callActivity();

@@ -61,20 +61,11 @@
                         android:layout_height="@dimen/now_playing_save_asSize"
                         android:layout_gravity="center_vertical|right"
                         android:layout_weight="0.0"
-                        android:background="@drawable/eq"
+                        android:background="@drawable/eq_switch"
                         android:clickable="false" />
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
-
-        <Spinner
-            android:id="@+id/saved_preset"
-            style="style/SpinnerStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:popupBackground="#b0000000" />
 
         <LinearLayout
             android:id="@+id/SessionFrame"
@@ -91,6 +82,15 @@
                 android:adjustViewBounds="true"
                 android:paddingTop="55dp"
                 android:scaleType="centerCrop" />
+
+            <Spinner
+                android:id="@+id/saved_preset"
+                style="style/SpinnerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:popupBackground="#b0000000" />
 
             <LinearLayout
                 android:id="@+id/button_layout"
@@ -141,7 +141,7 @@
                         android:gravity="center"
                         android:text="@string/bass"
                         android:textColor="@color/TextColor_Secondary"
-                        android:textSize="21sp" />
+                        android:textSize="18sp" />
 
                     <champak.champabun.business.utilities.utilClass.TextViewOstrich
                         android:id="@+id/voltext"
@@ -151,7 +151,7 @@
                         android:gravity="center"
                         android:text="Volume"
                         android:textColor="@color/TextColor_Secondary"
-                        android:textSize="21sp" />
+                        android:textSize="18sp" />
 
                     <champak.champabun.business.utilities.utilClass.TextViewOstrich
                         android:id="@+id/virtualizertext"
@@ -161,7 +161,7 @@
                         android:gravity="center"
                         android:text="@string/virtualizer"
                         android:textColor="@color/TextColor_Secondary"
-                        android:textSize="21sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
             </LinearLayout>

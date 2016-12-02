@@ -118,13 +118,13 @@ public interface IConstant {
         public static final String CMDTOGGLEPAUSE = "togglepause";
         public static final String CMDSTOP = "stop";
         public static final String CMDPLAY = "play";
-        public static final String CMDPAUSE = "pause";
+        public static final String CMDPAUSE = "act_pause";
         public static final String CMDPREVIOUS = "previous";
         public static final String CMDNEXT = "next";
 
         public static final String TOGGLEPAUSE_ACTION = "champa.musicservicecommand.togglepause";
         public static final String PLAY_ACTION = "champa.musicservicecommand.play";
-        public static final String PAUSE_ACTION = "champa.musicservicecommand.pause";
+        public static final String PAUSE_ACTION = "champa.musicservicecommand.act_pause";
         public static final String PREVIOUS_ACTION = "champa.musicservicecommand.previous";
         public static final String NEXT_ACTION = "champa.musicservicecommand.next";
     }

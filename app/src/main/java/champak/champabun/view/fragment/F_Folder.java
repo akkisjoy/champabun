@@ -33,6 +33,8 @@ import champak.champabun.view.activity.MainActivity;
 import champak.champabun.view.activity.Player;
 import champak.champabun.view.adapters.Adapter_Folder;
 
+import static champak.champabun.view.activity.MainActivity.miniBack;
+
 public class F_Folder extends BaseFragment {
     ImageView backPager;
     private String rootPath = "/";
@@ -74,7 +76,7 @@ public class F_Folder extends BaseFragment {
                     .setStartDelay(100)
                     .start(titleHeader);
 
-            ImageView miniBack = (ImageView) MainActivity.getMainActivity().findViewById(R.id.miniBack);
+//            ImageView miniBack = (ImageView) MainActivity.getMainActivity().findViewById(R.id.miniBack);
             miniBack.setColorFilter(ContextCompat.getColor(MainActivity.getMainActivity(), R.color.purplePager), PorterDuff.Mode.MULTIPLY);
         }
         super.setUserVisibleHint(isVisibleToUser);
